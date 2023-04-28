@@ -30,118 +30,110 @@ class BottomNav extends StatelessWidget {
                   fit: BoxFit.fill,
                 ),
               ),
-              child: SizedBox(
-                height: Get.height,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: Get.height - 120,
-                      child: Obx(() => homeController.bottomIndex.value == 1
-                          ? const SearchUi()
-                          : homeController.bottomIndex.value == 2
-                              ? const HomeUI()
-                              : homeController.bottomIndex.value == 3
-                                  ? const CategoriesUi()
-                                  : homeController.bottomIndex.value == 5
-                                      ? const WebViewScreen()
-                                      : homeController.bottomIndex.value == 6
-                                          ? const SubCategoriesUI()
-                                      : homeController.bottomIndex.value == 7
-                                          ? const DetailUi()
-                                          : const MoreUI()),
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: SizedBox(
+                    height: Get.height,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: Get.height - 120,
+                          child: Obx(() => homeController.bottomIndex.value == 1
+                              ? const SearchUi()
+                              : homeController.bottomIndex.value == 2
+                                  ? const HomeUI()
+                                  : homeController.bottomIndex.value == 3
+                                      ? const CategoriesUi()
+                                      : homeController.bottomIndex.value == 5
+                                          ? const WebViewScreen()
+                                          : homeController.bottomIndex.value ==
+                                                  6
+                                              ? const SubCategoriesUI()
+                                              : homeController
+                                                          .bottomIndex.value ==
+                                                      7
+                                                  ? const DetailUi()
+                                                  : const MoreUI()),
+                        ),
+                        Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20)),
+                            color: const Color(0xffeef1f8),
+                          ),
+                          width: Get.width,
+                          alignment: Alignment.center,
+                          height: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              menuItem(
+                                  icon: ImagesPaths.ic_notification,
+                                  title: "Notification",
+                                  onTap: () {
+                                    ToastContext().init(context);
+                                    Toast.show("No New Notifications");
+                                  }),
+                              menuItem(
+                                  icon: ImagesPaths.ic_search,
+                                  title: "Search",
+                                  onTap: () {
+                                    HomeController homeController = Get.find();
+                                    homeController.changeIndex(1);
+                                  }),
+                              menuItem(
+                                  icon: ImagesPaths.ic_home,
+                                  title: "Home",
+                                  isHighlighted: true,
+                                  onTap: () {
+                                    HomeController homeController = Get.find();
+                                    homeController.changeIndex(2);
+                                  }),
+                              menuItem(
+                                  icon: ImagesPaths.ic_category,
+                                  title: "Categories",
+                                  onTap: () {
+                                    HomeController homeController = Get.find();
+                                    homeController.changeIndex(3);
+                                  }),
+                              menuItem(
+                                  icon: ImagesPaths.ic_more,
+                                  title: "More",
+                                  onTap: () {
+                                    HomeController homeController = Get.find();
+                                    homeController.changeIndex(4);
+                                  }),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                    Container(
-                      width: Get.width,
-                      alignment: Alignment.center,
-                      height: 80,
-                      color: const Color(0xffeef1f8),
-                      child: Row(
-                        children: [
-                          menuItem(
-                              icon: ImagesPaths.ic_notification,
-                              title: "Notification",
-                              onTap: () {
-                                ToastContext().init(context);
-                                Toast.show("No New Notifications");
-                              }),
-                          menuItem(
-                              icon: ImagesPaths.ic_search,
-                              title: "Search",
-                              onTap: () {
-                                HomeController homeController = Get.find();
-                                homeController.changeIndex(1);
-                              }),
-                          homeMenuItem(
-                              icon: ImagesPaths.ic_home,
-                              title: "Home",
-                              onTap: () {
-                                HomeController homeController = Get.find();
-                                homeController.changeIndex(2);
-                              }),
-                          menuItem(
-                              icon: ImagesPaths.ic_category,
-                              title: "Categories",
-                              onTap: () {
-                                HomeController homeController = Get.find();
-                                homeController.changeIndex(3);
-                              }),
-                          menuItem(
-                              icon: ImagesPaths.ic_more,
-                              title: "More",
-                              onTap: () {
-                                HomeController homeController = Get.find();
-                                homeController.changeIndex(4);
-                              }),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ))),
+                  )))),
     );
   }
 
   Widget menuItem(
-      {required String icon, required String title, required Function onTap}) {
-    return Container(
-      height: 60,
-      width: Get.width * .2,
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Image.asset(
+      {required String icon,
+      required String title,
+      bool isHighlighted = false,
+      required Function onTap}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CircleAvatar(
+          backgroundColor: isHighlighted ? Colors.red : Colors.transparent,
+          child: Image.asset(
             icon,
             width: 25,
+            color: isHighlighted ? Colors.white : null,
           ),
-          FittedBox(child: title.text.size(11).make())
-        ],
-      ),
-    ).onTap(() {
-      onTap();
-    });
-  }
-
-  Widget homeMenuItem(
-      {required String icon, required String title, required Function onTap}) {
-    return Container(
-      height: 80,
-      width: Get.width * .2,
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.red,
-            child: Image.asset(
-              icon,
-              color: Colors.white,
-              width: 25,
-            ),
-          ),
-          FittedBox(child: title.text.size(11).make())
-        ],
-      ),
+        ),
+        Text(
+          title,
+          style: TextStyle(fontSize: 4),
+        )
+      ],
     ).onTap(() {
       onTap();
     });

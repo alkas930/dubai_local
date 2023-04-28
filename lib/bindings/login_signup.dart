@@ -67,10 +67,9 @@ class LoginSignUpUI extends StatelessWidget {
                       .px(25)
                       .py(10),
                   onTap: () {
-
                     GetStorage storage = GetStorage();
                     storage.write(SharedPrefrencesKeys.IS_LOGGED_BY, "GUEST");
-                    Get.offNamed(AppRoutes.mainHome);
+                    Get.offNamed(AppRoutes.home);
                   }).marginOnly(top: 85),
               "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy."
                   .text

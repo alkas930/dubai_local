@@ -11,12 +11,12 @@ class SplashController extends SuperController {
     GetStorage storage = GetStorage();
 
     String data= storage.read(SharedPrefrencesKeys.IS_LOGGED_BY)??"";
-    printData("$data");
+    printError(info: "LOGGEDIN: "+ "$data");
     Future.delayed(const Duration(seconds: 3), () {
 
 
      if(data=="GUEST"||data=="GOOGLE"||data=="FACEBOOK"){
-       Get.offAllNamed(AppRoutes.mainHome);
+       Get.offAllNamed(AppRoutes.home);
      } else{
        Get.offAllNamed(AppRoutes.loginSignUp);
      }

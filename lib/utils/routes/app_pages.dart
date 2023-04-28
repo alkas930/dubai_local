@@ -24,7 +24,7 @@ import '../../screens/main_home_ui.dart';
 import '../../screens/webview_screen_ui.dart';
 
 class AppPages {
-  static const initialRoute = AppRoutes.home;
+  static const initialRoute = AppRoutes.splash;
   static final route = [
     GetPage(
         name: AppRoutes.home,
