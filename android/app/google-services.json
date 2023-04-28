@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "387827751249",
+    "project_id": "dubai-local-cbd6e",
+    "storage_bucket": "dubai-local-cbd6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387827751249:android:43920cdb1b76883f911b70",
+        "android_client_info": {
+          "package_name": "com.example.dubai_local"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387827751249-fbeau4i1nob9c0qa3rci7fq454c555g8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBskyWtGpywMoOCzh1EN2sczeIumNu9l4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387827751249-fbeau4i1nob9c0qa3rci7fq454c555g8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
