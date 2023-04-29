@@ -54,54 +54,60 @@ class BottomNav extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(50),
-                        bottomRight: Radius.circular(50)),
+                        bottomLeft: Radius.circular(Constants.tabBarRadius),
+                        bottomRight: Radius.circular(Constants.tabBarRadius)),
                     color: const Color(0xffeef1f8),
                   ),
                   width: Get.width,
                   alignment: Alignment.center,
                   height: Constants.tabBarHeight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      menuItem(
-                          icon: ImagesPaths.ic_notification,
-                          title: "Notification",
-                          onTap: () {
-                            ToastContext().init(context);
-                            Toast.show("No New Notifications");
-                          }),
-                      menuItem(
-                          icon: ImagesPaths.ic_search,
-                          title: "Search",
-                          onTap: () {
-                            HomeController homeController = Get.find();
-                            homeController.changeIndex(1);
-                          }),
-                      menuItem(
-                          icon: ImagesPaths.ic_home,
-                          title: "Home",
-                          isHighlighted: true,
-                          onTap: () {
-                            HomeController homeController = Get.find();
-                            homeController.changeIndex(2);
-                          }),
-                      menuItem(
-                          icon: ImagesPaths.ic_category,
-                          title: "Categories",
-                          onTap: () {
-                            HomeController homeController = Get.find();
-                            homeController.changeIndex(3);
-                          }),
-                      menuItem(
-                          icon: ImagesPaths.ic_more,
-                          title: "More",
-                          onTap: () {
-                            HomeController homeController = Get.find();
-                            homeController.changeIndex(4);
-                          }),
-                    ],
-                  ),
+                  child: Obx(() => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          menuItem(
+                            isSelected: homeController.bottomIndex.value == 0,
+                            icon: ImagesPaths.ic_notification,
+                            title: "Notification",
+                            onTap: () {
+                              ToastContext().init(context);
+                              Toast.show("No New Notifications");
+                            },
+                          ),
+                          menuItem(
+                              isSelected: homeController.bottomIndex.value == 1,
+                              icon: ImagesPaths.ic_search,
+                              title: "Search",
+                              onTap: () {
+                                HomeController homeController = Get.find();
+                                homeController.changeIndex(1);
+                              }),
+                          menuItem(
+                              isSelected: homeController.bottomIndex.value == 2,
+                              icon: ImagesPaths.ic_home,
+                              title: "Home",
+                              isHighlighted: true,
+                              onTap: () {
+                                HomeController homeController = Get.find();
+                                homeController.changeIndex(2);
+                              }),
+                          menuItem(
+                              isSelected: homeController.bottomIndex.value == 3,
+                              icon: ImagesPaths.ic_category,
+                              title: "Categories",
+                              onTap: () {
+                                HomeController homeController = Get.find();
+                                homeController.changeIndex(3);
+                              }),
+                          menuItem(
+                              isSelected: homeController.bottomIndex == 4,
+                              icon: ImagesPaths.ic_more,
+                              title: "More",
+                              onTap: () {
+                                HomeController homeController = Get.find();
+                                homeController.changeIndex(4);
+                              }),
+                        ],
+                      )),
                 )
               ],
             ),
@@ -115,28 +121,36 @@ class BottomNav extends StatelessWidget {
       {required String icon,
       required String title,
       bool isHighlighted = false,
+      bool isSelected = false,
       required Function onTap}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        CircleAvatar(
-          backgroundColor: isHighlighted
-              ? Color(Constants.themeColorRed)
-              : Colors.transparent,
-          child: Image.asset(
-            icon,
-            width: 25,
-            color: isHighlighted ? Colors.white : null,
+        Transform.translate(
+          offset: isHighlighted ? const Offset(0, -16) : const Offset(0, 0),
+          child: CircleAvatar(
+            backgroundColor: isHighlighted
+                ? Color(Constants.themeColorRed)
+                : Colors.transparent,
+            radius: 25,
+            child: Image.asset(
+              icon,
+              width: 20,
+              color: isHighlighted ? Colors.white : null,
+            ),
           ),
         ),
         Text(
           title,
-          style: TextStyle(fontSize: 12),
+          style: TextStyle(
+              fontSize: 12,
+              color: isSelected
+                  ? Color(Constants.themeColorRed)
+                  : Color(0xff333333),
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
         )
       ],
-    ).onTap(() {
-      onTap();
-    });
+    ).onTap(() => onTap());
   }
 }
 

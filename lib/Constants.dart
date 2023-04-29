@@ -10,6 +10,9 @@ class Constants {
   //BOTTOM TAB BAR HEIGHT
   static const double tabBarHeight = 72.0;
 
+  //BOTTOM TAB BAR ROUNDED RADIUS
+  static const double tabBarRadius = 25;
+
   //THEME COLOR CONSTANT
   static const int themeColorRed = 0xffe41c23;
 }
