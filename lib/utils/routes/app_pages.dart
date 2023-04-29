@@ -1,5 +1,5 @@
 import 'package:dubai_local/bindings/home_binding.dart';
-import 'package:dubai_local/bindings/login_signup.dart';
+import 'package:dubai_local/screens/login_signup.dart';
 import 'package:dubai_local/bindings/main_business_bindings.dart';
 import 'package:dubai_local/bottomNav.dart';
 import 'package:dubai_local/screens/categories_ui.dart';

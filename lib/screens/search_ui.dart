@@ -46,15 +46,7 @@ class SearchUi extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        alignment: Alignment.center,
-                        height: 50,
-                        width: Get.width * .85,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.white),
-                        ),
-                        child: SizedBox(
+                      SizedBox(
                           height: 45,
                           width: Get.width * .83,
                           child: TextFormField(
@@ -84,7 +76,6 @@ class SearchUi extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
                       const SizedBox(
                         height: 10,
                       ),
