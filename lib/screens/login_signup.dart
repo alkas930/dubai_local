@@ -1,3 +1,4 @@
+import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/services/networking_services/api_manager.dart';
 import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
@@ -17,6 +18,7 @@ class LoginSignUpUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GetStorage storage = GetStorage();
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -24,34 +26,37 @@ class LoginSignUpUI extends StatelessWidget {
           height: Get.height,
           decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(ImagesPaths.img_bg),
-                fit: BoxFit.cover,
-              )),
+            image: AssetImage(ImagesPaths.img_bg),
+            fit: BoxFit.cover,
+          )),
           child: Column(
             children: [
               Image.asset(ImagesPaths.app_logo_d)
                   .w(Get.width * .5)
                   .marginOnly(top: 105),
-              facebookLogin(
+              facebookLoginButton(
                   title: "Facebook",
                   imagePath: ImagesPaths.ic_facebook,
                   onTap: () {
-                    facebookLoginF(context: context);
+                    facebookLoginHandler(context: context, storage: storage);
                   }).marginOnly(top: 55),
               googleLogin(
                   title: "Google",
                   imagePath: ImagesPaths.ic_google,
                   onTap: () {
                     googleSignIn.signIn().then((value) {
-                      GetStorage storage = GetStorage();
-                      storage.write(SharedPrefrencesKeys.IS_LOGGED_BY, "GOOGLE");
-                      storage.write(SharedPrefrencesKeys.USER_NAME, value!.displayName??"");
-                      storage.write(SharedPrefrencesKeys.USER_ID, value.id??"");
-                      storage.write(SharedPrefrencesKeys.USER_IMAGE, value.photoUrl??"");
-                      storage.write(SharedPrefrencesKeys.USER_EMAIL, value.email??"");
+                      storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
+                          Constants.GOOGLE_LOGIN);
+                      storage.write(SharedPrefrencesKeys.USER_NAME,
+                          value!.displayName ?? "");
+                      storage.write(
+                          SharedPrefrencesKeys.USER_ID, value.id ?? "");
+                      storage.write(SharedPrefrencesKeys.USER_IMAGE,
+                          value.photoUrl ?? "");
+                      storage.write(
+                          SharedPrefrencesKeys.USER_EMAIL, value.email ?? "");
                       printData("${value}");
-                    }).onError((error, stackTrace) {
-                    });
+                    }).onError((error, stackTrace) {});
                   }).marginOnly(top: 35),
               InkButton(
                   borderRadius: 5,
@@ -67,8 +72,8 @@ class LoginSignUpUI extends StatelessWidget {
                       .px(25)
                       .py(10),
                   onTap: () {
-                    GetStorage storage = GetStorage();
-                    storage.write(SharedPrefrencesKeys.IS_LOGGED_BY, "GUEST");
+                    storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
+                        Constants.GUEST_LOGIN);
                     Get.offNamed(AppRoutes.home);
                   }).marginOnly(top: 85),
               "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy."
@@ -88,9 +93,10 @@ class LoginSignUpUI extends StatelessWidget {
     );
   }
 
-  Widget googleLogin({required String title,
-    required String imagePath,
-    required Function onTap}) {
+  Widget googleLogin(
+      {required String title,
+      required String imagePath,
+      required Function onTap}) {
     return GestureDetector(
       onTap: () {
         onTap();
@@ -122,9 +128,10 @@ class LoginSignUpUI extends StatelessWidget {
     );
   }
 
-  Widget facebookLogin({required String title,
-    required String imagePath,
-    required Function onTap}) {
+  Widget facebookLoginButton(
+      {required String title,
+      required String imagePath,
+      required Function onTap}) {
     return GestureDetector(
       onTap: () {
         onTap();
@@ -156,13 +163,15 @@ class LoginSignUpUI extends StatelessWidget {
     );
   }
 
-  void facebookLoginF({required BuildContext context}) async {
+  void facebookLoginHandler(
+      {required BuildContext context, required GetStorage storage}) async {
     try {
       LoginResult result =
-      await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
+          await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
       if (result.status == LoginStatus.success) {
-
         Map<String, dynamic> userData = await FacebookAuth.i.getUserData();
+        storage.write(
+            SharedPrefrencesKeys.IS_LOGGED_BY, Constants.FACEBOOK_LOGIN);
       }
     } catch (error) {
       if (kDebugMode) {

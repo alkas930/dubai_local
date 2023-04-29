@@ -1,3 +1,4 @@
+import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:get/get.dart';
@@ -10,18 +11,14 @@ class SplashController extends SuperController {
   void onInit() {
     GetStorage storage = GetStorage();
 
-    String data= storage.read(SharedPrefrencesKeys.IS_LOGGED_BY)??"";
-    printError(info: "LOGGEDIN: "+ "$data");
+    int loginState =
+        storage.read(SharedPrefrencesKeys.IS_LOGGED_BY) ?? Constants.LOGGED_OUT;
     Future.delayed(const Duration(seconds: 3), () {
-
-
-     if(data=="GUEST"||data=="GOOGLE"||data=="FACEBOOK"){
-       Get.offAllNamed(AppRoutes.home);
-     } else{
-       Get.offAllNamed(AppRoutes.loginSignUp);
-     }
-
-
+      if (loginState != Constants.LOGGED_OUT) {
+        Get.offAllNamed(AppRoutes.home);
+      } else {
+        Get.offAllNamed(AppRoutes.loginSignUp);
+      }
     });
     super.onInit();
   }
