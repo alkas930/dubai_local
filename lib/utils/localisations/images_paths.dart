@@ -13,9 +13,9 @@ class ImagesPaths {
   static const String ic_clock = "assets/images/ic_clock.png";
   static const String ic_web = "assets/images/ic_web.png";
   static const String ic_phone = "assets/images/ic_phone.png";
-  static const String ic_category = "assets/images/menu.png";
+  static const String ic_category = "assets/images/categories.png";
   static const String ic_home = "assets/images/home.png";
-  static const String ic_notification = "assets/images/bell.png";
+  static const String ic_notification = "assets/images/notifications.png";
   static const String ic_facebook = "assets/images/facebook.png";
   static const String ic_google = "assets/images/google.png";
   static const String ic_search = "assets/images/search.png";

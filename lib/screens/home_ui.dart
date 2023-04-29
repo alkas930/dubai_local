@@ -187,36 +187,27 @@ class HomeUI extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      width: Get.width * .85,
-                      // color: Colors.red,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.grey)),
-                      child: SizedBox(
-                        height: 45,
-                        width: Get.width * .83,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                              suffixIcon: const Icon(
-                                Icons.search,
-                                color: Colors.grey,
-                              ),
-                              hintText: "Try 'Asian Cuisine' or 'Mobile shop'",
-                              hintStyle: const TextStyle(
-                                  fontSize: 13, color: Colors.grey),
-                              focusColor: Colors.grey,
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide:
-                                    const BorderSide(color: Colors.grey),
-                              ),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12))),
-                        ),
-                      )),
+                  SizedBox(
+                    height: 45,
+                    width: Get.width * .83,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          suffixIcon: const Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
+                          hintText: "Try 'Asian Cuisine' or 'Mobile shop'",
+                          hintStyle:
+                              const TextStyle(fontSize: 13, color: Colors.grey),
+                          focusColor: Colors.grey,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(color: Colors.grey),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50))),
+                    ),
+                  ),
                   Container(
                     width: Get.width,
                     child: "Top Food Junction in Dubai".text.semiBold.make(),

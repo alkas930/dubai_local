@@ -58,8 +58,8 @@ class BottomNav extends StatelessWidget {
                         Container(
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50)),
                             color: const Color(0xffeef1f8),
                           ),
                           width: Get.width,
@@ -131,7 +131,7 @@ class BottomNav extends StatelessWidget {
         ),
         Text(
           title,
-          style: TextStyle(fontSize: 4),
+          style: TextStyle(fontSize: 12),
         )
       ],
     ).onTap(() {
