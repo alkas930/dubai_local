@@ -52,6 +52,7 @@ class BottomNav extends StatelessWidget {
                                           : const MoreUI()),
                 ),
                 Container(
+                  margin: EdgeInsets.only(bottom: 8),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(Constants.tabBarRadius),

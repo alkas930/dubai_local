@@ -14,48 +14,44 @@ class SearchUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SearchController controller = Get.find();
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            height: Get.height,
-            width: Get.width,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(ImagesPaths.img_bg),
-                fit: BoxFit.fill,
+    return SingleChildScrollView(
+      child: Container(
+        height: Get.height,
+        width: Get.width,
+        // decoration: const BoxDecoration(
+        //   image: DecorationImage(
+        //     image: AssetImage(ImagesPaths.img_bg),
+        //     fit: BoxFit.fill,
+        //   ),
+        // ),
+        child: Column(
+          children: [
+            const HeaderWidget(isBackEnabled: false),
+            "Search Results"
+                .text
+                .color(Colors.white)
+                .size(20)
+                .make()
+                .pOnly(top: 30, bottom: 20),
+            Container(
+              width: Get.width,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  SearchWidget(isLight: false),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
             ),
-            child: Column(
-              children: [
-                const HeaderWidget(isBackEnabled: false),
-                "Search Results"
-                    .text
-                    .color(Colors.white)
-                    .size(20)
-                    .make()
-                    .pOnly(top: 30, bottom: 20),
-                Container(
-                  width: Get.width,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      SearchWidget(isLight: false),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ).pOnly(left: 5, right: 5),
-          ),
+          ],
         ),
       ),
     );

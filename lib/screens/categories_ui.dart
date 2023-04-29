@@ -17,70 +17,37 @@ class CategoriesUi extends StatelessWidget {
   Widget build(BuildContext context) {
     CategoriesController controller = Get.find();
 
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          height: Get.height,
-          width: Get.width,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(ImagesPaths.img_bg),
-              fit: BoxFit.fill,
-            ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-               const HeaderWidget(isBackEnabled: false),
-                "Categories"
-                    .text
-                    .color(Colors.white)
-                    .size(20)
-                    .make()
-                    .pOnly(top: 30, bottom: 20),
-                const SearchWidget(isLight: false),
-                Container(
-                  height: 590,
-                  width: Get.width,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        GetBuilder<CategoriesController>(
-                            id: controller.updateListKey,
-                            builder: (context) {
-                              return GridView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: controller.categoryList.length,
-                                      itemBuilder: (_, int index) {
-                                        return items(
-                                            categoryItems:
-                                                controller.categoryList[index]);
-                                      },
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              mainAxisSpacing: 10,
-                                              crossAxisSpacing: 10,
-                                              childAspectRatio: 10 / 6))
-                                  .marginOnly(top: 10, bottom: 30);
-                            }).pOnly(bottom: 48)
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ).pOnly(left: 5, right: 5),
-          ),
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const HeaderWidget(isBackEnabled: false),
+          "Categories"
+              .text
+              .color(Colors.white)
+              .size(20)
+              .make()
+              .pOnly(top: 30, bottom: 20),
+          const SearchWidget(isLight: false),
+          GetBuilder<CategoriesController>(
+              id: controller.updateListKey,
+              builder: (context) {
+                return GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: controller.categoryList.length,
+                        itemBuilder: (_, int index) {
+                          return items(
+                              categoryItems: controller.categoryList[index]);
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                childAspectRatio: 10 / 6))
+                    .marginOnly(top: 10, bottom: 30);
+              }).pOnly(bottom: 48),
+        ],
       ),
     );
   }

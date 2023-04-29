@@ -14,68 +14,64 @@ class MoreUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MoreController controller = Get.find();
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Container(
-            height: Get.height,
-            width: Get.width,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(ImagesPaths.img_bg),
-                fit: BoxFit.fill,
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: Container(
+        height: Get.height,
+        width: Get.width,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(ImagesPaths.img_bg),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const HeaderWidget(isBackEnabled: false),
+            Container(
+              height: Get.height * .8,
+              width: Get.width,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  moreItems(
+                      title: "Explore Dubai",
+                      leadingIcon: Icon(
+                        Icons.explore,
+                        size: 30,
+                        color: AppColors.fadedBlack,
+                      ),
+                      controller: controller),
+                  moreItems(
+                      title: "Things To Do",
+                      leadingIcon: Icon(
+                        Icons.graphic_eq_outlined,
+                        size: 30,
+                        color: AppColors.fadedBlack,
+                      ),
+                      controller: controller),
+                  moreItems(
+                      title: "Blog",
+                      leadingIcon: Icon(
+                        Icons.format_align_center_outlined,
+                        size: 30,
+                        color: AppColors.fadedBlack,
+                      ),
+                      controller: controller),
+                ],
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const HeaderWidget(isBackEnabled: false),
-                Container(
-                  height: Get.height * .8,
-                  width: Get.width,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      moreItems(
-                          title: "Explore Dubai",
-                          leadingIcon: Icon(
-                            Icons.explore,
-                            size: 30,
-                            color: AppColors.fadedBlack,
-                          ),
-                          controller: controller),
-                      moreItems(
-                          title: "Things To Do",
-                          leadingIcon: Icon(
-                            Icons.graphic_eq_outlined,
-                            size: 30,
-                            color: AppColors.fadedBlack,
-                          ),
-                          controller: controller),
-                      moreItems(
-                          title: "Blog",
-                          leadingIcon: Icon(
-                            Icons.format_align_center_outlined,
-                            size: 30,
-                            color: AppColors.fadedBlack,
-                          ),
-                          controller: controller),
-                    ],
-                  ),
-                ),
-              ],
-            ).pOnly(left: 5, right: 5),
-          ),
+          ],
         ),
       ),
     );
