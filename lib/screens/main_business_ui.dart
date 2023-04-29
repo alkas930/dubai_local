@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/controllers/main_business_controllers.dart';
+import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
 import 'package:flutter/material.dart';
@@ -27,28 +28,7 @@ class MainBusinessUI extends StatelessWidget {
           width: Get.width,
           child: Column(
             children: [
-              SizedBox(
-                width: Get.width,
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Image.asset(ImagesPaths.app_logo_d)
-                          .w(Get.width * .5)
-                          .marginOnly(top: 25),
-                    ),
-                    CircleAvatar(
-                        backgroundColor: Colors.red.shade700,
-                        child: CachedNetworkImage(
-                            imageUrl: "",
-                            errorWidget: (_, __, ___) {
-                              return "G".text.make();
-                            },
-                            placeholder: (_, __) {
-                              return "G".text.make();
-                            })).marginOnly(top: 25).positioned(right: 10),
-                  ],
-                ),
-              ),
+              const HeaderWidget(isBackEnabled: true),
               "Indian Foods".text.white.size(20).make().py(10),
               ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -176,7 +156,10 @@ class MainBusinessUI extends StatelessWidget {
                                   width: 20,
                                   color: Colors.white,
                                 ),
-                                "SEND ENQUIRY".text.fontWeight(FontWeight.w600).make()
+                                "SEND ENQUIRY"
+                                    .text
+                                    .fontWeight(FontWeight.w600)
+                                    .make()
                               ],
                             ).py(5).px(15),
                           ).onTap(() {
@@ -195,7 +178,10 @@ class MainBusinessUI extends StatelessWidget {
                                   width: 20,
                                   color: Colors.white,
                                 ),
-                                "SEND ENQUIRY".text.fontWeight(FontWeight.w600).make()
+                                "SEND ENQUIRY"
+                                    .text
+                                    .fontWeight(FontWeight.w600)
+                                    .make()
                               ],
                             ).py(5).px(15),
                           ).onTap(() {

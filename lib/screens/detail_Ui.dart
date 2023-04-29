@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/controllers/detail_controllers.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/models/SubCategoryBusinessResponseModel.dart';
+import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -39,47 +40,18 @@ class DetailUi extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 Column(children: [ Container(
-                   width: Get.width,
-                   alignment: Alignment.center,
-                   child: Stack(
-                     children: [
-                       const Icon(
-                         Icons.arrow_back_ios,
-                         color: Colors.white,
-                         size: 35,
-                       ).marginOnly(left: 10).onTap(() {
-                         homeController.getBack();
-                       }),
-                       Center(
-                         child: Image.asset(ImagesPaths.app_logo_d)
-                             .w(Get.width * .5),
-                       ),
-                       CircleAvatar(
-                         backgroundColor: Colors.red.shade700,
-                         child: CachedNetworkImage(
-                           imageUrl: "",
-                           errorWidget: (_, __, ___) {
-                             return Image.asset(ImagesPaths.ic_send_enquiry)
-                                 .p(6);
-                           },
-                           placeholder: (_, __) {
-                             return CircularProgressIndicator(
-                               color: AppColors.accentRipple,
-                             );
-                           },
-                         ),
-                       ).positioned(right: 10),
-                     ],
-                   ),
-                 ),
-                   Obx(
-                         () => controller.placeName.value.text
-                         .color(Colors.white)
-                         .size(20)
-                         .make()
-                         .pOnly(top: 30, bottom: 20),
-                   ),],),
+                  Column(
+                    children: [
+                      const HeaderWidget(isBackEnabled: true),
+                      Obx(
+                        () => controller.placeName.value.text
+                            .color(Colors.white)
+                            .size(20)
+                            .make()
+                            .pOnly(top: 30, bottom: 20),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     height: Get.height * .74,
                     child: GetBuilder<DetailController>(

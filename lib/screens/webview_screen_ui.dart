@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:dubai_local/controllers/home_controller.dart';
+import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -24,17 +25,16 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: SafeArea(
-        child: Scaffold(
-          body: Container(
-            height: Get.height,
-            width: Get.width,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(ImagesPaths.img_bg),
-                fit: BoxFit.fill,
-              ),
-            ),
+      child: Column(
+        children: [
+          const HeaderWidget(isBackEnabled: true),
+          Expanded(
+            // decoration: const BoxDecoration(
+            //   image: DecorationImage(
+            //     image: AssetImage(ImagesPaths.img_bg),
+            //     fit: BoxFit.fill,
+            //   ),
+            // ),
             child: WebView(
               backgroundColor: Colors.transparent,
               initialUrl: homeController.webViewURL,
@@ -44,7 +44,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               },
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -53,7 +53,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     if (await _webViewController.canGoBack()) {
       _webViewController.goBack();
       return false;
-    } else  {
+    } else {
       homeController.changeIndex(homeController.lastIndex);
       return false;
     }

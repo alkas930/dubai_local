@@ -46,7 +46,7 @@ class LoginSignUpUI extends StatelessWidget {
                   onTap: () {
                     googleSignIn.signIn().then((value) {
                       storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
-                          Constants.GOOGLE_LOGIN);
+                          Constants.googleLogin);
                       storage.write(SharedPrefrencesKeys.USER_NAME,
                           value!.displayName ?? "");
                       storage.write(
@@ -73,7 +73,7 @@ class LoginSignUpUI extends StatelessWidget {
                       .py(10),
                   onTap: () {
                     storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
-                        Constants.GUEST_LOGIN);
+                        Constants.guestLogin);
                     Get.offNamed(AppRoutes.home);
                   }).marginOnly(top: 85),
               "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy."
@@ -171,7 +171,7 @@ class LoginSignUpUI extends StatelessWidget {
       if (result.status == LoginStatus.success) {
         Map<String, dynamic> userData = await FacebookAuth.i.getUserData();
         storage.write(
-            SharedPrefrencesKeys.IS_LOGGED_BY, Constants.FACEBOOK_LOGIN);
+            SharedPrefrencesKeys.IS_LOGGED_BY, Constants.facebookLogin);
       }
     } catch (error) {
       if (kDebugMode) {

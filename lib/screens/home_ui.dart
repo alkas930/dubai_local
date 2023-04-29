@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/controllers/categories_controller.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
+import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
+import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jovial_svg/jovial_svg.dart';
@@ -24,32 +26,7 @@ class HomeUI extends StatelessWidget {
         width: Get.width,
         child: Column(
           children: [
-            Container(
-              width: Get.width,
-              child: Stack(
-                children: [
-                  Center(
-                    child: Image.asset(ImagesPaths.app_logo_d)
-                        .w(Get.width * .5)
-                        .marginOnly(top: 25),
-                  ),
-                  CircleAvatar(
-                    backgroundColor: Colors.red.shade700,
-                    child: CachedNetworkImage(
-                      imageUrl: "",
-                      errorWidget: (_, __, ___) {
-                        return Image.asset(ImagesPaths.ic_send_enquiry).p(6);
-                      },
-                      placeholder: (_, __) {
-                        return CircularProgressIndicator(
-                          color: AppColors.accentRipple,
-                        );
-                      },
-                    ),
-                  ).marginOnly(top: 25).positioned(right: 10),
-                ],
-              ),
-            ),
+            const HeaderWidget(isBackEnabled: false),
             "Choose A Category"
                 .text
                 .color(Colors.white)
@@ -184,30 +161,7 @@ class HomeUI extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                    height: 45,
-                    width: Get.width * .83,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          suffixIcon: const Icon(
-                            Icons.search,
-                            color: Colors.grey,
-                          ),
-                          hintText: "Try 'Asian Cuisine' or 'Mobile shop'",
-                          hintStyle:
-                              const TextStyle(fontSize: 13, color: Colors.grey),
-                          focusColor: Colors.grey,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.grey),
-                          ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50))),
-                    ),
-                  ),
+                  const SearchWidget(isLight: true).marginOnly(top: 16),
                   Container(
                     width: Get.width,
                     child: "Top Food Junction in Dubai".text.semiBold.make(),

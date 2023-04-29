@@ -1,3 +1,4 @@
+import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/utils/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(
         fontFamily: "Poppins",
-        primarySwatch: Colors.blue,
       ),
       getPages: AppPages.route,
       initialRoute: AppPages.initialRoute,

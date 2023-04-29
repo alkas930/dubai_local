@@ -1,3 +1,4 @@
+import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +30,7 @@ class MoreUI extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(ImagesPaths.app_logo_d)
-                    .w(Get.width * .5)
-                    .marginOnly(top: 20, bottom: 70),
+                const HeaderWidget(isBackEnabled: false),
                 Container(
                   height: Get.height * .8,
                   width: Get.width,

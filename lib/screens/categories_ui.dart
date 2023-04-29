@@ -1,5 +1,6 @@
 import 'package:dubai_local/controllers/categories_controller.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
+import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:jovial_svg/jovial_svg.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../utils/localisations/app_colors.dart';
+import '../utils/search_widget.dart';
 
 class CategoriesUi extends StatelessWidget {
   const CategoriesUi({Key? key}) : super(key: key);
@@ -29,53 +31,14 @@ class CategoriesUi extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Center(
-                  child: Image.asset(ImagesPaths.app_logo_d)
-                      .w(Get.width * .5)
-                      .marginOnly(top: 25),
-                ).pOnly(top: 10),
+               const HeaderWidget(isBackEnabled: false),
                 "Categories"
                     .text
                     .color(Colors.white)
                     .size(20)
                     .make()
                     .pOnly(top: 30, bottom: 20),
-                Container(
-                  alignment: Alignment.center,
-                  height: 50,
-                  width: Get.width * .85,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.white),
-                  ),
-                  child: SizedBox(
-                    height: 45,
-                    width: Get.width * .83,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        suffixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.white,
-                        ),
-                        hintText: "Try 'Asian Cuisine' or 'Mobile shop'",
-                        hintStyle:
-                            const TextStyle(fontSize: 13, color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                const SearchWidget(isLight: false),
                 Container(
                   height: 590,
                   width: Get.width,

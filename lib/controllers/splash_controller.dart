@@ -12,9 +12,10 @@ class SplashController extends SuperController {
     GetStorage storage = GetStorage();
 
     int loginState =
-        storage.read(SharedPrefrencesKeys.IS_LOGGED_BY) ?? Constants.LOGGED_OUT;
+        storage.read(SharedPrefrencesKeys.IS_LOGGED_BY) ?? Constants.loggedOut;
     Future.delayed(const Duration(seconds: 3), () {
-      if (loginState != Constants.LOGGED_OUT) {
+      if (loginState
+          != Constants.loggedOut) {
         Get.offAllNamed(AppRoutes.home);
       } else {
         Get.offAllNamed(AppRoutes.loginSignUp);
