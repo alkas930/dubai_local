@@ -48,6 +48,7 @@ class HomeController extends SuperController {
 
   @override
   void onInit() {
+    super.onInit();
     // homeCategoryList.add(HomeCategoryItems("Restaurants",
     //     "https://cdn-icons-png.flaticon.com/128/561/561611.png"));
     // homeCategoryList.add(HomeCategoryItems("Home Services",
@@ -64,7 +65,6 @@ class HomeController extends SuperController {
     //     "https://cdn-icons-png.flaticon.com/128/3163/3163478.png"));
     // homeCategoryList.add(HomeCategoryItems(
     //     "More", "https://cdn-icons-png.flaticon.com/128/10172/10172168.png"));
-    super.onInit();
   }
 
   @override

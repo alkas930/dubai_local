@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dubai_local/controllers/categories_controller.dart';
+import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../controllers/categories_controller.dart';
+import '../models/top_home_response_model.dart';
 import '../utils/localisations/app_colors.dart';
 import '../utils/localisations/images_paths.dart';
 
@@ -19,43 +21,121 @@ class HomeUI extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeController controller = Get.find();
     CategoriesController mainHomeController = Get.find();
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Container(
-        height: Get.height,
-        width: Get.width,
-        child: Column(
-          children: [
-            const HeaderWidget(isBackEnabled: false),
-            "Choose A Category"
-                .text
-                .color(Colors.white)
-                .size(20)
-                .make()
-                .pOnly(top: 30, bottom: 20),
-            Container(
-              height: Get.height * .73,
-              alignment: Alignment.bottomCenter,
-              width: Get.width,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+
+    Widget ListingCard({required TopHomeData data, required int index}) => Card(
+          clipBehavior: Clip.hardEdge,
+          elevation: 8,
+          shadowColor: Colors.black,
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Container(
+            width: (Get.width / 3) - 16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    if (data.res![index]?.icon != null) ...[
+                      Image.network(
+                        data.res![index].icon!,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                    Container(
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              data.res![index].name!,
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(Constants.themeColorRed),
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Row(
+                              children: [
+                                Image.asset(
+                                  ImagesPaths.ic_location,
+                                  scale: 12,
+                                  color: Color(0xff444444),
+                                ),
+                                Text(
+                                  data.res![index].name!,
+                                  style: TextStyle(
+                                      fontSize: 10, color: Color(0xff444444)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
+              ],
+            ),
+          ),
+        );
+
+    return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const HeaderWidget(isBackEnabled: false),
+          "Choose A Category"
+              .text
+              .color(Colors.white)
+              .size(20)
+              .make()
+              .pOnly(top: 48, bottom: 0),
+          Container(
+            alignment: Alignment.bottomCenter,
+            width: Get.width,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: Stack(
-                      children: [
-                        GetBuilder<CategoriesController>(
-                            id: mainHomeController.updateListKey,
-                            builder: (context) {
+            ),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 90,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: Stack(
+                    children: [
+                      GetBuilder<CategoriesController>(
+                          id: mainHomeController.updateListKey,
+                          builder: (context) {
+                            if (mainHomeController.categoryList.isNotEmpty) {
                               return GridView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -64,15 +144,13 @@ class HomeUI extends StatelessWidget {
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 4,
-                                          childAspectRatio: 5 / 4,
+                                          childAspectRatio: 5 / 4.5,
                                           mainAxisSpacing: 20 / 2,
                                           crossAxisSpacing: 10),
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return InkButton(
-                                      width: 80,
-                                      height: 60,
-                                      backGroundColor: Colors.grey.shade300,
+                                      backGroundColor: Color(0xffEEF2F3),
                                       borderRadius: 10,
                                       child: Column(
                                         crossAxisAlignment:
@@ -83,10 +161,10 @@ class HomeUI extends StatelessWidget {
                                           index == 7
                                               ? Image.asset(
                                                   ImagesPaths.ic_more_svg,
-                                                  height: 25,
+                                                  height: 35,
                                                 )
                                               : Container(
-                                                  height: 25,
+                                                  height: 35,
                                                   child: ScalableImageWidget
                                                       .fromSISource(
                                                     si: ScalableImageSource
@@ -105,46 +183,31 @@ class HomeUI extends StatelessWidget {
                                                     },
                                                   ),
                                                 ),
-
-                                          // SvgPicture.network(
-                                          //         (mainHomeController
-                                          //             .categoryList[index]
-                                          //             .fullIcon),
-                                          //         color: Colors.red,
-                                          //         height: 25,
-                                          //         placeholderBuilder:
-                                          //             (context) => SizedBox(
-                                          //                   child: CircularProgressIndicator(
-                                          //                       color: AppColors
-                                          //                           .accent),
-                                          //                 )),
                                           const SizedBox(
                                             height: 5,
                                           ),
-                                          SizedBox(
-                                              width: 70,
-                                              height: 20,
-                                              child: FittedBox(
-                                                  child: (index == 7
-                                                          ? "More"
-                                                          : mainHomeController
-                                                              .categoryList[
-                                                                  index]
-                                                              .name)
-                                                      .text
-                                                      .maxLines(1)
-                                                      .color(
-                                                          Colors.grey.shade700)
-                                                      .overflow(
-                                                          TextOverflow.ellipsis)
-                                                      .make())),
+                                          Text(
+                                            (() {
+                                              if (index == 7) {
+                                                return "More";
+                                              } else {
+                                                return mainHomeController
+                                                    .categoryList[index].name;
+                                              }
+                                            }()),
+                                            style: const TextStyle(
+                                              color: Color(0xff333333),
+                                              fontSize: 10,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ],
                                       ),
                                       onTap: () {
                                         controller.subCatSlug =
                                             mainHomeController
                                                 .categoryList[index].slug;
-
                                         controller.subCatName =
                                             mainHomeController
                                                 .categoryList[index].name;
@@ -157,101 +220,88 @@ class HomeUI extends StatelessWidget {
                                       },
                                     );
                                   });
-                            }),
-                      ],
-                    ),
+                            } else {
+                              return SizedBox.shrink();
+                            }
+                          }),
+                    ],
                   ),
-                  const SearchWidget(isLight: true).marginOnly(top: 16),
-                  Container(
-                    width: Get.width,
-                    child: "Top Food Junction in Dubai".text.semiBold.make(),
-                  ).marginOnly(left: 10, top: 25),
-                  ClipRect(
-                    child: Container(
-                      height: 140,
-                      width: 140,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15))),
-                      child: Column(
-                        children: [
-                          ClipRect(
-                            child: Image.network(
-                              "https://assets.architecturaldigest.in/photos/63733ec2a2dd6ea6560eb6da/16:9/pass/Ditas%20Interior%20Image%20-%201%20(8).png",
-                              width: 140,
-                              height: 120,
-                              fit: BoxFit.contain,
+                ),
+                const SearchWidget(isLight: true).marginOnly(top: 16),
+                GetBuilder<CategoriesController>(
+                  id: mainHomeController.updateTopKey,
+                  builder: (context) {
+                    if (mainHomeController.topList.isNotEmpty) {
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: mainHomeController.topList.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(mainHomeController.topList[index].heading!,
+                                style: TextStyle(), textAlign: TextAlign.start),
+                            SizedBox(
+                              height: 128,
+                              child: ListView.builder(
+                                clipBehavior: Clip.none,
+                                physics: ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: mainHomeController
+                                        .topList[index].res!.isNotEmpty
+                                    ? mainHomeController
+                                        .topList[index].res?.length
+                                    : 0,
+                                itemBuilder: (BuildContext context, int idx) =>
+                                    ListingCard(
+                                        data: mainHomeController.topList[index],
+                                        index: idx),
+                              ),
                             ),
-                          ),
-                          "Purani Dilli Restaurant".text.red500.size(10).make()
-                        ],
+                          ],
+                        ),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  },
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: Get.width,
+                      height: 130,
+                      child: Image.asset(
+                        ImagesPaths.ic_explore_dubai,
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
+                    ).onTap(() {
+                      controller
+                          .openWebView("https://dubailocal.ae/dubai-explore");
+                    }),
+                    SizedBox(
                         width: Get.width,
                         height: 130,
                         child: Image.asset(
-                          ImagesPaths.ic_explore_dubai,
+                          ImagesPaths.ic_things_to_do,
                           fit: BoxFit.cover,
-                        ),
-
-                        // CachedNetworkImage(
-                        //   imageUrl:
-                        //       "https://amateurtraveler.com/wp-content/uploads/2021/02/Xline%20Dubai%20Marina%20Zipline.jpg",
-                        //   fit: BoxFit.cover,
-                        //   placeholder: (context, url) => SizedBox(
-                        //     child: LinearProgressIndicator(
-                        //       color: AppColors.accentRipple,
-                        //       minHeight: 120,
-                        //     ),
-                        //   ),
-                        //   errorWidget: (context, url, error) =>
-                        //       const Icon(Icons.error),
-                        // ),
-                      ).onTap(() {
-                        controller
-                            .openWebView("https://dubailocal.ae/dubai-explore");
-                      }),
-                      SizedBox(
-                          width: Get.width,
-                          height: 130,
-                          child: Image.asset(
-                            ImagesPaths.ic_things_to_do,
-                            fit: BoxFit.cover,
-                          )
-
-                          // CachedNetworkImage(
-                          //   imageUrl:
-                          //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOvT_h4saSuIC8Ptf8WEGB63G_PnOqABrqGQ&usqp=CAU",
-                          //   fit: BoxFit.cover,
-                          //   placeholder: (context, url) => SizedBox(
-                          //     child: LinearProgressIndicator(
-                          //       color: AppColors.accentRipple,
-                          //       minHeight: 120,
-                          //     ),
-                          //   ),
-                          //   errorWidget: (context, url, error) =>
-                          //       const Icon(Icons.error),
-                          // ),
-                          ).onTap(() {
-                        controller.openWebView(
-                            "https://dubailocal.ae/things-to-do-in-dubai");
-                        // Get.toNamed(AppRoutes.webview,
-                        //     arguments:
-                        //         "https://dubailocal.ae/dubai-explore");
-                      }),
-                    ],
-                  ),
-                ],
-              ),
+                        )).onTap(() {
+                      controller.openWebView(
+                          "https://dubailocal.ae/things-to-do-in-dubai");
+                      // Get.toNamed(AppRoutes.webview,
+                      //     arguments:
+                      //         "https://dubailocal.ae/dubai-explore");
+                    }),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

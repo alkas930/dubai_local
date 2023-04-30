@@ -3,25 +3,23 @@ import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
 import '../utils/routes/app_routes.dart';
 
 class SplashController extends SuperController {
   @override
   void onInit() {
+    super.onInit();
     GetStorage storage = GetStorage();
 
     int loginState =
         storage.read(SharedPrefrencesKeys.IS_LOGGED_BY) ?? Constants.loggedOut;
     Future.delayed(const Duration(seconds: 3), () {
-      if (loginState
-          != Constants.loggedOut) {
+      if (loginState != Constants.loggedOut) {
         Get.offAllNamed(AppRoutes.home);
       } else {
         Get.offAllNamed(AppRoutes.loginSignUp);
       }
     });
-    super.onInit();
   }
 
   @override

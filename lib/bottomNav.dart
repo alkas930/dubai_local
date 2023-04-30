@@ -22,6 +22,7 @@ class BottomNav extends StatelessWidget {
     HomeController homeController = Get.find();
     return Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           height: Get.height,
@@ -35,6 +36,7 @@ class BottomNav extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
                   child: Obx(() => homeController.bottomIndex.value == 1

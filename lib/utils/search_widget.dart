@@ -24,7 +24,7 @@ class _SearchWidget extends State<SearchWidget> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
-            BoxShadow(blurRadius: 8, offset: Offset(0, 8), spreadRadius: -8)
+            BoxShadow(blurRadius: 0.5, offset: Offset(0, 8), spreadRadius: -8)
           ]),
       width: Get.width * widget.width,
       child: TextFormField(
@@ -44,6 +44,7 @@ class _SearchWidget extends State<SearchWidget> {
             borderRadius: BorderRadius.circular(50),
           ),
         ),
+        style: TextStyle(fontSize: 12),
       ),
     );
   }

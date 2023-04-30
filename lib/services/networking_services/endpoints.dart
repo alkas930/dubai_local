@@ -11,6 +11,7 @@ class Endpoints {
   static const String epBusinessDetails = "businesses/";
   static const String epContactUs = "contact-us/";
   static const String epAllCategories = "category";
+  static const String epTopHome = "top-home";
   static const String epKeywords = "keywords";
   static const String epSearch = "search";
 

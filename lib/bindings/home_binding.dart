@@ -1,4 +1,5 @@
 import 'package:dubai_local/controllers/home_controller.dart';
+import 'package:dubai_local/controllers/splash_controller.dart';
 import 'package:get/get.dart';
 
 import '../controllers/categories_controller.dart';

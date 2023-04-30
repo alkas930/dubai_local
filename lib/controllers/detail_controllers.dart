@@ -15,6 +15,7 @@ class DetailController extends SuperController {
 
   @override
   void onInit() {
+    super.onInit();
     HomeController homeController = Get.find();
     CallAPI()
         .getSubCategoriesBusiness(slug: homeController.subCatBusinessSlug)
@@ -28,7 +29,6 @@ class DetailController extends SuperController {
       // Toast.show("$error");
     });
 
-    super.onInit();
   }
 
   @override

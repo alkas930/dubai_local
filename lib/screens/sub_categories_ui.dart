@@ -88,7 +88,7 @@ class SubCategoriesUI extends StatelessWidget {
                 ),
               ),
             ],
-          ).pOnly(left: 5, right: 5),
+          ),
         ),
       ),
     );
