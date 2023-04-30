@@ -4,13 +4,30 @@ import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../utils/routes/app_routes.dart';
+import '../models/all_categories_response_model.dart';
+import '../models/top_home_response_model.dart';
+import '../services/networking_services/api_call.dart';
+import '../utils/localisations/custom_widgets.dart';
 
 class SplashController extends SuperController {
+  List<AllCategoriesData> categoryList = [];
+  List<TopHomeData> topList = [];
+  String updateListKey = "updateListKey";
+  String updateTopKey = "updateTop";
+
   @override
   void onInit() {
     super.onInit();
     GetStorage storage = GetStorage();
+    CallAPI().getAllCategories().then((value) {
+      categoryList = value.data;
+      update([updateListKey]);
+    });
 
+    CallAPI().getHomeTop().then((value) {
+      topList = value.data;
+      update([updateTopKey]);
+    });
     int loginState =
         storage.read(SharedPrefrencesKeys.IS_LOGGED_BY) ?? Constants.loggedOut;
     Future.delayed(const Duration(seconds: 3), () {

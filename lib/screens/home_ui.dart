@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
+import 'package:dubai_local/controllers/splash_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/search_widget.dart';
@@ -20,7 +21,7 @@ class HomeUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeController controller = Get.find();
-    CategoriesController mainHomeController = Get.find();
+    SplashController mainHomeController = Get.find();
 
     Widget ListingCard({required TopHomeData data, required int index}) => Card(
           clipBehavior: Clip.hardEdge,
@@ -132,7 +133,7 @@ class HomeUI extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                   child: Stack(
                     children: [
-                      GetBuilder<CategoriesController>(
+                      GetBuilder<SplashController>(
                           id: mainHomeController.updateListKey,
                           builder: (context) {
                             if (mainHomeController.categoryList.isNotEmpty) {
@@ -228,7 +229,7 @@ class HomeUI extends StatelessWidget {
                   ),
                 ),
                 const SearchWidget(isLight: true).marginOnly(top: 16),
-                GetBuilder<CategoriesController>(
+                GetBuilder<SplashController>(
                   id: mainHomeController.updateTopKey,
                   builder: (context) {
                     if (mainHomeController.topList.isNotEmpty) {

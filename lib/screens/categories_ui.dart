@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../controllers/splash_controller.dart';
 import '../utils/localisations/app_colors.dart';
 import '../utils/search_widget.dart';
 
@@ -15,7 +16,7 @@ class CategoriesUi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CategoriesController controller = Get.find();
+    SplashController controller = Get.find();
 
     return SingleChildScrollView(
       child: Column(
