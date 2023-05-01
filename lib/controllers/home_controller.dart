@@ -8,7 +8,6 @@ import '../models/all_categories_response_model.dart';
 
 class HomeController extends SuperController {
   List<AllCategoriesData> homeCategoryList = [];
-  String webViewURL = "https://dubailocal.ae";
   String subCatSlug = "";
   String subBusiness = "";
   String subCatBusinessSlug = "";

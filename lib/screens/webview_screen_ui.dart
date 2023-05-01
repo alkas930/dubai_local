@@ -2,6 +2,7 @@
 
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
+import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,7 +57,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 backgroundColor: Colors.transparent,
                 initialUrl: args?["url"] != null && args?["url"]?.isNotEmpty
                     ? args["url"]
-                    : "https://dubailocal.ae",
+                    : Endpoints.BASE_URL,
                 javascriptMode: JavascriptMode.unrestricted,
                 onPageFinished: (finish) {
                   setState(() {

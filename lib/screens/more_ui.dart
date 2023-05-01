@@ -1,4 +1,5 @@
 import 'package:dubai_local/controllers/home_controller.dart';
+import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
@@ -52,31 +53,31 @@ class MoreUI extends StatelessWidget {
                         context: context,
                         title: "Explore Dubai",
                         icon: ImagesPaths.more_explore,
-                        url: "https://dubailocal.ae/dubai-explore"),
+                        url: Endpoints.ExploreDubai),
                     Divider(),
                     moreItems(
                         context: context,
                         title: "Things To Do",
                         icon: ImagesPaths.more_things_to_do,
-                        url: "https://dubailocal.ae/things-to-do-in-dubai"),
+                        url: Endpoints.ThingsToDo),
                     Divider(),
                     moreItems(
                         context: context,
                         title: "Blog",
                         icon: ImagesPaths.more_blog,
-                        url: "https://blog.dubailocal.ae/"),
+                        url: Endpoints.Blog),
                     Divider(),
                     moreItems(
                         context: context,
                         title: "Important Phone Numbers",
                         icon: ImagesPaths.more_important_phone,
-                        url: "https://dubailocal.ae/useful-numbers"),
+                        url: Endpoints.UsefulNumbers),
                     Divider(),
                     moreItems(
                         context: context,
                         title: "Visit Website",
                         icon: ImagesPaths.more_visit_website,
-                        url: "https://dubailocal.ae/"),
+                        url: Endpoints.BASE_URL),
                     Divider(),
                   ],
                 ),
@@ -97,8 +98,8 @@ class MoreUI extends StatelessWidget {
       tileColor: Colors.blueGrey.shade50,
       contentPadding: EdgeInsets.zero,
       visualDensity: VisualDensity(horizontal: -4, vertical: -3),
-      onTap: () =>
-          Navigator.pushNamed(context, AppRoutes.webview, arguments: {"url":url}),
+      onTap: () => Navigator.pushNamed(context, AppRoutes.webview,
+          arguments: {"url": url}),
       leading: SizedBox(
         width: 24,
         height: 24,

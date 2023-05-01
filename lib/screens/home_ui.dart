@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/controllers/splash_controller.dart';
+import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
@@ -25,8 +26,6 @@ class HomeUI extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeController controller = Get.find();
     SplashController mainHomeController = Get.find();
-    final String ExploreDubai = "https://dubailocal.ae/dubai-explore";
-    final String ThingsToDo = "https://dubailocal.ae/things-to-do-in-dubai";
 
     Widget ListingCard({required TopHomeData data, required int index}) => Card(
           clipBehavior: Clip.hardEdge,
@@ -270,10 +269,10 @@ class HomeUI extends StatelessWidget {
                           children: [
                             if (index == 2)
                               WebviewBanner(
-                                  ImagesPaths.ic_explore_dubai, ExploreDubai),
+                                  ImagesPaths.ic_explore_dubai, Endpoints.ExploreDubai),
                             if (index == 3)
                               WebviewBanner(
-                                  ImagesPaths.ic_things_to_do, ThingsToDo),
+                                  ImagesPaths.ic_things_to_do, Endpoints.ThingsToDo),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 8),
                               child: Text(

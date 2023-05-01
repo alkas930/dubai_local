@@ -27,8 +27,7 @@ class SubCategoriesUI extends StatelessWidget {
       return false;
     }
 
-    return SafeArea(
-      child: WillPopScope(
+    return WillPopScope(
         onWillPop: _onWillPop,
         child: SingleChildScrollView(
           child: Column(
@@ -90,7 +89,6 @@ class SubCategoriesUI extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 

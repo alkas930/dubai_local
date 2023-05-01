@@ -18,7 +18,7 @@ class APIManager {
   var headers = {'api-key': 'ad238d3e391635dcf33a82a0e0275789'};
 
   Future<dynamic> getAllCall({required String endPoint}) async {
-    String newBaseURL = Endpoints.BASE_URL;
+    String newBaseURL = Endpoints.BASE_URL + Endpoints.API_ENDPOINT;
 
     printData("NEW BASE URL ${newBaseURL.toString()}");
 
