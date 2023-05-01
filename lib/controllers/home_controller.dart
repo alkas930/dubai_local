@@ -36,15 +36,10 @@ class HomeController extends SuperController {
     changeIndex(7);
   }
 
-  void openBusinessDetails(int lastIndex) {
-    this.lastIndex = lastIndex;
-    changeIndex(8);
-  }
-
-  void openWebView(String url) {
-    webViewURL = url;
-    changeIndex(5);
-  }
+  // void openBusinessDetails(int lastIndex) {
+  //   this.lastIndex = lastIndex;
+  //   changeIndex(8);
+  // }
 
   @override
   void onInit() {

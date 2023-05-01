@@ -4,8 +4,9 @@ class ImagesPaths {
   //lottiePaths
 //imagesPaths
 
-  static const String ic_explore_dubai = "assets/images/explore-dubai.png";
-  static const String ic_things_to_do = "assets/images/things-to-do.png";
+  static const String ic_explore_dubai =
+      "assets/images/explore-dubai-banner.png";
+  static const String ic_things_to_do = "assets/images/things-to-do-banner.png";
   static const String ic_more = "assets/images/more.png";
   static const String ic_send_enquiry = "assets/images/fluent.png";
   static const String ic_send_to_friend = "assets/images/person.png";
@@ -23,4 +24,11 @@ class ImagesPaths {
   static const String app_logo_d = "assets/images/app_logo_d.png";
   static const String ic_more_svg = "assets/images/ic_more.png";
   static const String splash_img = "assets/images/splash_image.jpg";
+  static const String more_explore = "assets/images/explore-dubai.png";
+  static const String more_blog = "assets/images/blog.png";
+  static const String more_important_phone =
+      "assets/images/important-phone.png";
+  static const String more_things_to_do = "assets/images/things-to-do.png";
+  static const String more_visit_website = "assets/images/visit-website.png";
+  static const String arrow_right = "assets/images/arrow-right.png";
 }

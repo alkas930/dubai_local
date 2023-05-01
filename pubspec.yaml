@@ -93,15 +93,19 @@ flutter:
         - asset: fonts/Poppins-Black.ttf
         - asset: fonts/Poppins-BlackItalic.ttf
         - asset: fonts/Poppins-ExtraBoldItalic.ttf
+          weight: 900
         - asset: fonts/Poppins-ExtraLight.ttf
         - asset: fonts/Poppins-ExtraLightItalic.ttf
         - asset: fonts/Poppins-Italic.ttf
         - asset: fonts/Poppins-Light.ttf
         - asset: fonts/Poppins-LightItalic.ttf
+          weight: 200
         - asset: fonts/Poppins-MediumItalic.ttf
         - asset: fonts/Poppins-SemiBoldItalic.ttf
+          weight: 400
         - asset: fonts/Poppins-Thin.ttf
         - asset: fonts/Poppins-ThinItalic.ttf
+          weight: 100
     - family: Medium
       fonts:
         - asset: fonts/Poppins-Medium.ttf
@@ -111,6 +115,8 @@ flutter:
     - family: Poppins Bold
       fonts:
         - asset: fonts/Poppins-Bold.ttf
+          weight: 900
     - family: Poppins SemiBold
       fonts:
         - asset: fonts/Poppins-SemiBold.ttf
+          weight: 500

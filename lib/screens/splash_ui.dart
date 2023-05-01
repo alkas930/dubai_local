@@ -9,7 +9,7 @@ class SplashUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.white,
         body: Container(
           height: Get.height,
           width: Get.width,

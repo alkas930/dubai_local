@@ -55,7 +55,6 @@ class LoginSignUpUI extends StatelessWidget {
                           value.photoUrl ?? "");
                       storage.write(
                           SharedPrefrencesKeys.USER_EMAIL, value.email ?? "");
-                      printData("${value}");
                     }).onError((error, stackTrace) {});
                   }).marginOnly(top: 35),
               InkButton(
@@ -175,7 +174,6 @@ class LoginSignUpUI extends StatelessWidget {
       }
     } catch (error) {
       if (kDebugMode) {
-        print(error);
       }
     }
   }

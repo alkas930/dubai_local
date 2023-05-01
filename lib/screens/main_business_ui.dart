@@ -101,7 +101,6 @@ class MainBusinessUI extends StatelessWidget {
                           isWeb: true,
                           title: "www.crossingtherestaurant.com",
                           onTap: () {
-                            printData("launching");
                             launchUrl(
                               Uri(
                                   scheme: 'https',

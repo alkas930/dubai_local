@@ -2,6 +2,7 @@ import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
+import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -15,7 +16,6 @@ class MoreUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MoreController controller = Get.find();
-    HomeController homeController = Get.find();
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Container(
@@ -41,36 +41,45 @@ class MoreUI extends StatelessWidget {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  moreItems(
-                      title: "Explore Dubai",
-                      leadingIcon: Icon(
-                        Icons.explore,
-                        size: 30,
-                        color: AppColors.fadedBlack,
-                      ),
-                      controller: controller),
-                  moreItems(
-                      title: "Things To Do",
-                      leadingIcon: Icon(
-                        Icons.graphic_eq_outlined,
-                        size: 30,
-                        color: AppColors.fadedBlack,
-                      ),
-                      controller: controller),
-                  moreItems(
-                      title: "Blog",
-                      leadingIcon: Icon(
-                        Icons.format_align_center_outlined,
-                        size: 30,
-                        color: AppColors.fadedBlack,
-                      ),
-                      controller: controller),
-                ],
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    moreItems(
+                        context: context,
+                        title: "Explore Dubai",
+                        icon: ImagesPaths.more_explore,
+                        url: "https://dubailocal.ae/dubai-explore"),
+                    Divider(),
+                    moreItems(
+                        context: context,
+                        title: "Things To Do",
+                        icon: ImagesPaths.more_things_to_do,
+                        url: "https://dubailocal.ae/things-to-do-in-dubai"),
+                    Divider(),
+                    moreItems(
+                        context: context,
+                        title: "Blog",
+                        icon: ImagesPaths.more_blog,
+                        url: "https://blog.dubailocal.ae/"),
+                    Divider(),
+                    moreItems(
+                        context: context,
+                        title: "Important Phone Numbers",
+                        icon: ImagesPaths.more_important_phone,
+                        url: "https://dubailocal.ae/useful-numbers"),
+                    Divider(),
+                    moreItems(
+                        context: context,
+                        title: "Visit Website",
+                        icon: ImagesPaths.more_visit_website,
+                        url: "https://dubailocal.ae/"),
+                    Divider(),
+                  ],
+                ),
               ),
             ),
           ],
@@ -80,20 +89,32 @@ class MoreUI extends StatelessWidget {
   }
 
   Widget moreItems(
-      {required String title,
-      required Icon leadingIcon,
-      required MoreController controller}) {
+      {required BuildContext context,
+      required String title,
+      required String icon,
+      required String url}) {
     return ListTile(
-      onTap: () {
-        controller.moreOnWebView();
-        printData("message");
-      },
-      leading: leadingIcon,
-      title: title.text.size(15).make(),
-      trailing: Icon(
-        Icons.chevron_right,
-        size: 50,
-        color: AppColors.fadedBlack,
+      tileColor: Colors.blueGrey.shade50,
+      contentPadding: EdgeInsets.zero,
+      visualDensity: VisualDensity(horizontal: -4, vertical: -3),
+      onTap: () =>
+          Navigator.pushNamed(context, AppRoutes.webview, arguments: {"url":url}),
+      leading: SizedBox(
+        width: 24,
+        height: 24,
+        child: Image.asset(icon),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+            color: Color(0xff333333),
+            fontWeight: FontWeight.w500,
+            fontSize: 12),
+      ),
+      trailing: SizedBox(
+        width: 16,
+        height: 16,
+        child: Image.asset(ImagesPaths.arrow_right),
       ),
     );
   }

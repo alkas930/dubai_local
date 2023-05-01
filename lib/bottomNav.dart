@@ -7,6 +7,7 @@ import 'package:dubai_local/screens/more_ui.dart';
 import 'package:dubai_local/screens/search_ui.dart';
 import 'package:dubai_local/screens/sub_categories_ui.dart';
 import 'package:dubai_local/screens/webview_screen_ui.dart';
+import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toast/toast.dart';
@@ -31,24 +32,39 @@ class _BottomNavState extends State<BottomNav> {
 
     Widget getScreen(String name) {
       switch (name) {
-        case '/':
+        case AppRoutes.main:
           switch (_currentIndex) {
             case 1:
+              if (_navigatorKey.currentState!.canPop()) {
+                _navigatorKey.currentState!.pop();
+              }
               return const SearchUi();
             case 2:
+              if (_navigatorKey.currentState!.canPop()) {
+                _navigatorKey.currentState!.pop();
+              }
               return const HomeUI();
             case 3:
+              if (_navigatorKey.currentState!.canPop()) {
+                _navigatorKey.currentState!.pop();
+              }
               return const CategoriesUi();
             case 4:
+              if (_navigatorKey.currentState!.canPop()) {
+                _navigatorKey.currentState!.pop();
+              }
               return const MoreUI();
-            case 6:
-              return const SubCategoriesUI();
-            case 7:
-              return const DetailUi();
             default:
+              if (_navigatorKey.currentState!.canPop()) {
+                _navigatorKey.currentState!.pop();
+              }
               return const HomeUI();
           }
-        case "/webview":
+        case "/sub-categories": //6
+          return const SubCategoriesUI();
+        case AppRoutes.detail: //7
+          return const DetailUi();
+        case AppRoutes.webview:
           return const WebViewScreen();
         default:
           return const HomeUI();

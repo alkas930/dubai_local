@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:flutter/material.dart';
@@ -16,46 +17,64 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  late WebViewController _webViewController;
-  HomeController homeController = Get.find();
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
-    // String url = Get.arguments??"https://dubailocal.ae";
-
+    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Column(
         children: [
           const HeaderWidget(isBackEnabled: true),
           Expanded(
-            // decoration: const BoxDecoration(
-            //   image: DecorationImage(
-            //     image: AssetImage(ImagesPaths.img_bg),
-            //     fit: BoxFit.fill,
-            //   ),
-            // ),
-            child: WebView(
-              backgroundColor: Colors.transparent,
-              initialUrl: homeController.webViewURL,
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController webViewController) {
-                _webViewController = webViewController;
-              },
-            ),
-          ),
+              child: Stack(
+            children: [
+              isLoading
+                  ? Positioned(
+                      top: 0,
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                        ),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Color(Constants.themeColorRed),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
+              WebView(
+                backgroundColor: Colors.transparent,
+                initialUrl: args?["url"] != null && args?["url"]?.isNotEmpty
+                    ? args["url"]
+                    : "https://dubailocal.ae",
+                javascriptMode: JavascriptMode.unrestricted,
+                onPageFinished: (finish) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                // onWebViewCreated: (WebViewController webViewController) {
+                // },
+              ),
+            ],
+          )),
         ],
       ),
     );
   }
 
   Future<bool> _onWillPop() async {
-    if (await _webViewController.canGoBack()) {
-      _webViewController.goBack();
-      return false;
-    } else {
-      homeController.changeIndex(homeController.lastIndex);
-      return false;
-    }
+    Navigator.pop(context);
+    return false;
   }
 }

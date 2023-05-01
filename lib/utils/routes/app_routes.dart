@@ -1,4 +1,5 @@
 class AppRoutes{
+  static const String main="/";
   static const String splash="/splash";
   static const String home="/home";
   static const String mainHome="/mainHome";

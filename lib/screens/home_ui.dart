@@ -23,6 +23,8 @@ class HomeUI extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeController controller = Get.find();
     SplashController mainHomeController = Get.find();
+    final String ExploreDubai = "https://dubailocal.ae/dubai-explore";
+    final String ThingsToDo = "https://dubailocal.ae/things-to-do-in-dubai";
 
     Widget ListingCard({required TopHomeData data, required int index}) => Card(
           clipBehavior: Clip.hardEdge,
@@ -102,6 +104,21 @@ class HomeUI extends StatelessWidget {
           ),
         );
 
+    Widget WebviewBanner(String image, String url) => Padding(
+          padding: EdgeInsets.only(bottom: 24),
+          child: SizedBox(
+            width: Get.width,
+            height: 130,
+            child: Image.asset(
+              image,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ).onTap(() {
+          Navigator.pushNamed(context, AppRoutes.webview,
+              arguments: {"url": url});
+        });
+
     return SingleChildScrollView(
       // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       physics: const BouncingScrollPhysics(),
@@ -116,8 +133,9 @@ class HomeUI extends StatelessWidget {
               .make()
               .pOnly(top: 48, bottom: 0),
           Container(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.topCenter,
             width: Get.width,
+            constraints: BoxConstraints(minHeight: Get.height),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -128,7 +146,7 @@ class HomeUI extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 90,
+                  height: 15,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -229,7 +247,8 @@ class HomeUI extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SearchWidget(isLight: true).marginOnly(top: 16),
+                const SearchWidget(isLight: true)
+                    .marginOnly(top: 16, bottom: 16),
                 GetBuilder<SplashController>(
                   id: mainHomeController.updateTopKey,
                   builder: (context) {
@@ -243,24 +262,40 @@ class HomeUI extends StatelessWidget {
                             Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(mainHomeController.topList[index].heading!,
-                                style: TextStyle(), textAlign: TextAlign.start),
-                            SizedBox(
-                              height: 128,
-                              child: ListView.builder(
-                                clipBehavior: Clip.none,
-                                physics: ClampingScrollPhysics(),
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: mainHomeController
-                                        .topList[index].res!.isNotEmpty
-                                    ? mainHomeController
-                                        .topList[index].res?.length
-                                    : 0,
-                                itemBuilder: (BuildContext context, int idx) =>
-                                    ListingCard(
-                                        data: mainHomeController.topList[index],
-                                        index: idx),
+                            if (index == 2)
+                              WebviewBanner(
+                                  ImagesPaths.ic_explore_dubai, ExploreDubai),
+                            if (index == 3)
+                              WebviewBanner(
+                                  ImagesPaths.ic_things_to_do, ThingsToDo),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                  mainHomeController.topList[index].heading!,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.start),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 24),
+                              child: SizedBox(
+                                height: 128,
+                                child: ListView.builder(
+                                  clipBehavior: Clip.none,
+                                  physics: ClampingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: mainHomeController
+                                          .topList[index].res!.isNotEmpty
+                                      ? mainHomeController
+                                          .topList[index].res?.length
+                                      : 0,
+                                  itemBuilder: (BuildContext context,
+                                          int idx) =>
+                                      ListingCard(
+                                          data:
+                                              mainHomeController.topList[index],
+                                          index: idx),
+                                ),
                               ),
                             ),
                           ],
@@ -270,36 +305,6 @@ class HomeUI extends StatelessWidget {
                       return SizedBox.shrink();
                     }
                   },
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: Get.width,
-                      height: 130,
-                      child: Image.asset(
-                        ImagesPaths.ic_explore_dubai,
-                        fit: BoxFit.cover,
-                      ),
-                    ).onTap(() {
-                      controller
-                          .openWebView("https://dubailocal.ae/dubai-explore");
-                    }),
-                    SizedBox(
-                        width: Get.width,
-                        height: 130,
-                        child: Image.asset(
-                          ImagesPaths.ic_things_to_do,
-                          fit: BoxFit.cover,
-                        )).onTap(() {
-                      // controller.openWebView(
-                      //     "https://dubailocal.ae/things-to-do-in-dubai");
-                      // Get.toNamed(AppRoutes.webview,
-                      //     arguments: "https://dubailocal.ae/dubai-explore");
-                      Navigator.pushNamed(context, AppRoutes.webview,
-                          arguments: "https://dubailocal.ae/dubai-explore");
-                    }),
-                  ],
                 ),
               ],
             ),

@@ -1,10 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
-import '../controllers/home_controller.dart';
-import '../utils/localisations/app_colors.dart';
 import '../utils/localisations/images_paths.dart';
 
 class HeaderWidget extends StatefulWidget {
@@ -22,7 +19,6 @@ class HeaderWidget extends StatefulWidget {
 class _HeaderWidget extends State<HeaderWidget> {
   @override
   Widget build(BuildContext context) {
-    HomeController homeController = Get.find();
 
     return Padding(
       padding: EdgeInsets.only(top: 32),
@@ -40,7 +36,7 @@ class _HeaderWidget extends State<HeaderWidget> {
                         Icons.arrow_back_ios,
                         color: Colors.white,
                       ).onTap(() {
-                        homeController.getBack();
+                        Navigator.pop(context);
                       })
                     : null),
             Image.asset(ImagesPaths.app_logo_d, width: Get.width * .5),

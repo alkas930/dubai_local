@@ -136,7 +136,6 @@ class SubCategoriesUI extends StatelessWidget {
         ],
       ),
     ).onTap(() {
-      printData(categoryItems.toJson().toString());
       HomeController homeController = Get.find();
       homeController.subCatBusinessSlug = categoryItems.slug ?? "";
       homeController.subBusiness = categoryItems.subCatName ?? "";
