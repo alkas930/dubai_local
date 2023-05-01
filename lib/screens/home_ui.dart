@@ -4,6 +4,7 @@ import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/controllers/splash_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
+import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -291,11 +292,12 @@ class HomeUI extends StatelessWidget {
                           ImagesPaths.ic_things_to_do,
                           fit: BoxFit.cover,
                         )).onTap(() {
-                      controller.openWebView(
-                          "https://dubailocal.ae/things-to-do-in-dubai");
+                      // controller.openWebView(
+                      //     "https://dubailocal.ae/things-to-do-in-dubai");
                       // Get.toNamed(AppRoutes.webview,
-                      //     arguments:
-                      //         "https://dubailocal.ae/dubai-explore");
+                      //     arguments: "https://dubailocal.ae/dubai-explore");
+                      Navigator.pushNamed(context, AppRoutes.webview,
+                          arguments: "https://dubailocal.ae/dubai-explore");
                     }),
                   ],
                 ),

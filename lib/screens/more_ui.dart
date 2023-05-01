@@ -1,3 +1,4 @@
+import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
@@ -14,6 +15,7 @@ class MoreUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MoreController controller = Get.find();
+    HomeController homeController = Get.find();
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Container(

@@ -14,33 +14,52 @@ import 'package:velocity_x/velocity_x.dart';
 
 import 'utils/localisations/images_paths.dart';
 
-class BottomNav extends StatelessWidget {
+class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    HomeController homeController = Get.find();
+  _BottomNavState createState() => _BottomNavState();
+}
 
-    Widget getScreen() {
-      switch (homeController.bottomIndex.value) {
-        case 1:
-          return const SearchUi();
-        case 2:
-          return const HomeUI();
-        case 3:
-          return const CategoriesUi();
-        case 4:
-          return const MoreUI();
-        case 5:
+class _BottomNavState extends State<BottomNav> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  int _currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    // HomeController homeController = Get.find();
+
+    Widget getScreen(String name) {
+      switch (name) {
+        case '/':
+          switch (_currentIndex) {
+            case 1:
+              return const SearchUi();
+            case 2:
+              return const HomeUI();
+            case 3:
+              return const CategoriesUi();
+            case 4:
+              return const MoreUI();
+            case 6:
+              return const SubCategoriesUI();
+            case 7:
+              return const DetailUi();
+            default:
+              return const HomeUI();
+          }
+        case "/webview":
           return const WebViewScreen();
-        case 6:
-          return const SubCategoriesUI();
-        case 7:
-          return const DetailUi();
         default:
           return const HomeUI();
       }
     }
+
+    setScreen(index) => {
+          setState(() {
+            _currentIndex = index;
+          })
+        };
 
     return Stack(
       children: <Widget>[
@@ -55,14 +74,32 @@ class BottomNav extends StatelessWidget {
           child: Scaffold(
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
-            body: SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: Obx(() => getScreen()),
-                  ),
-                ],
+            body: WillPopScope(
+              onWillPop: () async {
+                if (_navigatorKey.currentState!.canPop()) {
+                  _navigatorKey.currentState!.pop();
+                  return false;
+                }
+                return true;
+              },
+              child: Navigator(
+                key: _navigatorKey,
+                onGenerateRoute: (settings) {
+                  printInfo(info: settings.toString());
+                  return MaterialPageRoute(
+                    builder: (BuildContext context) => SafeArea(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: getScreen(settings.name!),
+                          ),
+                        ],
+                      ),
+                    ),
+                    settings: settings,
+                  );
+                },
               ),
             ),
             bottomNavigationBar: Container(
@@ -75,55 +112,41 @@ class BottomNav extends StatelessWidget {
               ),
               alignment: Alignment.center,
               height: Constants.tabBarHeight,
-              child: Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    menuItem(
-                      isSelected: homeController.bottomIndex.value == 0,
-                      icon: ImagesPaths.ic_notification,
-                      title: "Notification",
-                      onTap: () {
-                        ToastContext().init(context);
-                        Toast.show("No New Notifications");
-                      },
-                    ),
-                    menuItem(
-                        isSelected: homeController.bottomIndex.value == 1,
-                        icon: ImagesPaths.ic_search,
-                        title: "Search",
-                        onTap: () {
-                          HomeController homeController = Get.find();
-                          homeController.changeIndex(1);
-                        }),
-                    menuItem(
-                        isSelected: homeController.bottomIndex.value == 2,
-                        icon: ImagesPaths.ic_home,
-                        title: "Home",
-                        isHighlighted: true,
-                        onTap: () {
-                          HomeController homeController = Get.find();
-                          homeController.changeIndex(2);
-                        }),
-                    menuItem(
-                        isSelected: homeController.bottomIndex.value == 3,
-                        icon: ImagesPaths.ic_category,
-                        title: "Categories",
-                        onTap: () {
-                          HomeController homeController = Get.find();
-                          homeController.changeIndex(3);
-                        }),
-                    menuItem(
-                        isSelected: homeController.bottomIndex == 4,
-                        icon: ImagesPaths.ic_more,
-                        title: "More",
-                        onTap: () {
-                          HomeController homeController = Get.find();
-                          homeController.changeIndex(4);
-                        }),
-                  ],
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  menuItem(
+                    isSelected: _currentIndex == 0,
+                    icon: ImagesPaths.ic_notification,
+                    title: "Notification",
+                    onTap: () {
+                      ToastContext().init(context);
+                      Toast.show("No New Notifications");
+                    },
+                  ),
+                  menuItem(
+                      isSelected: _currentIndex == 1,
+                      icon: ImagesPaths.ic_search,
+                      title: "Search",
+                      onTap: () => setScreen(1)),
+                  menuItem(
+                      isSelected: _currentIndex == 2,
+                      icon: ImagesPaths.ic_home,
+                      title: "Home",
+                      isHighlighted: true,
+                      onTap: () => setScreen(2)),
+                  menuItem(
+                      isSelected: _currentIndex == 3,
+                      icon: ImagesPaths.ic_category,
+                      title: "Categories",
+                      onTap: () => setScreen(3)),
+                  menuItem(
+                      isSelected: _currentIndex == 4,
+                      icon: ImagesPaths.ic_more,
+                      title: "More",
+                      onTap: () => setScreen(4)),
+                ],
               ),
             ),
           ),
@@ -161,7 +184,7 @@ class BottomNav extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-                fontSize: 12,
+                fontSize: 10,
                 color: isSelected
                     ? Color(Constants.themeColorRed)
                     : Color(0xff333333),
