@@ -76,17 +76,6 @@ class CategoriesUi extends StatelessWidget {
               },
             ),
           ).marginOnly(top: 10),
-          // SvgPicture.network(
-          //   categoryItems.fullIcon,
-          //   // color: Colors.red,
-          //   colorFilter: ColorFilter.mode(Colors.transparent, BlendMode.srcIn),
-          //   height: 35,
-          //   placeholderBuilder: (context) => SizedBox(
-          //     child: CircularProgressIndicator(
-          //       color: AppColors.accentRipple,
-          //     ),
-          //   ),
-          // ).pOnly(top: 10),
           Container(
               alignment: Alignment.center,
               child: categoryItems.name.text

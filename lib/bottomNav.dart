@@ -24,11 +24,17 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-  int _currentIndex = 0;
+  int _currentIndex = 2;
 
   @override
   Widget build(BuildContext context) {
     // HomeController homeController = Get.find();
+
+    setScreen(index) => {
+          setState(() {
+            _currentIndex = index;
+          })
+        };
 
     Widget getScreen(String name) {
       switch (name) {
@@ -43,7 +49,7 @@ class _BottomNavState extends State<BottomNav> {
               if (_navigatorKey.currentState!.canPop()) {
                 _navigatorKey.currentState!.pop();
               }
-              return const HomeUI();
+              return HomeUI(changeIndex: (index) => setScreen(index));
             case 3:
               if (_navigatorKey.currentState!.canPop()) {
                 _navigatorKey.currentState!.pop();
@@ -58,24 +64,18 @@ class _BottomNavState extends State<BottomNav> {
               if (_navigatorKey.currentState!.canPop()) {
                 _navigatorKey.currentState!.pop();
               }
-              return const HomeUI();
+              return HomeUI(changeIndex: (index) => setScreen(index));
           }
-        case "/sub-categories": //6
+        case AppRoutes.subCategories:
           return const SubCategoriesUI();
-        case AppRoutes.detail: //7
+        case AppRoutes.detail:
           return const DetailUi();
         case AppRoutes.webview:
           return const WebViewScreen();
         default:
-          return const HomeUI();
+          return HomeUI(changeIndex: (index) => setScreen(index));
       }
     }
-
-    setScreen(index) => {
-          setState(() {
-            _currentIndex = index;
-          })
-        };
 
     return Stack(
       children: <Widget>[

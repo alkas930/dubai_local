@@ -62,7 +62,7 @@ class SubcatBusinessData {
   String? email;
   String? phone;
   String? banner;
-  Null? aeverageRating;
+  String? aeverageRating;
   String? avgRating;
   String? categoryId;
   String? countRating;

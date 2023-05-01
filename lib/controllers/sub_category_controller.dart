@@ -14,9 +14,9 @@ class SubCategoryController extends SuperController {
     super.onInit();
   }
 
-  void callAPI() {
-    HomeController homeController = Get.find();
-    CallAPI().getSubCategories(slug: homeController.subCatSlug).then((value) {
+  void callAPI(String slug) {
+    subCategoryList = [];
+    CallAPI().getSubCategories(slug: slug).then((value) {
       subCategoryList = value.subCatData;
       update([updateListKey]);
       printData("DATA ${value.toJson().toString()}");

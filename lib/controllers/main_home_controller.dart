@@ -17,10 +17,12 @@ class MainHomeController extends SuperController {
   String updateListKey = "updateListKey";
 
   List<Widget> buildScreens() {
-    return  [
-      Center(child: "No New Notifications".text.make(),),
+    return [
+      Center(
+        child: "No New Notifications".text.make(),
+      ),
       const SearchUi(),
-      const HomeUI(),
+      HomeUI(),
       const CategoriesUi(),
       const MoreUI(),
     ];

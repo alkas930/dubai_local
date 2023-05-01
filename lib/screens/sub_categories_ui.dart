@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/controllers/sub_category_controller.dart';
 import 'package:dubai_local/models/sub_categories_response_model.dart';
@@ -63,25 +64,24 @@ class SubCategoriesUI extends StatelessWidget {
                     children: [
                       GetBuilder<SubCategoryController>(
                           id: controller.updateListKey,
-                          builder: (context) {
+                          builder: (ctx) {
                             return GridView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        controller.subCategoryList.length,
-                                    itemBuilder: (_, int index) {
-                                      return items(
-                                          categoryItems: controller
-                                              .subCategoryList[index]);
-                                    },
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            mainAxisSpacing: 10,
-                                            crossAxisSpacing: 10,
-                                            childAspectRatio: 10 / 6))
-                                .marginOnly(top: 10, bottom: 30);
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.subCategoryList.length,
+                              itemBuilder: (_, int index) {
+                                return items(
+                                    context: context,
+                                    categoryItem:
+                                        controller.subCategoryList[index]);
+                              },
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      childAspectRatio: 5 / 4.5,
+                                      mainAxisSpacing: 20 / 2,
+                                      crossAxisSpacing: 10),
+                            ).marginOnly(top: 10, bottom: 30);
                           })
                     ],
                   ),
@@ -94,52 +94,50 @@ class SubCategoriesUI extends StatelessWidget {
     );
   }
 
-  Widget items({required SubcatData categoryItems}) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(10),
-      ),
+  Widget items(
+      {required BuildContext context, required SubcatData categoryItem}) {
+    return InkButton(
+      rippleColor: Color(Constants.themeColorRed),
+      backGroundColor: Color(0xffEEF2F3),
+      borderRadius: 10,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          Container(
             height: 35,
             child: ScalableImageWidget.fromSISource(
               si: ScalableImageSource.fromSvgHttpUrl(
-                  Uri.parse('${categoryItems.fullIcon}')),
+                  Uri.parse(categoryItem.fullIcon!)),
               onLoading: (ctx) {
                 return SizedBox(
                     child: CircularProgressIndicator(
                   color: AppColors.accentRipple,
                 ));
               },
-            ).pOnly(top: 10),
+            ),
           ),
-          // SvgPicture.network(
-          //   "${categoryItems.fullIcon}",
-          //   color: Colors.red,
-          //   height: 35,
-          //   placeholderBuilder: (context) => SizedBox(
-          //     child: CircularProgressIndicator(
-          //       color: AppColors.accentRipple,
-          //     ),
-          //   ),
-          // ).pOnly(top: 10),
-          ("${categoryItems.subCatName}")
-              .text
-              .color(Colors.grey.shade700)
-              .overflow(TextOverflow.ellipsis)
-              .size(8)
-              .make(),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            categoryItem.subCatName!,
+            style: const TextStyle(
+              color: Color(0xff333333),
+              fontSize: 10,
+              overflow: TextOverflow.ellipsis,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
-    ).onTap(() {
-      HomeController homeController = Get.find();
-      homeController.subCatBusinessSlug = categoryItems.slug ?? "";
-      homeController.subBusiness = categoryItems.subCatName ?? "";
-      homeController.openSubCategoryBusiness(homeController.lastIndex);
-    });
+      onTap: () {
+        HomeController homeController = Get.find();
+        homeController.subCatBusinessSlug = categoryItem.slug ?? "";
+        homeController.subBusiness = categoryItem.subCatName ?? "";
+        homeController.openSubCategoryBusiness(
+            context, homeController.lastIndex);
+      },
+    );
   }
 }

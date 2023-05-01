@@ -1,5 +1,7 @@
 import 'package:dubai_local/controllers/detail_controllers.dart';
 import 'package:dubai_local/controllers/sub_category_controller.dart';
+import 'package:dubai_local/utils/routes/app_routes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../models/all_categories_response_model.dart';
@@ -22,18 +24,17 @@ class HomeController extends SuperController {
     bottomIndex.value = lastIndex;
   }
 
-  void openSubCategory(int lastIndex) {
+  void openSubCategory(BuildContext context, String slug) {
     Get.put(SubCategoryController());
     SubCategoryController controller = Get.find();
-    controller.callAPI();
-    this.lastIndex = lastIndex;
-    changeIndex(6);
+    controller.callAPI(slug);
+    Navigator?.pushNamed(context, AppRoutes.subCategories);
   }
 
-  void openSubCategoryBusiness(int lastIndex) {
+  void openSubCategoryBusiness(BuildContext context, int lastIndex) {
     this.lastIndex = lastIndex;
     Get.put(DetailController());
-    changeIndex(7);
+    Navigator?.pushNamed(context, AppRoutes.detail);
   }
 
   // void openBusinessDetails(int lastIndex) {

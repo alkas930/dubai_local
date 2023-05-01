@@ -17,7 +17,9 @@ import '../utils/localisations/app_colors.dart';
 import '../utils/localisations/images_paths.dart';
 
 class HomeUI extends StatelessWidget {
-  const HomeUI({Key? key}) : super(key: key);
+  final Function(int index)? changeIndex;
+
+  HomeUI({Key? key, this.changeIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +172,7 @@ class HomeUI extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return InkButton(
+                                      rippleColor: Color(Constants.themeColorRed),
                                       backGroundColor: Color(0xffEEF2F3),
                                       borderRadius: 10,
                                       child: Column(
@@ -232,10 +235,13 @@ class HomeUI extends StatelessWidget {
                                             mainHomeController
                                                 .categoryList[index].name;
                                         if (index == 7) {
-                                          controller.changeIndex(3);
+                                          changeIndex!(3);
                                         } else {
                                           controller.openSubCategory(
-                                              controller.bottomIndex.value);
+                                            context,
+                                            mainHomeController
+                                                .categoryList[index].slug,
+                                          );
                                         }
                                       },
                                     );
