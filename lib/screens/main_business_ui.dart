@@ -1,145 +1,143 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:convert';
+
+import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/controllers/main_business_controllers.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
-import 'package:dubai_local/utils/localisations/custom_widgets.dart';
+import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:intl/intl.dart';
 
 class MainBusinessUI extends StatelessWidget {
   MainBusinessUI({Key? key}) : super(key: key);
 
   MainBusinessControllers controllers = Get.put(MainBusinessControllers());
 
+  double getRating(double? rating, double avgRating) {
+    double avg = 0;
+    if (rating == null) {
+      avg = avgRating;
+    } else {
+      avg = (rating + avgRating) / 2;
+    }
+    return avgRating;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(ImagesPaths.img_bg),
-              fit: BoxFit.fill,
-            ),
-          ),
-          height: Get.height,
-          width: Get.width,
-          child: Column(
-            children: [
-              const HeaderWidget(isBackEnabled: true),
-              "Indian Foods".text.white.size(20).make().py(10),
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                child: Container(
-                  width: Get.width * .95,
-                  height: Get.height * .81,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Obx(
+        () => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const HeaderWidget(isBackEnabled: true),
+            "${controllers.businessDetail.value.businessData!.name}"
+                .text
+                .white
+                .size(20)
+                .make()
+                .py(10),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              child: Container(
+                alignment: Alignment.topCenter,
+                constraints: BoxConstraints(minHeight: Get.height),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        child: Stack(
-                          children: [
-                            Image.network(
-                              "https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png",
-                              fit: BoxFit.cover,
-                              width: Get.width,
-                              height: 150,
-                            ),
-                            "The Crossing"
-                                .text
-                                .semiBold
-                                .white
-                                .make()
-                                .px(15)
-                                .positioned(bottom: 15),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    size: 18,
-                                    color: Colors.yellow,
-                                  ),
-                                  "4.5"
-                                      .text
-                                      .size(15)
-                                      .white
-                                      .make()
-                                      .marginOnly(left: 2)
-                                ],
-                              ).px(8).py(1),
-                            ).positioned(bottom: 15, right: 15)
-                          ],
-                        ),
-                      ),
-                      customContainer(
-                          icon: ImagesPaths.ic_location,
-                          title:
-                              "H Dubai - 1 Sheikh Zayed Rd- Dubai - United Arab Emirates",
-                          onTap: () {}),
-                      customContainer(
-                          icon: ImagesPaths.ic_phone,
-                          title: "+971449154563",
-                          onTap: () {}),
-                      customContainer(
-                          icon: ImagesPaths.ic_web,
-                          isWeb: true,
-                          title: "www.crossingtherestaurant.com",
-                          onTap: () {
-                            launchUrl(
-                              Uri(
-                                  scheme: 'https',
-                                  host: 'www.crossingtherestaurant.com',
-                                  path: ''),
-                              mode: LaunchMode.externalApplication,
-                            );
-                          }),
-                      workingHoursWidget(
-                          icon: ImagesPaths.ic_clock,
-                          title: "Working Hours",
-                          onTap: () {
-                            controllers.changeVisibility();
-                          }),
-                      Obx(() => !controllers.isVisible.value
-                          ? SizedBox()
-                          : Column(
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 150,
+                      child: Stack(
+                        children: [
+                          Image.network(
+                            "${controllers.businessDetail.value.businessData!.fullBanner}",
+                            fit: BoxFit.cover,
+                            width: Get.width,
+                            height: 150,
+                          ),
+                          "${controllers.businessDetail.value.businessData!.name}"
+                              .text
+                              .semiBold
+                              .white
+                              .make()
+                              .px(15)
+                              .positioned(bottom: 15),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.black),
+                            child: Row(
                               children: [
-                                dayWidget(
-                                    dayName: "Monday",
-                                    time: "18:00 hrs - 18:00 hrs"),
-                                dayWidget(
-                                    dayName: "Tuesday",
-                                    time: "18:00 hrs - 18:00 hrs"),
-                                dayWidget(
-                                    dayName: "Wednesday",
-                                    time: "18:00 hrs - 18:00 hrs"),
-                                dayWidget(
-                                    dayName: "Thursday",
-                                    time: "18:00 hrs - 18:00 hrs"),
-                                dayWidget(
-                                    dayName: "Friday",
-                                    time: "18:00 hrs - 18:00 hrs"),
-                                dayWidget(
-                                    dayName: "Satday",
-                                    time: "18:00 hrs - 18:00 hrs"),
+                                const Icon(
+                                  Icons.star,
+                                  size: 18,
+                                  color: Colors.yellow,
+                                ),
+                                "4.5"
+                                    .text
+                                    .size(15)
+                                    .white
+                                    .make()
+                                    .marginOnly(left: 2)
                               ],
-                            )).marginOnly(top: 10),
-                      Row(
+                            ).px(8).py(1),
+                          ).positioned(bottom: 15, right: 15)
+                        ],
+                      ),
+                    ),
+                    customContainer(
+                        icon: ImagesPaths.ic_location,
+                        title:
+                            "${controllers.businessDetail.value.businessData!.address}",
+                        onTap: () {}),
+                    customContainer(
+                        icon: ImagesPaths.ic_phone,
+                        title:
+                            "${controllers.businessDetail.value.businessData!.phone}",
+                        onTap: () {}),
+                    customContainer(
+                        icon: ImagesPaths.ic_web,
+                        isWeb: true,
+                        title:
+                            "${controllers.businessDetail.value.businessData!.url}",
+                        onTap: () {
+                          launchUrl(
+                            Uri(
+                                scheme: 'https',
+                                host:
+                                    '${controllers.businessDetail.value.businessData!.url}',
+                                path: ''),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }),
+                    workingHoursWidget(
+                        icon: ImagesPaths.ic_clock,
+                        title: "Working Hours",
+                        onTap: () {
+                          controllers.changeVisibility();
+                        }),
+                    Obx(() => !controllers.isVisible.value
+                        ? const SizedBox.shrink()
+                        : getTimings(controllers)).px(15).marginOnly(top: 10),
+                    Container(
+                      color: AppColors.lightGrey,
+                      height: 60,
+                      alignment: Alignment.center,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Container(
@@ -147,7 +145,7 @@ class MainBusinessUI extends StatelessWidget {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: Colors.green.shade700),
+                                color: AppColors.greenTheme),
                             child: Row(
                               children: [
                                 Image.asset(
@@ -155,10 +153,12 @@ class MainBusinessUI extends StatelessWidget {
                                   width: 20,
                                   color: Colors.white,
                                 ),
-                                "SEND ENQUIRY"
-                                    .text
-                                    .fontWeight(FontWeight.w600)
-                                    .make()
+                                const Text(
+                                  " Send Enquiry",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white),
+                                ),
                               ],
                             ).py(5).px(15),
                           ).onTap(() {
@@ -169,7 +169,7 @@ class MainBusinessUI extends StatelessWidget {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: Colors.green.shade700),
+                                color: AppColors.greenTheme),
                             child: Row(
                               children: [
                                 Image.asset(
@@ -177,23 +177,74 @@ class MainBusinessUI extends StatelessWidget {
                                   width: 20,
                                   color: Colors.white,
                                 ),
-                                "SEND ENQUIRY"
-                                    .text
-                                    .fontWeight(FontWeight.w600)
-                                    .make()
+                                const Text(
+                                  " Send to Friend",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white),
+                                ),
                               ],
                             ).py(5).px(15),
                           ).onTap(() {
-                            controllers.onTapSendToFriend();
+                            controllers.onTapSendEnquiry();
                           }),
                         ],
-                      ).marginOnly(top: 10),
-                    ],
-                  ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Container(
+                          width: Get.width - 50,
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text(
+                            "${controllers.businessDetail.value.businessData!.name}",
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Container(
+                          width: Get.width - 50,
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text(
+                            "${controllers.businessDetail.value.businessData!.description}",
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                wordSpacing: -1),
+                          )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15, bottom: 15),
+                      child: Container(
+                        height: 40,
+                        width: 160,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(Constants.themeColorRed),
+                        ),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Text(
+                            "Own This Business?",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13,
+                                color: Colors.white),
+                          ).py(5).px(15),
+                        ),
+                      ).onTap(() {
+                        controllers.onTapSendEnquiry();
+                      }),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -212,7 +263,7 @@ class MainBusinessUI extends StatelessWidget {
           SizedBox(
             child: Row(
               children: [
-                Container(
+                SizedBox(
                     width: Get.width * .76,
                     child: "$title ${isWeb ? "(Click to visit)" : ""}"
                         .text
@@ -230,22 +281,35 @@ class MainBusinessUI extends StatelessWidget {
   }
 
   Widget dayWidget({required String dayName, required String time}) {
-    return SizedBox(
-      width: Get.width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 35,
-            color: Colors.grey,
-            width: Get.width * .4,
-            alignment: Alignment.centerLeft,
-            child: dayName.text.make(),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          alignment: Alignment.center,
+          width: ((Get.width - 16) / 3) * 0.25,
+          decoration: BoxDecoration(color: Color(0xffDAE0EE)),
+          child: Text(
+            dayName,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
           ),
-          (time ?? "18:00 hrs - 18:00 hrs").text.make(),
-        ],
-      ),
-    ).px(5);
+        ),
+        Expanded(
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(color: Color(0xffEEF1F8)),
+            child: Text(
+              time ?? "NA - NA",
+              style: TextStyle(fontSize: 8),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        )
+      ],
+    ).marginSymmetric(vertical: 4, horizontal: 2);
   }
 
   Widget workingHoursWidget({
@@ -264,7 +328,7 @@ class MainBusinessUI extends StatelessWidget {
                 title.text.size(11).overflow(TextOverflow.ellipsis).make(),
                 Obx(() => controllers.isVisible.value
                     ? const Icon(Icons.keyboard_arrow_down)
-                    : Icon(Icons.keyboard_arrow_right)),
+                    : const Icon(Icons.keyboard_arrow_right)),
               ],
             ),
           ),
@@ -282,5 +346,38 @@ class MainBusinessUI extends StatelessWidget {
     )) {
       throw 'Could not launch $url';
     }
+  }
+
+  Widget getTimings(MainBusinessControllers controllers) {
+    final timings = [];
+    final days = ["M", "T", "W", "T", "F", "S", "S"];
+    Widget widget = SizedBox.shrink();
+    try {
+      timings.addAll(jsonDecode(
+          controllers.businessDetail.value.businessData!.timings!.trim()));
+      widget = GridView.builder(
+        // padding: padding,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          // width / height: fixed for *all* items
+          childAspectRatio: 4.0,
+        ),
+        itemBuilder: (context, i) {
+          String opening = DateFormat('hh:mm a').format(
+              DateTime.tryParse(timings[i]['opening']) ?? DateTime.now());
+          String closing = DateFormat('hh:mm a').format(
+              DateTime.tryParse(timings[i]['closing']) ?? DateTime.now());
+          return dayWidget(
+              dayName: days[i], time: '${opening + " - " + closing}');
+        },
+        itemCount: timings.length,
+      );
+    } catch (e) {
+      printError(info: e.toString());
+    }
+    return widget;
   }
 }

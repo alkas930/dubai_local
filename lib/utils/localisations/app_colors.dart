@@ -22,7 +22,12 @@ class AppColors {
   static Color textGrey = const Color(0xff57636F);
   static Color iconColorBlue = const Color(0xff7BCFE9);
   static Color grey = const Color(0xff7A8D9C);
+
+  static Color lightGrey = const Color(0xffEEF1F8);
+  static Color greenTheme = const Color(0xff318805);
+  static Color redColor = const Color(0xff318805);
   static Color backGround = const Color(0xffE4E4E4);
+  static Color textColorGrey = const Color(0xff818181);
 
 
 

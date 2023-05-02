@@ -1,4 +1,5 @@
 import 'package:dubai_local/controllers/detail_controllers.dart';
+import 'package:dubai_local/controllers/main_business_controllers.dart';
 import 'package:dubai_local/controllers/sub_category_controller.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,27 +14,30 @@ class HomeController extends SuperController {
   String subCatBusinessSlug = "";
   String subCatName = "";
   RxInt bottomIndex = 2.obs;
-  int lastIndex = 2;
 
   void changeIndex(int index) {
     bottomIndex.value = index;
-  }
-
-  void getBack() {
-    bottomIndex.value = lastIndex;
   }
 
   void openSubCategory(BuildContext context, String slug) {
     Get.put(SubCategoryController());
     SubCategoryController controller = Get.find();
     controller.callAPI(slug);
-    Navigator?.pushNamed(context, AppRoutes.subCategories);
+    Navigator.pushNamed(context, AppRoutes.subCategories);
   }
 
-  void openSubCategoryBusiness(BuildContext context, int lastIndex) {
-    this.lastIndex = lastIndex;
+  void openBusinessDetails(BuildContext context, String businessSlug) {
+    Get.put(MainBusinessControllers());
+    MainBusinessControllers controller = Get.find();
+    controller.callAPI(businessSlug);
+    Navigator.pushNamed(context, AppRoutes.mainBusiness);
+  }
+
+  void openSubCategoryBusiness(BuildContext context) {
     Get.put(DetailController());
-    Navigator?.pushNamed(context, AppRoutes.detail);
+    DetailController detailController = Get.find();
+    detailController.getData(subCatBusinessSlug, subCatName, subBusiness);
+    Navigator.pushNamed(context, AppRoutes.detail);
   }
 
   // void openBusinessDetails(int lastIndex) {

@@ -13,7 +13,7 @@ class Endpoints {
 
   static const String epSubCategoryBusiness = "businesses/";
   static const String epSubCategory = "category/";
-  static const String epBusinessDetails = "businesses/";
+  static const String epBusinessDetails = "business/";
   static const String epContactUs = "contact-us/";
   static const String epAllCategories = "category";
   static const String epTopHome = "top-home";

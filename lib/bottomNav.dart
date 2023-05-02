@@ -1,9 +1,10 @@
 import 'package:dubai_local/Constants.dart';
-import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/screens/categories_ui.dart';
 import 'package:dubai_local/screens/detail_Ui.dart';
 import 'package:dubai_local/screens/home_ui.dart';
+import 'package:dubai_local/screens/main_business_ui.dart';
 import 'package:dubai_local/screens/more_ui.dart';
+import 'package:dubai_local/screens/my_profile.dart';
 import 'package:dubai_local/screens/search_ui.dart';
 import 'package:dubai_local/screens/sub_categories_ui.dart';
 import 'package:dubai_local/screens/webview_screen_ui.dart';
@@ -72,6 +73,10 @@ class _BottomNavState extends State<BottomNav> {
           return const DetailUi();
         case AppRoutes.webview:
           return const WebViewScreen();
+        case AppRoutes.mainBusiness:
+          return MainBusinessUI();
+        case AppRoutes.profile:
+          return const MyProfile();
         default:
           return HomeUI(changeIndex: (index) => setScreen(index));
       }
@@ -119,12 +124,12 @@ class _BottomNavState extends State<BottomNav> {
               ),
             ),
             bottomNavigationBar: Container(
-              margin: EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: 8),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(Constants.tabBarRadius),
                     bottomRight: Radius.circular(Constants.tabBarRadius)),
-                color: const Color(0xffeef1f8),
+                color:const Color(0xffeef1f8),
               ),
               alignment: Alignment.center,
               height: Constants.tabBarHeight,
@@ -187,7 +192,7 @@ class _BottomNavState extends State<BottomNav> {
             offset: isHighlighted ? const Offset(0, -16) : const Offset(0, 0),
             child: CircleAvatar(
               backgroundColor: isHighlighted
-                  ? Color(Constants.themeColorRed)
+                  ? const Color(Constants.themeColorRed)
                   : Colors.transparent,
               radius: 25,
               child: Image.asset(
@@ -202,8 +207,8 @@ class _BottomNavState extends State<BottomNav> {
             style: TextStyle(
                 fontSize: 10,
                 color: isSelected
-                    ? Color(Constants.themeColorRed)
-                    : Color(0xff333333),
+                    ? const Color(Constants.themeColorRed)
+                    : const Color(0xff333333),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
           )
         ],

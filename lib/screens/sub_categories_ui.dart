@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/Constants.dart';
+import 'package:dubai_local/controllers/detail_controllers.dart';
 import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/controllers/sub_category_controller.dart';
 import 'package:dubai_local/models/sub_categories_response_model.dart';
@@ -23,72 +24,72 @@ class SubCategoriesUI extends StatelessWidget {
     HomeController homeController = Get.find();
 
     Future<bool> _onWillPop() async {
-      homeController.getBack();
+      Navigator.pop(context);
       return false;
     }
 
     return WillPopScope(
-        onWillPop: _onWillPop,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const HeaderWidget(isBackEnabled: true),
-              // Row(
-              //   children: [
-              //
-              //     Image.asset(
-              //       ImagesPaths.app_logo_d,
-              //       width: Get.width * .5,
-              //     ).centered(),
-              //   ],
-              // ),
-              homeController.subCatName.text
-                  .color(Colors.white)
-                  .size(20)
-                  .make()
-                  .pOnly(top: 30, bottom: 20),
-              const SearchWidget(isLight: true),
-              Container(
-                height: 590,
-                width: Get.width,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      GetBuilder<SubCategoryController>(
-                          id: controller.updateListKey,
-                          builder: (ctx) {
-                            return GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.subCategoryList.length,
-                              itemBuilder: (_, int index) {
-                                return items(
-                                    context: context,
-                                    categoryItem:
-                                        controller.subCategoryList[index]);
-                              },
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4,
-                                      childAspectRatio: 5 / 4.5,
-                                      mainAxisSpacing: 20 / 2,
-                                      crossAxisSpacing: 10),
-                            ).marginOnly(top: 10, bottom: 30);
-                          })
-                    ],
-                  ),
+      onWillPop: _onWillPop,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const HeaderWidget(isBackEnabled: true),
+            // Row(
+            //   children: [
+            //
+            //     Image.asset(
+            //       ImagesPaths.app_logo_d,
+            //       width: Get.width * .5,
+            //     ).centered(),
+            //   ],
+            // ),
+            homeController.subCatName.text
+                .color(Colors.white)
+                .size(20)
+                .make()
+                .pOnly(top: 30, bottom: 20),
+            const SearchWidget(isLight: true),
+            Container(
+              height: 590,
+              width: Get.width,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
               ),
-            ],
-          ),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    GetBuilder<SubCategoryController>(
+                        id: controller.updateListKey,
+                        builder: (ctx) {
+                          return GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: controller.subCategoryList.length,
+                            itemBuilder: (_, int index) {
+                              return items(
+                                  context: context,
+                                  categoryItem:
+                                      controller.subCategoryList[index]);
+                            },
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,
+                                    childAspectRatio: 5 / 4.5,
+                                    mainAxisSpacing: 20 / 2,
+                                    crossAxisSpacing: 10),
+                          ).marginOnly(top: 10, bottom: 30);
+                        })
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
+      ),
     );
   }
 
@@ -133,8 +134,7 @@ class SubCategoriesUI extends StatelessWidget {
         HomeController homeController = Get.find();
         homeController.subCatBusinessSlug = categoryItem.slug ?? "";
         homeController.subBusiness = categoryItem.subCatName ?? "";
-        homeController.openSubCategoryBusiness(
-            context, homeController.lastIndex);
+        homeController.openSubCategoryBusiness(context);
       },
     );
   }

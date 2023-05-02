@@ -31,4 +31,9 @@ class ImagesPaths {
   static const String more_things_to_do = "assets/images/things-to-do.png";
   static const String more_visit_website = "assets/images/visit-website.png";
   static const String arrow_right = "assets/images/arrow-right.png";
+  static const String ic_payment = "assets/images/ic_payments.png";
+  static const String ic_listings = "assets/images/ic_listings.png";
+  static const String ic_document = "assets/images/ic_documents.png";
+  static const String ic_star = "assets/images/ic_vector.png";
+  static const String ic_forward_ios = "assets/images/ic_fordward_ios.png";
 }

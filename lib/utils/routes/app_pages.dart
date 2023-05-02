@@ -1,4 +1,5 @@
 import 'package:dubai_local/bindings/home_binding.dart';
+import 'package:dubai_local/bindings/my_profile_bindings.dart';
 import 'package:dubai_local/screens/login_signup.dart';
 import 'package:dubai_local/bindings/main_business_bindings.dart';
 import 'package:dubai_local/bottomNav.dart';
@@ -6,6 +7,7 @@ import 'package:dubai_local/screens/categories_ui.dart';
 import 'package:dubai_local/screens/detail_Ui.dart';
 import 'package:dubai_local/screens/home_ui.dart';
 import 'package:dubai_local/screens/more_ui.dart';
+import 'package:dubai_local/screens/my_profile.dart';
 import 'package:dubai_local/screens/search_ui.dart';
 import 'package:dubai_local/screens/splash_ui.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
@@ -30,6 +32,11 @@ class AppPages {
       name: AppRoutes.home,
       page: () => const BottomNav(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => const MyProfile(),
+      binding: MyProfileBindings(),
     ),
     GetPage(
       name: AppRoutes.mainBusiness,
