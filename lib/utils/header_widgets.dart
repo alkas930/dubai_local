@@ -1,4 +1,6 @@
 import 'package:dubai_local/Constants.dart';
+import 'package:dubai_local/controllers/my_profile_controllers.dart';
+import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -19,7 +21,6 @@ class HeaderWidget extends StatefulWidget {
 class _HeaderWidget extends State<HeaderWidget> {
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.only(top: 32),
       child: Container(
@@ -69,7 +70,10 @@ class _HeaderWidget extends State<HeaderWidget> {
                   },
                 ),
               ),
-            ),
+            ).onTap(() {
+              Get.put(MyProfileControllers());
+              Navigator.pushNamed(context, AppRoutes.profile);
+            }),
           ],
         ),
       ),

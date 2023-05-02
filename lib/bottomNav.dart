@@ -129,7 +129,7 @@ class _BottomNavState extends State<BottomNav> {
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(Constants.tabBarRadius),
                     bottomRight: Radius.circular(Constants.tabBarRadius)),
-                color:const Color(0xffeef1f8),
+                color: const Color(0xffeef1f8),
               ),
               alignment: Alignment.center,
               height: Constants.tabBarHeight,

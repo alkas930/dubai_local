@@ -23,87 +23,76 @@ class SubCategoriesUI extends StatelessWidget {
     SubCategoryController controller = Get.find();
     HomeController homeController = Get.find();
 
+    //  HomeController controller = Get.find();
+    //   SplashController mainHomeController = Get.find();
     Future<bool> _onWillPop() async {
-      Navigator.pop(context);
+      // Navigator.pop(context);
       return false;
     }
 
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const HeaderWidget(isBackEnabled: true),
-            // Row(
-            //   children: [
-            //
-            //     Image.asset(
-            //       ImagesPaths.app_logo_d,
-            //       width: Get.width * .5,
-            //     ).centered(),
-            //   ],
-            // ),
-            homeController.subCatName.text
-                .color(Colors.white)
-                .size(20)
-                .make()
-                .pOnly(top: 30, bottom: 20),
-            const SearchWidget(isLight: true),
-            Container(
-              height: 590,
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const HeaderWidget(isBackEnabled: true),
+          homeController.subCatName.text
+              .color(Colors.white)
+              .size(20)
+              .make()
+              .pOnly(top: 30, bottom: 20),
+          const SearchWidget(isLight: true),
+          Container(
               width: Get.width,
+              constraints: BoxConstraints(minHeight: 0),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    GetBuilder<SubCategoryController>(
-                        id: controller.updateListKey,
-                        builder: (ctx) {
-                          return GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: controller.subCategoryList.length,
-                            itemBuilder: (_, int index) {
-                              return items(
-                                  context: context,
-                                  categoryItem:
-                                      controller.subCategoryList[index]);
-                            },
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4,
-                                    childAspectRatio: 5 / 4.5,
-                                    mainAxisSpacing: 20 / 2,
-                                    crossAxisSpacing: 10),
-                          ).marginOnly(top: 10, bottom: 30);
-                        })
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+              child: GetBuilder<SubCategoryController>(
+                  id: controller.updateListKey,
+                  builder: (ctx) {
+                    return GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.subCategoryList.length,
+                      itemBuilder: (_, int index) {
+                        return items(
+                            context: context,
+                            categoryItem: controller.subCategoryList[index],
+                            index: index,
+                            homeController: homeController);
+                      },
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              childAspectRatio: 5 / 4.5,
+                              mainAxisSpacing: 20 / 2,
+                              crossAxisSpacing: 10),
+                    ).marginOnly(top: 10, bottom: 30);
+                  })),
+        ],
       ),
     );
   }
 
   Widget items(
-      {required BuildContext context, required SubcatData categoryItem}) {
+      {required BuildContext context,
+      required SubcatData categoryItem,
+      required int index,
+      required HomeController homeController}) {
     return InkButton(
-      rippleColor: Color(Constants.themeColorRed),
-      backGroundColor: Color(0xffEEF2F3),
+      rippleColor: const Color(Constants.themeColorRed),
+      backGroundColor: const Color(0xffEEF2F3),
       borderRadius: 10,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             height: 35,
             child: ScalableImageWidget.fromSISource(
               si: ScalableImageSource.fromSvgHttpUrl(

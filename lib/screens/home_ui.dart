@@ -180,107 +180,98 @@ class HomeUI extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: Stack(
-                    children: [
-                      GetBuilder<SplashController>(
-                          id: mainHomeController.updateListKey,
-                          builder: (context) {
-                            if (mainHomeController.categoryList.isNotEmpty) {
-                              return GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: 8,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 4,
-                                          childAspectRatio: 5 / 4.5,
-                                          mainAxisSpacing: 20 / 2,
-                                          crossAxisSpacing: 10),
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return InkButton(
-                                      rippleColor:
-                                          const Color(Constants.themeColorRed),
-                                      backGroundColor: const Color(0xffEEF2F3),
-                                      borderRadius: 10,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          index == 7
-                                              ? Image.asset(
-                                                  ImagesPaths.ic_more_svg,
-                                                  height: 35,
-                                                )
-                                              : SizedBox(
-                                                  height: 35,
-                                                  child: ScalableImageWidget
-                                                      .fromSISource(
-                                                    si: ScalableImageSource
-                                                        .fromSvgHttpUrl(Uri.parse(
-                                                            mainHomeController
-                                                                .categoryList[
-                                                                    index]
-                                                                .fullIcon)),
-                                                    onLoading: (ctx) {
-                                                      return SizedBox(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                        color: AppColors
-                                                            .accentRipple,
-                                                      ));
-                                                    },
-                                                  ),
-                                                ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            (() {
-                                              if (index == 7) {
-                                                return "More";
-                                              } else {
-                                                return mainHomeController
-                                                    .categoryList[index].name;
-                                              }
-                                            }()),
-                                            style: const TextStyle(
-                                              color: Color(0xff333333),
-                                              fontSize: 10,
-                                              overflow: TextOverflow.ellipsis,
+                  child: GetBuilder<SplashController>(
+                      id: mainHomeController.updateListKey,
+                      builder: (context) {
+                        if (mainHomeController.categoryList.isNotEmpty) {
+                          return GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: 8,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      childAspectRatio: 5 / 4.5,
+                                      mainAxisSpacing: 20 / 2,
+                                      crossAxisSpacing: 10),
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkButton(
+                                  rippleColor:
+                                      const Color(Constants.themeColorRed),
+                                  backGroundColor: const Color(0xffEEF2F3),
+                                  borderRadius: 10,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      index == 7
+                                          ? Image.asset(
+                                              ImagesPaths.ic_more_svg,
+                                              height: 35,
+                                            )
+                                          : SizedBox(
+                                              height: 35,
+                                              child: ScalableImageWidget
+                                                  .fromSISource(
+                                                si: ScalableImageSource
+                                                    .fromSvgHttpUrl(Uri.parse(
+                                                        mainHomeController
+                                                            .categoryList[index]
+                                                            .fullIcon)),
+                                                onLoading: (ctx) {
+                                                  return SizedBox(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                    color:
+                                                        AppColors.accentRipple,
+                                                  ));
+                                                },
+                                              ),
                                             ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
+                                      const SizedBox(
+                                        height: 5,
                                       ),
-                                      onTap: () {
-                                        controller.subCatSlug =
-                                            mainHomeController
-                                                .categoryList[index].slug;
-                                        controller.subCatName =
-                                            mainHomeController
+                                      Text(
+                                        (() {
+                                          if (index == 7) {
+                                            return "More";
+                                          } else {
+                                            return mainHomeController
                                                 .categoryList[index].name;
-                                        if (index == 7) {
-                                          changeIndex!(3);
-                                        } else {
-                                          controller.openSubCategory(
-                                            context,
-                                            mainHomeController
-                                                .categoryList[index].slug,
-                                          );
-                                        }
-                                      },
-                                    );
-                                  });
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          }),
-                    ],
-                  ),
+                                          }
+                                        }()),
+                                        style: const TextStyle(
+                                          color: Color(0xff333333),
+                                          fontSize: 10,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    controller.subCatSlug = mainHomeController
+                                        .categoryList[index].slug;
+                                    controller.subCatName = mainHomeController
+                                        .categoryList[index].name;
+                                    if (index == 7) {
+                                      changeIndex!(3);
+                                    } else {
+                                      controller.openSubCategory(
+                                        context,
+                                        mainHomeController
+                                            .categoryList[index].slug,
+                                      );
+                                    }
+                                  },
+                                );
+                              });
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }),
                 ),
                 const SearchWidget(isLight: true)
                     .marginOnly(top: 16, bottom: 16),

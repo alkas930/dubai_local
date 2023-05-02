@@ -31,221 +31,226 @@ class MainBusinessUI extends StatelessWidget {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Obx(
-        () => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const HeaderWidget(isBackEnabled: true),
-            "${controllers.businessDetail.value.businessData!.name}"
-                .text
-                .white
-                .size(20)
-                .make()
-                .py(10),
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-              child: Container(
-                alignment: Alignment.topCenter,
-                constraints: BoxConstraints(minHeight: Get.height),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: 150,
-                      child: Stack(
+        () => controllers.businessDetail.value.businessData == null
+            ? SizedBox.shrink()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const HeaderWidget(isBackEnabled: true),
+                  "${controllers.businessDetail.value?.businessData?.name}"
+                      .text
+                      .white
+                      .size(20)
+                      .make()
+                      .py(10),
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      constraints: BoxConstraints(minHeight: Get.height),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Image.network(
-                            "${controllers.businessDetail.value.businessData!.fullBanner}",
-                            fit: BoxFit.cover,
-                            width: Get.width,
+                          SizedBox(
                             height: 150,
-                          ),
-                          "${controllers.businessDetail.value.businessData!.name}"
-                              .text
-                              .semiBold
-                              .white
-                              .make()
-                              .px(15)
-                              .positioned(bottom: 15),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black),
-                            child: Row(
+                            child: Stack(
                               children: [
-                                const Icon(
-                                  Icons.star,
-                                  size: 18,
-                                  color: Colors.yellow,
+                                Image.network(
+                                  "${controllers.businessDetail.value?.businessData!.fullBanner}",
+                                  fit: BoxFit.cover,
+                                  width: Get.width,
+                                  height: 150,
                                 ),
-                                "4.5"
+                                "${controllers.businessDetail.value?.businessData?.name}"
                                     .text
-                                    .size(15)
+                                    .semiBold
                                     .white
                                     .make()
-                                    .marginOnly(left: 2)
+                                    .px(15)
+                                    .positioned(bottom: 15),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.black),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.star,
+                                        size: 18,
+                                        color: Colors.yellow,
+                                      ),
+                                      "4.5"
+                                          .text
+                                          .size(15)
+                                          .white
+                                          .make()
+                                          .marginOnly(left: 2)
+                                    ],
+                                  ).px(8).py(1),
+                                ).positioned(bottom: 15, right: 15)
                               ],
-                            ).px(8).py(1),
-                          ).positioned(bottom: 15, right: 15)
-                        ],
-                      ),
-                    ),
-                    customContainer(
-                        icon: ImagesPaths.ic_location,
-                        title:
-                            "${controllers.businessDetail.value.businessData!.address}",
-                        onTap: () {}),
-                    customContainer(
-                        icon: ImagesPaths.ic_phone,
-                        title:
-                            "${controllers.businessDetail.value.businessData!.phone}",
-                        onTap: () {}),
-                    customContainer(
-                        icon: ImagesPaths.ic_web,
-                        isWeb: true,
-                        title:
-                            "${controllers.businessDetail.value.businessData!.url}",
-                        onTap: () {
-                          launchUrl(
-                            Uri(
-                                scheme: 'https',
-                                host:
-                                    '${controllers.businessDetail.value.businessData!.url}',
-                                path: ''),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        }),
-                    workingHoursWidget(
-                        icon: ImagesPaths.ic_clock,
-                        title: "Working Hours",
-                        onTap: () {
-                          controllers.changeVisibility();
-                        }),
-                    Obx(() => !controllers.isVisible.value
-                        ? const SizedBox.shrink()
-                        : getTimings(controllers)).px(15).marginOnly(top: 10),
-                    Container(
-                      color: AppColors.lightGrey,
-                      height: 60,
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                            ),
+                          ),
+                          customContainer(
+                              icon: ImagesPaths.ic_location,
+                              title:
+                                  "${controllers.businessDetail.value?.businessData?.address}",
+                              onTap: () {}),
+                          customContainer(
+                              icon: ImagesPaths.ic_phone,
+                              title:
+                                  "${controllers.businessDetail.value?.businessData?.phone}",
+                              onTap: () {}),
+                          customContainer(
+                              icon: ImagesPaths.ic_web,
+                              isWeb: true,
+                              title:
+                                  "${controllers.businessDetail.value?.businessData?.url}",
+                              onTap: () {
+                                launchUrl(
+                                  Uri(
+                                      scheme: 'https',
+                                      host:
+                                          '${controllers.businessDetail.value?.businessData?.url}',
+                                      path: ''),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              }),
+                          workingHoursWidget(
+                              icon: ImagesPaths.ic_clock,
+                              title: "Working Hours",
+                              onTap: () {
+                                controllers.changeVisibility();
+                              }),
+                          Obx(() => !controllers.isVisible.value
+                                  ? const SizedBox.shrink()
+                                  : getTimings(controllers))
+                              .px(15)
+                              .marginOnly(top: 10),
                           Container(
-                            height: 40,
+                            color: AppColors.lightGrey,
+                            height: 60,
                             alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppColors.greenTheme),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Image.asset(
-                                  ImagesPaths.ic_send_enquiry,
-                                  width: 20,
-                                  color: Colors.white,
-                                ),
-                                const Text(
-                                  " Send Enquiry",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
+                                Container(
+                                  height: 40,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AppColors.greenTheme),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        ImagesPaths.ic_send_enquiry,
+                                        width: 20,
+                                        color: Colors.white,
+                                      ),
+                                      const Text(
+                                        " Send Enquiry",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ).py(5).px(15),
+                                ).onTap(() {
+                                  controllers.onTapSendEnquiry();
+                                }),
+                                Container(
+                                  height: 40,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AppColors.greenTheme),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        ImagesPaths.ic_send_enquiry,
+                                        width: 20,
+                                        color: Colors.white,
+                                      ),
+                                      const Text(
+                                        " Send to Friend",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ).py(5).px(15),
+                                ).onTap(() {
+                                  controllers.onTapSendEnquiry();
+                                }),
                               ],
-                            ).py(5).px(15),
-                          ).onTap(() {
-                            controllers.onTapSendEnquiry();
-                          }),
-                          Container(
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppColors.greenTheme),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  ImagesPaths.ic_send_enquiry,
-                                  width: 20,
-                                  color: Colors.white,
-                                ),
-                                const Text(
-                                  " Send to Friend",
-                                  style: TextStyle(
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Container(
+                                width: Get.width - 50,
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  "${controllers.businessDetail.value?.businessData?.name}",
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Container(
+                                width: Get.width - 50,
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  "${controllers.businessDetail.value?.businessData?.description}",
+                                  style: const TextStyle(
                                       fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      wordSpacing: -1),
+                                )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 15),
+                            child: Container(
+                              height: 40,
+                              width: 160,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: const Color(Constants.themeColorRed),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  "Own This Business?",
+                                  style: TextStyle(
                                       fontWeight: FontWeight.w500,
+                                      fontSize: 13,
                                       color: Colors.white),
-                                ),
-                              ],
-                            ).py(5).px(15),
-                          ).onTap(() {
-                            controllers.onTapSendEnquiry();
-                          }),
+                                ).py(5).px(15),
+                              ),
+                            ).onTap(() {
+                              controllers.onTapSendEnquiry();
+                            }),
+                          ),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Container(
-                          width: Get.width - 50,
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(
-                            "${controllers.businessDetail.value.businessData!.name}",
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Container(
-                          width: Get.width - 50,
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(
-                            "${controllers.businessDetail.value.businessData!.description}",
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                wordSpacing: -1),
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15, bottom: 15),
-                      child: Container(
-                        height: 40,
-                        width: 160,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: const Color(Constants.themeColorRed),
-                        ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: const Text(
-                            "Own This Business?",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13,
-                                color: Colors.white),
-                          ).py(5).px(15),
-                        ),
-                      ).onTap(() {
-                        controllers.onTapSendEnquiry();
-                      }),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

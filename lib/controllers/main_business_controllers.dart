@@ -40,11 +40,11 @@ class MainBusinessControllers extends SuperController {
 
   @override
   void onInit() {
-    callAPI("businessSlug");
     super.onInit();
   }
 
   void callAPI(String businessSlug) {
+    businessDetail = BusinessDetailResponseModel().obs;
     CallAPI().getBusinessDetail(businessSlug: businessSlug).then((value) {
       businessDetail.value = value;
     });

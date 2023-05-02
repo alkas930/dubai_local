@@ -22,12 +22,6 @@ class MoreUI extends StatelessWidget {
       child: Container(
         height: Get.height,
         width: Get.width,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(ImagesPaths.img_bg),
-            fit: BoxFit.fill,
-          ),
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

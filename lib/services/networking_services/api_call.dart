@@ -9,7 +9,6 @@ import 'api_manager.dart';
 import 'endpoints.dart';
 
 class CallAPI {
-
   Future<AllCategoriesResponseModel> getAllCategories() async {
     AllCategoriesResponseModel result = AllCategoriesResponseModel(data: []);
 
@@ -117,11 +116,9 @@ class CallAPI {
     }
   }
 
-
   Future<BusinessDetailResponseModel> getBusinessDetail(
       {required String businessSlug}) async {
-    BusinessDetailResponseModel result =
-    BusinessDetailResponseModel();
+    BusinessDetailResponseModel result = BusinessDetailResponseModel();
 
     try {
       String endPoint = "${Endpoints.epBusinessDetails}$businessSlug";
@@ -129,7 +126,7 @@ class CallAPI {
       var json = await APIManager().getAllCall(endPoint: endPoint);
 
       BusinessDetailResponseModel responseModel =
-      BusinessDetailResponseModel.fromJson(json);
+          BusinessDetailResponseModel.fromJson(json);
 
       printData(json.toString());
       // if (responseModel == 200) {
@@ -141,7 +138,7 @@ class CallAPI {
       //   return result;
       // }
     } on Exception catch (e) {
-      printData(e.toString());
+      printData("DATETIME EXCEPTION: " + e.toString());
       return result;
     }
   }

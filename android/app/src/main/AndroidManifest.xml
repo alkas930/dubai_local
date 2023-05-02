@@ -3,7 +3,7 @@
     package="com.example.dubai_local">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="dubai_local"
+        android:label="Dubai Local"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
