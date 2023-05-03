@@ -7,19 +7,47 @@ import 'package:flutter/material.dart';
 import '../utils/localisations/images_paths.dart';
 
 class MoreUI extends StatelessWidget {
-  const MoreUI({Key? key}) : super(key: key);
+  final Function(int index)? changeIndex;
+  final Function(Map args)? setArgs;
+  final Function() onBack;
+  final Map args;
+
+  const MoreUI(
+      {Key? key,
+      required this.changeIndex,
+      required this.setArgs,
+      required this.onBack,
+      required this.args})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const HeaderWidget(isBackEnabled: false),
-            Container(
-              width: width,
+    Future<bool> _onWillPop() async {
+      // Navigator.pop(context);
+      onBack();
+      return false;
+    }
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          HeaderWidget(
+            isBackEnabled: false,
+            changeIndex: changeIndex,
+            onBack: () {},
+          ),
+          Expanded(
+            flex: 1,
+            child: SizedBox.shrink(),
+          ),
+          Expanded(
+            flex: 5,
+            child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -69,8 +97,11 @@ class MoreUI extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        );}
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget moreItems(
       {required BuildContext context,
@@ -82,8 +113,10 @@ class MoreUI extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       visualDensity: VisualDensity(horizontal: -4, vertical: -3),
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.webview,
-            arguments: {"url": url});
+        // Navigator.pushNamed(context, AppRoutes.webview,
+        //     arguments: {"url": url});
+        setArgs!({"url": url});
+        changeIndex!(7);
       },
       leading: SizedBox(
         width: 24,

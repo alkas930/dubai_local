@@ -14,14 +14,20 @@ import '../utils/localisations/images_paths.dart';
 
 class HomeUI extends StatefulWidget {
   final Function(int index)? changeIndex;
+  final Function(Map args)? setArgs;
   final List<AllCategoriesData> categoryList;
   final List<TopHomeData> topList;
+  final Function() onBack;
+  final Map args;
 
   const HomeUI(
       {Key? key,
       this.changeIndex,
       required this.categoryList,
-      required this.topList})
+      required this.setArgs,
+      required this.onBack,
+      required this.topList,
+      required this.args})
       : super(key: key);
 
   @override
@@ -35,12 +41,15 @@ class _HomeUIState extends State<HomeUI> {
     final double height = MediaQuery.of(context).size.height;
 
     void openSubCategory(BuildContext context, String catName, String slug) {
-      Navigator.pushNamed(context, AppRoutes.subCategories,
-          arguments: {"catName": catName, "slug": slug});
+      // Navigator.pushNamed(context, AppRoutes.subCategories,
+      //     arguments: {"catName": catName, "slug": slug});
+      widget.setArgs!({"catName": catName, "slug": slug});
+      widget.changeIndex!(5);
     }
 
     void openSubCategoryBusiness(BuildContext context) {
-      Navigator.pushNamed(context, AppRoutes.detail);
+      // Navigator.pushNamed(context, AppRoutes.detail);
+      widget.changeIndex!(6);
     }
 
     Widget ListingCard({required TopHomeData data, required int index}) =>
@@ -138,9 +147,12 @@ class _HomeUIState extends State<HomeUI> {
                             openSubCategoryBusiness(context);
                           }
                         } else if (data.source == "blog") {
-                          if (data.res![index].link != null)
-                            Navigator.pushNamed(context, AppRoutes.webview,
-                                arguments: {"url": data.res![index].link!});
+                          if (data.res![index].link != null) {
+                            widget.changeIndex!(7);
+                            widget.setArgs!({"url": data.res![index].link!});
+                          }
+                          // Navigator.pushNamed(context, AppRoutes.webview,
+                          //     arguments: {"url": data.res![index].link!});
                         }
                       },
                       child: SizedBox.shrink())),
@@ -150,8 +162,11 @@ class _HomeUIState extends State<HomeUI> {
 
     Widget WebviewBanner(String image, String url) => GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, AppRoutes.webview,
-                arguments: {"url": url});
+            widget.changeIndex!(7);
+            widget.setArgs!({"url": url});
+
+            // Navigator.pushNamed(context, AppRoutes.webview,
+            //     arguments: {"url": url});
           },
           child: Padding(
             padding: const EdgeInsets.only(bottom: 24),
@@ -165,173 +180,187 @@ class _HomeUIState extends State<HomeUI> {
             ),
           ),
         );
+    Future<bool> _onWillPop() async {
+      // Navigator.pop(context);
+      widget.onBack();
+      return false;
+    }
 
-    return SingleChildScrollView(
-      // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const HeaderWidget(isBackEnabled: false),
-          const Padding(
-            padding: EdgeInsets.only(top: 48),
-            child: Text(
-              "Choose A Category",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: SingleChildScrollView(
+        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            HeaderWidget(
+              isBackEnabled: false,
+              changeIndex: widget.changeIndex,
+              onBack: () {},
             ),
-          ),
-          Container(
-            alignment: Alignment.topCenter,
-            width: width,
-            constraints: BoxConstraints(minHeight: height),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+            const Padding(
+              padding: EdgeInsets.only(top: 48),
+              child: Text(
+                "Choose A Category",
+                style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 15,
+            Container(
+              alignment: Alignment.topCenter,
+              width: width,
+              constraints: BoxConstraints(minHeight: height),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: widget.categoryList.isNotEmpty
-                      ? GridView.builder(
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: widget.categoryList.isNotEmpty
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: 8,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,
+                                    childAspectRatio: 5 / 4.5,
+                                    mainAxisSpacing: 20 / 2,
+                                    crossAxisSpacing: 10),
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkButton(
+                                rippleColor:
+                                    const Color(Constants.themeColorRed),
+                                backGroundColor: const Color(0xffEEF2F3),
+                                borderRadius: 10,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    index == 7
+                                        ? Image.asset(
+                                            ImagesPaths.ic_more_svg,
+                                            height: 35,
+                                          )
+                                        : SizedBox(
+                                            height: 35,
+                                            child: ScalableImageWidget
+                                                .fromSISource(
+                                              si: ScalableImageSource
+                                                  .fromSvgHttpUrl(Uri.parse(
+                                                      widget.categoryList[index]
+                                                          .fullIcon)),
+                                              onLoading: (ctx) {
+                                                return SizedBox(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                  color: AppColors.accentRipple,
+                                                ));
+                                              },
+                                            ),
+                                          ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      (() {
+                                        if (index == 7) {
+                                          return "More";
+                                        } else {
+                                          return widget
+                                              .categoryList[index].name;
+                                        }
+                                      }()),
+                                      style: const TextStyle(
+                                        color: Color(0xff333333),
+                                        fontSize: 10,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                                onTap: () {
+                                  if (index == 7) {
+                                    widget.changeIndex!(3);
+                                  } else {
+                                    openSubCategory(
+                                      context,
+                                      widget.categoryList[index].name,
+                                      widget.categoryList[index].slug,
+                                    );
+                                  }
+                                },
+                              );
+                            })
+                        : const SizedBox.shrink(),
+                  ),
+                  const SearchWidget(isLight: true),
+                  // .marginOnly(top: 16, bottom: 16),
+
+                  widget.topList.isNotEmpty
+                      ? ListView.builder(
+                          scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          itemCount: 8,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4,
-                                  childAspectRatio: 5 / 4.5,
-                                  mainAxisSpacing: 20 / 2,
-                                  crossAxisSpacing: 10),
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkButton(
-                              rippleColor: const Color(Constants.themeColorRed),
-                              backGroundColor: const Color(0xffEEF2F3),
-                              borderRadius: 10,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  index == 7
-                                      ? Image.asset(
-                                          ImagesPaths.ic_more_svg,
-                                          height: 35,
-                                        )
-                                      : SizedBox(
-                                          height: 35,
-                                          child:
-                                              ScalableImageWidget.fromSISource(
-                                            si: ScalableImageSource
-                                                .fromSvgHttpUrl(Uri.parse(widget
-                                                    .categoryList[index]
-                                                    .fullIcon)),
-                                            onLoading: (ctx) {
-                                              return SizedBox(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                color: AppColors.accentRipple,
-                                              ));
-                                            },
-                                          ),
-                                        ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    (() {
-                                      if (index == 7) {
-                                        return "More";
-                                      } else {
-                                        return widget.categoryList[index].name;
-                                      }
-                                    }()),
+                          itemCount: widget.topList.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (index == 2)
+                                WebviewBanner(ImagesPaths.ic_explore_dubai,
+                                    Endpoints.ExploreDubai),
+                              if (index == 3)
+                                WebviewBanner(ImagesPaths.ic_things_to_do,
+                                    Endpoints.ThingsToDo),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Text(widget.topList[index].heading!,
                                     style: const TextStyle(
-                                      color: Color(0xff333333),
-                                      fontSize: 10,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.start),
                               ),
-                              onTap: () {
-                                if (index == 7) {
-                                  widget.changeIndex!(3);
-                                } else {
-                                  openSubCategory(
-                                    context,
-                                    widget.categoryList[index].name,
-                                    widget.categoryList[index].slug,
-                                  );
-                                }
-                              },
-                            );
-                          })
-                      : const SizedBox.shrink(),
-                ),
-                const SearchWidget(isLight: true),
-                // .marginOnly(top: 16, bottom: 16),
-
-                widget.topList.isNotEmpty
-                    ? ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: widget.topList.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (index == 2)
-                              WebviewBanner(ImagesPaths.ic_explore_dubai,
-                                  Endpoints.ExploreDubai),
-                            if (index == 3)
-                              WebviewBanner(ImagesPaths.ic_things_to_do,
-                                  Endpoints.ThingsToDo),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Text(widget.topList[index].heading!,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.start),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 24),
-                              child: SizedBox(
-                                height: 128,
-                                child: ListView.builder(
-                                  clipBehavior: Clip.none,
-                                  physics: const ClampingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount:
-                                      widget.topList[index].res!.isNotEmpty
-                                          ? widget.topList[index].res?.length
-                                          : 0,
-                                  itemBuilder:
-                                      (BuildContext context, int idx) =>
-                                          ListingCard(
-                                              data: widget.topList[index],
-                                              index: idx),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 24),
+                                child: SizedBox(
+                                  height: 128,
+                                  child: ListView.builder(
+                                    clipBehavior: Clip.none,
+                                    physics: const ClampingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount:
+                                        widget.topList[index].res!.isNotEmpty
+                                            ? widget.topList[index].res?.length
+                                            : 0,
+                                    itemBuilder:
+                                        (BuildContext context, int idx) =>
+                                            ListingCard(
+                                                data: widget.topList[index],
+                                                index: idx),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : const SizedBox.shrink()
-              ],
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink()
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -10,45 +10,71 @@ import '../utils/localisations/app_colors.dart';
 import '../utils/search_widget.dart';
 
 class CategoriesUi extends StatelessWidget {
+  final Function(int index)? changeIndex;
+  final Function(Map args)? setArgs;
   final List<AllCategoriesData> categoryList;
   final List<TopHomeData> topList;
+  final Function() onBack;
+  final Map args;
+
   const CategoriesUi(
-      {Key? key, required this.categoryList, required this.topList})
+      {Key? key,
+      required this.categoryList,
+      required this.topList,
+      required this.changeIndex,
+      required this.onBack,
+      required this.setArgs,
+      required this.args})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     void openSubCategory(BuildContext context, String catName, String slug) {
-      Navigator.pushNamed(context, AppRoutes.subCategories,
-          arguments: {"catName": catName, "slug": slug});
+      // Navigator.pushNamed(context, AppRoutes.subCategories,
+      //     arguments: {"catName": catName, "slug": slug});
+      setArgs!({"catName": catName, "slug": slug});
+      changeIndex!(5);
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const HeaderWidget(isBackEnabled: false),
-          const Text(
-            "Categories",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          const SearchWidget(isLight: false),
-          GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: categoryList.length,
-              itemBuilder: (_, int index) {
-                return items(
-                    context: context,
-                    categoryItems: categoryList[index],
-                    openSubCategory: openSubCategory);
-              },
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 10 / 6))
-          // .marginOnly(top: 10, bottom: 30).pOnly(bottom: 48),
-        ],
+    Future<bool> _onWillPop() async {
+      // Navigator.pop(context);
+      onBack();
+      return false;
+    }
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            HeaderWidget(
+              isBackEnabled: false,
+              changeIndex: changeIndex,
+              onBack: () {},
+            ),
+            const Text(
+              "Categories",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            const SearchWidget(isLight: false),
+            GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: categoryList.length,
+                itemBuilder: (_, int index) {
+                  return items(
+                      context: context,
+                      categoryItems: categoryList[index],
+                      openSubCategory: openSubCategory);
+                },
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 10 / 6))
+            // .marginOnly(top: 10, bottom: 30).pOnly(bottom: 48),
+          ],
+        ),
       ),
     );
   }

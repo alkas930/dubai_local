@@ -14,10 +14,10 @@ class AppPages {
   static const initialRoute = AppRoutes.splash;
   static final route = {
     AppRoutes.main: (context) => const BottomNav(),
-    AppRoutes.profile: (context) => const MyProfile(),
-    AppRoutes.mainBusiness: (context) => MainBusinessUI(),
-    AppRoutes.detail: (context) => const DetailUi(),
-    AppRoutes.webview: (context) => const WebViewScreen(),
+    // AppRoutes.profile: (context) => const MyProfile(),
+    // AppRoutes.mainBusiness: (context) => MainBusinessUI(),
+    // AppRoutes.detail: (context) => const DetailUi(),
+    // AppRoutes.webview: (context) => const WebViewScreen(),
     AppRoutes.splash: (context) => const SplashUI(),
     AppRoutes.loginSignUp: (context) => const LoginSignUpUI(),
   };

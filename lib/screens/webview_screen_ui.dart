@@ -8,7 +8,18 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../utils/localisations/images_paths.dart';
 
 class WebViewScreen extends StatefulWidget {
-  const WebViewScreen({Key? key}) : super(key: key);
+  final Function(int index)? changeIndex;
+  final Function(Map args)? setArgs;
+  final Function() onBack;
+  final Map args;
+
+  const WebViewScreen(
+      {Key? key,
+      required this.changeIndex,
+      required this.setArgs,
+      required this.onBack,
+      required this.args})
+      : super(key: key);
 
   @override
   _WebViewScreenState createState() => _WebViewScreenState();
@@ -19,12 +30,16 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+    // final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Column(
         children: [
-          const HeaderWidget(isBackEnabled: true),
+          HeaderWidget(
+            isBackEnabled: true,
+            changeIndex: widget.changeIndex,
+            onBack: widget.onBack,
+          ),
           Expanded(
               child: Stack(
             children: [
@@ -52,8 +67,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   : SizedBox.shrink(),
               WebView(
                 backgroundColor: Colors.transparent,
-                initialUrl: args?["url"] != null && args?["url"]?.isNotEmpty
-                    ? args["url"]
+                initialUrl: widget.args?["url"] != null &&
+                        widget.args?["url"]?.isNotEmpty
+                    ? widget.args["url"]
                     : Endpoints.BASE_URL,
                 javascriptMode: JavascriptMode.unrestricted,
                 onPageFinished: (finish) {
@@ -72,7 +88,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    Navigator.pop(context);
+    // Navigator.pop(context);
+    widget.onBack();
     return false;
   }
 }

@@ -13,7 +13,18 @@ import 'package:jovial_svg/jovial_svg.dart';
 import '../utils/localisations/app_colors.dart';
 
 class SubCategoriesUI extends StatefulWidget {
-  const SubCategoriesUI({Key? key}) : super(key: key);
+  final Function(int index)? changeIndex;
+  final Function(Map args)? setArgs;
+  final Function() onBack;
+  final Map args;
+
+  const SubCategoriesUI(
+      {Key? key,
+      required this.changeIndex,
+      required this.setArgs,
+      required this.onBack,
+      required this.args})
+      : super(key: key);
 
   @override
   State<SubCategoriesUI> createState() => _SubCategoriesUIState();
@@ -35,9 +46,9 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final Map args =
-          (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
-      callApi(args["slug"] ?? "");
+      // final Map args =
+      //     (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+      callApi(widget.args["slug"] ?? "");
     });
   }
 
@@ -49,67 +60,81 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
 
   @override
   Widget build(BuildContext context) {
-    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+    // final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
 
     void openSubCategoryBusiness(
         BuildContext context, String subCategory, String slug) {
-      Navigator.pushNamed(context, AppRoutes.detail, arguments: {
-        "catName": args["catName"],
+      // Navigator.pushNamed(context, AppRoutes.detail, arguments: {
+      //   "catName": args["catName"],
+      //   "subCat": subCategory,
+      //   "slug": slug
+      // });
+      widget.setArgs!({
+        "catName": widget.args["catName"],
         "subCat": subCategory,
         "slug": slug
       });
+      widget.changeIndex!(6);
     }
 
     Future<bool> _onWillPop() async {
-      Navigator.pop(context);
+      // Navigator.pop(context);
+      widget.onBack();
       return false;
     }
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const HeaderWidget(isBackEnabled: true),
-          Text(args["catName"] ?? ""),
-          // .text
-          //     .color(Colors.white)
-          //     .size(20)
-          //     .make()
-          //     .pOnly(top: 30, bottom: 20),
-          const SearchWidget(isLight: true),
-          Container(
-            width: width,
-            constraints: BoxConstraints(minHeight: 0),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            HeaderWidget(
+              isBackEnabled: true,
+              changeIndex: widget.changeIndex,
+              onBack: widget.onBack,
+            ),
+            Text(widget.args["catName"] ?? ""),
+            // .text
+            //     .color(Colors.white)
+            //     .size(20)
+            //     .make()
+            //     .pOnly(top: 30, bottom: 20),
+            const SearchWidget(isLight: true),
+            Container(
+              width: width,
+              constraints: BoxConstraints(minHeight: 0),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
               ),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: subCategoryList.length,
+                itemBuilder: (_, int index) {
+                  return items(
+                      context: context,
+                      categoryItem: subCategoryList[index],
+                      index: index,
+                      openSubCategoryBusiness: openSubCategoryBusiness);
+                },
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    childAspectRatio: 5 / 4.5,
+                    mainAxisSpacing: 20 / 2,
+                    crossAxisSpacing: 10),
+              ),
+              // .marginOnly(top: 10, bottom: 30);
             ),
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: subCategoryList.length,
-              itemBuilder: (_, int index) {
-                return items(
-                    context: context,
-                    categoryItem: subCategoryList[index],
-                    index: index,
-                    openSubCategoryBusiness: openSubCategoryBusiness);
-              },
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  childAspectRatio: 5 / 4.5,
-                  mainAxisSpacing: 20 / 2,
-                  crossAxisSpacing: 10),
-            ),
-            // .marginOnly(top: 10, bottom: 30);
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

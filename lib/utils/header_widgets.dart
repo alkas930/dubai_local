@@ -5,10 +5,14 @@ import '../utils/localisations/images_paths.dart';
 
 class HeaderWidget extends StatefulWidget {
   final bool isBackEnabled;
+  final Function(int index)? changeIndex;
+  final Function() onBack;
 
   const HeaderWidget({
     Key? key,
     required this.isBackEnabled,
+    required this.changeIndex,
+    required this.onBack,
   }) : super(key: key);
 
   @override
@@ -34,7 +38,8 @@ class _HeaderWidget extends State<HeaderWidget> {
                 child: widget.isBackEnabled
                     ? GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          // Navigator.pop(context);
+                          widget.onBack();
                         },
                         child: const Icon(
                           Icons.arrow_back_ios,
@@ -45,7 +50,8 @@ class _HeaderWidget extends State<HeaderWidget> {
             Image.asset(ImagesPaths.app_logo_d, width: width * .5),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, AppRoutes.profile);
+                widget.changeIndex!(9);
+                // Navigator.pushNamed(context, AppRoutes.profile);
               },
               child: Container(
                 width: Constants.iconSize,

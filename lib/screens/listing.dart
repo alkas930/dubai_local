@@ -14,7 +14,18 @@ import '../utils/localisations/app_colors.dart';
 import '../utils/localisations/images_paths.dart';
 
 class DetailUi extends StatefulWidget {
-  const DetailUi({Key? key}) : super(key: key);
+  final Function(int index)? changeIndex;
+  final Function(Map args)? setArgs;
+  final Function() onBack;
+  final Map args;
+
+  const DetailUi(
+      {Key? key,
+      required this.changeIndex,
+      required this.setArgs,
+      required this.onBack,
+      required this.args})
+      : super(key: key);
 
   @override
   State<DetailUi> createState() => _DetailUiState();
@@ -22,6 +33,7 @@ class DetailUi extends StatefulWidget {
 
 class _DetailUiState extends State<DetailUi> {
   List<SubcatBusinessData> detailList = [];
+
   void getData(String slug) {
     CallAPI().getSubCategoriesBusiness(slug: slug).then((value) {
       if (value.subcatBusinessData!.isNotEmpty) {
@@ -39,9 +51,9 @@ class _DetailUiState extends State<DetailUi> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final Map args =
-          (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
-      getData(args["slug"] ?? "");
+      // final Map args =
+      //     (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+      getData(widget?.args?["slug"] ?? "");
     });
   }
 
@@ -53,18 +65,21 @@ class _DetailUiState extends State<DetailUi> {
 
   @override
   Widget build(BuildContext context) {
-    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+    // final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
 
     Future<bool> _onWillPop() async {
-      Navigator.pop(context);
+      // Navigator.pop(context);
+      widget.onBack();
       return false;
     }
 
     void openBusinessDetails(BuildContext context, String businessSlug) {
-      Navigator.pushNamed(context, AppRoutes.mainBusiness,
-          arguments: {"slug": businessSlug});
+      // Navigator.pushNamed(context, AppRoutes.mainBusiness,
+      //     arguments: {"slug": businessSlug});
+      widget.setArgs!({"slug": businessSlug});
+      widget.changeIndex!(8);
     }
 
     return WillPopScope(
@@ -73,7 +88,11 @@ class _DetailUiState extends State<DetailUi> {
         children: [
           Column(
             children: [
-              const HeaderWidget(isBackEnabled: true),
+              HeaderWidget(
+                isBackEnabled: true,
+                changeIndex: widget.changeIndex,
+                onBack: widget.onBack,
+              ),
               Column(
                 children: [
                   Padding(
@@ -81,14 +100,14 @@ class _DetailUiState extends State<DetailUi> {
                       top: 30,
                     ),
                     child: Text(
-                      args["catName"] ?? "",
+                      widget.args["catName"] ?? "",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
-                      "-" + args["subCat"] ?? "" + "-",
+                      "-" + widget.args["subCat"] ?? "" + "-",
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   )

@@ -11,14 +11,25 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
 class MainBusinessUI extends StatefulWidget {
-  MainBusinessUI({Key? key}) : super(key: key);
+  final Function(int index)? changeIndex;
+  final Function(Map args)? setArgs;
+  final Function() onBack;
+  final Map args;
+
+  MainBusinessUI(
+      {Key? key,
+      required this.changeIndex,
+      required this.setArgs,
+      required this.onBack,
+      required this.args})
+      : super(key: key);
 
   @override
   State<MainBusinessUI> createState() => _MainBusinessUIState();
 }
 
 class _MainBusinessUIState extends State<MainBusinessUI> {
-  late BusinessDetailResponseModel _businessDetail;
+  BusinessDetailResponseModel? _businessDetail;
 
   void callAPI(String businessSlug) {
     CallAPI().getBusinessDetail(businessSlug: businessSlug).then((value) {
@@ -43,9 +54,9 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final Map args =
-          (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
-      callAPI(args["slug"] ?? "");
+      // final Map args =
+      //     (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+      callAPI(widget.args["slug"] ?? "");
     });
   }
 
@@ -59,254 +70,269 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+    // final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
 
     bool isVisible = false;
+    Future<bool> _onWillPop() async {
+      // Navigator.pop(context);
+      widget.onBack();
+      return false;
+    }
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: _businessDetail.businessData == null
-          ? SizedBox.shrink()
-          : Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const HeaderWidget(isBackEnabled: true),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    _businessDetail.businessData?.name ?? "",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: _businessDetail?.businessData == null
+            ? SizedBox.shrink()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  HeaderWidget(
+                    isBackEnabled: true,
+                    changeIndex: widget.changeIndex,
+                    onBack: widget.onBack,
                   ),
-                ),
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    constraints: BoxConstraints(minHeight: height),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      _businessDetail?.businessData?.name ?? "",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: 150,
-                          child: Stack(
-                            children: [
-                              Image.network(
-                                _businessDetail.businessData!.fullBanner ?? "",
-                                fit: BoxFit.cover,
-                                width: width,
-                                height: 150,
-                              ),
-                              Positioned(
-                                bottom: 15,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: Text(
-                                    _businessDetail.businessData?.name ?? "",
-                                    style: TextStyle(color: Colors.white),
+                  ),
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      constraints: BoxConstraints(minHeight: height),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 150,
+                            child: Stack(
+                              children: [
+                                Image.network(
+                                  _businessDetail?.businessData?.fullBanner ??
+                                      "",
+                                  fit: BoxFit.cover,
+                                  width: width,
+                                  height: 150,
+                                ),
+                                Positioned(
+                                  bottom: 15,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15),
+                                    child: Text(
+                                      _businessDetail?.businessData?.name ?? "",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 15,
-                                right: 15,
-                                child: Container(
+                                Positioned(
+                                  bottom: 15,
+                                  right: 15,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.black),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 1, horizontal: 8),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.star,
+                                            size: 18,
+                                            color: Colors.yellow,
+                                          ),
+                                          const Text(
+                                            "4.5",
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          customContainer(
+                              width: width,
+                              icon: ImagesPaths.ic_location,
+                              title:
+                                  _businessDetail?.businessData?.address ?? "",
+                              onTap: () {}),
+                          customContainer(
+                              width: width,
+                              icon: ImagesPaths.ic_phone,
+                              title: _businessDetail?.businessData?.phone ?? "",
+                              onTap: () {}),
+                          customContainer(
+                              width: width,
+                              icon: ImagesPaths.ic_web,
+                              isWeb: true,
+                              title: _businessDetail?.businessData?.url ?? "",
+                              onTap: () {
+                                launchUrl(
+                                  Uri(
+                                      scheme: 'https',
+                                      host:
+                                          _businessDetail?.businessData?.url ??
+                                              "",
+                                      path: ''),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              }),
+                          workingHoursWidget(
+                              width: width,
+                              isVisible: isVisible,
+                              icon: ImagesPaths.ic_clock,
+                              title: "Working Hours",
+                              onTap: () {
+                                setState(() {
+                                  isVisible = isVisible == true ? false : true;
+                                });
+                              }),
+                          isVisible
+                              ? getTimings(_businessDetail, width)
+                              : const SizedBox.shrink(),
+                          Container(
+                            color: AppColors.lightGrey,
+                            height: 60,
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  height: 40,
+                                  alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AppColors.greenTheme),
                                   child: Padding(
-                                    // .px(8).py(1)
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 1, horizontal: 8),
+                                        horizontal: 15, vertical: 5),
                                     child: Row(
                                       children: [
-                                        const Icon(
-                                          Icons.star,
-                                          size: 18,
-                                          color: Colors.yellow,
+                                        Image.asset(
+                                          ImagesPaths.ic_send_enquiry,
+                                          width: 20,
+                                          color: Colors.white,
                                         ),
                                         const Text(
-                                          "4.5",
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15),
-                                        )
+                                          " Send Enquiry",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white),
+                                        ),
                                       ],
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                        customContainer(
-                            width: width,
-                            icon: ImagesPaths.ic_location,
-                            title: _businessDetail.businessData?.address ?? "",
-                            onTap: () {}),
-                        customContainer(
-                            width: width,
-                            icon: ImagesPaths.ic_phone,
-                            title: _businessDetail.businessData?.phone ?? "",
-                            onTap: () {}),
-                        customContainer(
-                            width: width,
-                            icon: ImagesPaths.ic_web,
-                            isWeb: true,
-                            title: _businessDetail.businessData?.url ?? "",
-                            onTap: () {
-                              launchUrl(
-                                Uri(
-                                    scheme: 'https',
-                                    host:
-                                        _businessDetail.businessData?.url ?? "",
-                                    path: ''),
-                                mode: LaunchMode.externalApplication,
-                              );
-                            }),
-                        workingHoursWidget(
-                            width: width,
-                            isVisible: isVisible,
-                            icon: ImagesPaths.ic_clock,
-                            title: "Working Hours",
-                            onTap: () {
-                              setState(() {
-                                isVisible = isVisible == true ? false : true;
-                              });
-                            }),
-                        isVisible
-                            ? getTimings(_businessDetail, width)
-                            : const SizedBox.shrink(),
-                        Container(
-                          color: AppColors.lightGrey,
-                          height: 60,
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                height: 40,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: AppColors.greenTheme),
-                                child: Padding(
-                                  // .py(5).px(15)
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        ImagesPaths.ic_send_enquiry,
-                                        width: 20,
-                                        color: Colors.white,
-                                      ),
-                                      const Text(
-                                        " Send Enquiry",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      ),
-                                    ],
+                                Container(
+                                  height: 40,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AppColors.greenTheme),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          ImagesPaths.ic_send_enquiry,
+                                          width: 20,
+                                          color: Colors.white,
+                                        ),
+                                        const Text(
+                                          " Send to Friend",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                height: 40,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: AppColors.greenTheme),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        ImagesPaths.ic_send_enquiry,
-                                        width: 20,
-                                        color: Colors.white,
-                                      ),
-                                      const Text(
-                                        " Send to Friend",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Container(
-                              width: width - 50,
-                              alignment: AlignmentDirectional.centerStart,
-                              child: Text(
-                                _businessDetail.businessData?.name ?? "",
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Container(
-                              width: width - 50,
-                              alignment: AlignmentDirectional.centerStart,
-                              child: Text(
-                                _businessDetail.businessData?.description ?? "",
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    wordSpacing: -1),
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15, bottom: 15),
-                          child: Container(
-                            height: 40,
-                            width: 160,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: const Color(Constants.themeColorRed),
+                              ],
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
                             child: Container(
+                                width: width - 50,
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  _businessDetail?.businessData?.name ?? "",
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Container(
+                                width: width - 50,
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  _businessDetail?.businessData?.description ??
+                                      "",
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      wordSpacing: -1),
+                                )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 15),
+                            child: Container(
+                              height: 40,
+                              width: 160,
                               alignment: Alignment.center,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
-                                child: const Text(
-                                  "Own This Business?",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 13,
-                                      color: Colors.white),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: const Color(Constants.themeColorRed),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  child: const Text(
+                                    "Own This Business?",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+      ),
     );
   }
 
@@ -316,25 +342,28 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
       required Function onTap,
       bool isWeb = false,
       required double width}) {
-    return SizedBox(
-      width: width,
-      child: Row(
-        children: [
-          Image.asset(icon, width: 20),
-          SizedBox(
-            child: Row(
-              children: [
-                SizedBox(
-                    width: width * .76,
-                    child: Text(
-                      isWeb ? "(Click to visit)" : "",
-                      style: TextStyle(
-                          fontSize: 11, overflow: TextOverflow.ellipsis),
-                    )),
-              ],
+    return Padding(
+      padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+      child: SizedBox(
+        width: width,
+        child: Row(
+          children: [
+            Image.asset(icon, width: 20),
+            SizedBox(
+              child: Row(
+                children: [
+                  SizedBox(
+                      width: width * .76,
+                      child: Text(
+                        isWeb ? "(Click to visit)" : "",
+                        style: TextStyle(
+                            fontSize: 11, overflow: TextOverflow.ellipsis),
+                      )),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
     // .px(15).marginOnly(top: 10).onTap(() {
@@ -426,12 +455,12 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
     }
   }
 
-  Widget getTimings(BusinessDetailResponseModel businessDetail, double width) {
+  Widget getTimings(BusinessDetailResponseModel? businessDetail, double width) {
     final timings = [];
     final days = ["M", "T", "W", "T", "F", "S", "S"];
     Widget widget = SizedBox.shrink();
     try {
-      timings.addAll(jsonDecode(businessDetail.businessData!.timings!.trim()));
+      timings.addAll(jsonDecode(businessDetail!.businessData!.timings!.trim()));
       widget = GridView.builder(
         // padding: padding,
         shrinkWrap: true,
