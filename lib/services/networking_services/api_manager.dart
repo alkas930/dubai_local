@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -57,7 +56,6 @@ class APIManager {
       printData(response.body);
       responseJson = _response(response);
     } on SocketException {
-      Get.back();
       showSnackBar("", "Internet not available");
       throw FetchDataException('No Internet connection');
     } on Error catch (e) {
@@ -90,11 +88,11 @@ class APIManager {
   }
 
   void showSnackBar(statusCode, message) {
-    Get.snackbar(
-      AppStrings.appName,
-      "${message ?? "Something went wrong Status Code"} : $statusCode",
-      snackPosition: SnackPosition.TOP,
-    );
+    // Get.snackbar(
+    //   AppStrings.appName,
+    //   "${message ?? "Something went wrong Status Code"} : $statusCode",
+    //   snackPosition: SnackPosition.TOP,
+    // );
   }
 
   void printData(responseData) {

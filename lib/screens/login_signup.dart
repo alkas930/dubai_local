@@ -7,23 +7,24 @@ import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class LoginSignUpUI extends StatelessWidget {
   const LoginSignUpUI({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final GetStorage storage = GetStorage();
     return SafeArea(
       child: Scaffold(
         body: Container(
-          width: Get.width,
-          height: Get.height,
+          width: width,
+          height: height,
           decoration: const BoxDecoration(
               image: DecorationImage(
             image: AssetImage(ImagesPaths.img_bg),
@@ -31,60 +32,76 @@ class LoginSignUpUI extends StatelessWidget {
           )),
           child: Column(
             children: [
-              Image.asset(ImagesPaths.app_logo_d)
-                  .w(Get.width * .5)
-                  .marginOnly(top: 105),
-              facebookLoginButton(
-                  title: "Facebook",
-                  imagePath: ImagesPaths.ic_facebook,
-                  onTap: () {
-                    facebookLoginHandler(context: context, storage: storage);
-                  }).marginOnly(top: 55),
-              googleLogin(
-                  title: "Google",
-                  imagePath: ImagesPaths.ic_google,
-                  onTap: () {
-                    googleSignIn.signIn().then((value) {
+              Container(
+                margin: const EdgeInsets.only(
+                  top: 105,
+                ),
+                child: Image.asset(
+                  ImagesPaths.app_logo_d,
+                  width: width * 0.5,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 55),
+                child: facebookLoginButton(
+                    title: "Facebook",
+                    imagePath: ImagesPaths.ic_facebook,
+                    onTap: () {
+                      facebookLoginHandler(context: context, storage: storage);
+                    },
+                    width: width),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 35),
+                child: googleLogin(
+                    title: "Google",
+                    imagePath: ImagesPaths.ic_google,
+                    onTap: () {
+                      googleSignIn.signIn().then((value) {
+                        storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
+                            Constants.googleLogin);
+                        storage.write(SharedPrefrencesKeys.USER_NAME,
+                            value!.displayName ?? "");
+                        storage.write(
+                            SharedPrefrencesKeys.USER_ID, value.id ?? "");
+                        storage.write(SharedPrefrencesKeys.USER_IMAGE,
+                            value.photoUrl ?? "");
+                        storage.write(
+                            SharedPrefrencesKeys.USER_EMAIL, value.email ?? "");
+                      }).onError((error, stackTrace) {});
+                    },
+                    width: width),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 85),
+                child: InkButton(
+                    borderRadius: 5,
+                    width: width * .7,
+                    backGroundColor: Colors.grey.shade300,
+                    height: 40,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 10),
+                      child: Text(
+                        "CONTINUE WITHOUT LOGIN",
+                        style: TextStyle(color: Colors.grey.shade700),
+                      ),
+                    ),
+                    onTap: () {
                       storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
-                          Constants.googleLogin);
-                      storage.write(SharedPrefrencesKeys.USER_NAME,
-                          value!.displayName ?? "");
-                      storage.write(
-                          SharedPrefrencesKeys.USER_ID, value.id ?? "");
-                      storage.write(SharedPrefrencesKeys.USER_IMAGE,
-                          value.photoUrl ?? "");
-                      storage.write(
-                          SharedPrefrencesKeys.USER_EMAIL, value.email ?? "");
-                    }).onError((error, stackTrace) {});
-                  }).marginOnly(top: 35),
-              InkButton(
-                  borderRadius: 5,
-                  width: Get.width * .7,
-                  backGroundColor: Colors.grey.shade300,
-                  height: 40,
-                  child: "CONTINUE WITHOUT LOGIN"
-                      .text
-                      .color(Colors.grey.shade700)
-                      .caption(context)
-                      .fontFamily("Poppins")
-                      .make()
-                      .px(25)
-                      .py(10),
-                  onTap: () {
-                    storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
-                        Constants.guestLogin);
-                    Get.offNamed(AppRoutes.home);
-                  }).marginOnly(top: 85),
-              "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy."
-                  .text
-                  .white
-                  .size(14)
-                  .fontFamily("Poppins")
-                  .center
-                  .semiBold
-                  .make()
-                  .marginOnly(top: 30)
-                  .px(15)
+                          Constants.guestLogin);
+                      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.main,
+                          (Route<dynamic> route) => false,
+                          arguments: args);
+                    }),
+              ),
+              Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  margin: EdgeInsets.only(top: 30),
+                  child: Text(
+                    "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy.",
+                    style: TextStyle(fontSize: 14, color: Colors.white),
+                  )),
             ],
           ),
         ),
@@ -95,32 +112,36 @@ class LoginSignUpUI extends StatelessWidget {
   Widget googleLogin(
       {required String title,
       required String imagePath,
-      required Function onTap}) {
+      required Function onTap,
+      required double width}) {
     return GestureDetector(
       onTap: () {
         onTap();
       },
       child: SizedBox(
-        width: Get.width * .75,
+        width: width * .75,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
               backgroundColor: Colors.white,
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(
-                  imagePath,
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: Image.asset(
+                    imagePath,
+                  ),
                 ),
-              ).p(8),
+              ),
             ),
-            "Login with $title"
-                .text
-                .white
-                .size(18)
-                .fontFamily("Poppins")
-                .make()
-                .pOnly(left: 15)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                "Login with $title",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
           ],
         ),
       ),
@@ -130,32 +151,36 @@ class LoginSignUpUI extends StatelessWidget {
   Widget facebookLoginButton(
       {required String title,
       required String imagePath,
-      required Function onTap}) {
+      required Function onTap,
+      required double width}) {
     return GestureDetector(
       onTap: () {
         onTap();
       },
       child: SizedBox(
-        width: Get.width * .75,
+        width: width * .75,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
               backgroundColor: const Color(0xff1877F2),
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(
-                  imagePath,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: Image.asset(
+                    imagePath,
+                  ),
                 ),
-              ).p(5),
+              ),
             ),
-            "Login with $title"
-                .text
-                .white
-                .size(18)
-                .fontFamily("Poppins")
-                .make()
-                .pOnly(left: 15)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                "Login with $title",
+                style: const TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
           ],
         ),
       ),
@@ -173,8 +198,7 @@ class LoginSignUpUI extends StatelessWidget {
             SharedPrefrencesKeys.IS_LOGGED_BY, Constants.facebookLogin);
       }
     } catch (error) {
-      if (kDebugMode) {
-      }
+      if (kDebugMode) {}
     }
   }
 }

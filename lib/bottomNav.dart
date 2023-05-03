@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:dubai_local/Constants.dart';
+import 'package:dubai_local/models/all_categories_response_model.dart';
+import 'package:dubai_local/models/top_home_response_model.dart';
 import 'package:dubai_local/screens/categories_ui.dart';
-import 'package:dubai_local/screens/detail_Ui.dart';
+import 'package:dubai_local/screens/listing.dart';
 import 'package:dubai_local/screens/home_ui.dart';
 import 'package:dubai_local/screens/main_business_ui.dart';
 import 'package:dubai_local/screens/more_ui.dart';
@@ -10,9 +14,7 @@ import 'package:dubai_local/screens/sub_categories_ui.dart';
 import 'package:dubai_local/screens/webview_screen_ui.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:toast/toast.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import 'utils/localisations/images_paths.dart';
 
@@ -24,62 +26,93 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends State<BottomNav> {
+  List<AllCategoriesData> categoryList = [];
+  List<TopHomeData> topList = [];
   final _navigatorKey = GlobalKey<NavigatorState>();
   int _currentIndex = 2;
 
+  setScreen(index) => {
+        setState(() {
+          _currentIndex = index;
+        })
+      };
+
+  Widget getScreen(String name) {
+    switch (name) {
+      case AppRoutes.main:
+        switch (_currentIndex) {
+          case 1:
+            if (_navigatorKey.currentState!.canPop()) {
+              _navigatorKey.currentState
+                  ?.popUntil(ModalRoute.withName(AppRoutes.main));
+            }
+            return const SearchUi();
+          case 2:
+            if (_navigatorKey.currentState!.canPop()) {
+              _navigatorKey.currentState
+                  ?.popUntil(ModalRoute.withName(AppRoutes.main));
+            }
+            return HomeUI(
+              changeIndex: (index) => setScreen(index),
+              topList: topList,
+              categoryList: categoryList,
+            );
+          case 3:
+            if (_navigatorKey.currentState!.canPop()) {
+              _navigatorKey.currentState
+                  ?.popUntil(ModalRoute.withName(AppRoutes.main));
+            }
+            return CategoriesUi(
+              topList: topList,
+              categoryList: categoryList,
+            );
+          case 4:
+            if (_navigatorKey.currentState!.canPop()) {
+              _navigatorKey.currentState
+                  ?.popUntil(ModalRoute.withName(AppRoutes.main));
+            }
+            return const MoreUI();
+          default:
+            if (_navigatorKey.currentState!.canPop()) {
+              _navigatorKey.currentState
+                  ?.popUntil(ModalRoute.withName(AppRoutes.main));
+            }
+            return HomeUI(
+                changeIndex: (index) => setScreen(index),
+                categoryList: categoryList,
+                topList: topList);
+        }
+      case AppRoutes.subCategories:
+        return const SubCategoriesUI();
+      case AppRoutes.detail:
+        return const DetailUi();
+      case AppRoutes.webview:
+        return const WebViewScreen();
+      case AppRoutes.mainBusiness:
+        return MainBusinessUI();
+      case AppRoutes.profile:
+        return const MyProfile();
+      default:
+        return HomeUI(
+          changeIndex: (index) => setScreen(index),
+          topList: topList,
+          categoryList: categoryList,
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // HomeController homeController = Get.find();
+    log("RERENDER");
+    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
 
-    setScreen(index) => {
-          setState(() {
-            _currentIndex = index;
-          })
-        };
-
-    Widget getScreen(String name) {
-      switch (name) {
-        case AppRoutes.main:
-          switch (_currentIndex) {
-            case 1:
-              if (_navigatorKey.currentState!.canPop()) {
-                _navigatorKey.currentState!.pop();
-              }
-              return const SearchUi();
-            case 2:
-              if (_navigatorKey.currentState!.canPop()) {
-                _navigatorKey.currentState!.pop();
-              }
-              return HomeUI(changeIndex: (index) => setScreen(index));
-            case 3:
-              if (_navigatorKey.currentState!.canPop()) {
-                _navigatorKey.currentState!.pop();
-              }
-              return const CategoriesUi();
-            case 4:
-              if (_navigatorKey.currentState!.canPop()) {
-                _navigatorKey.currentState!.pop();
-              }
-              return const MoreUI();
-            default:
-              if (_navigatorKey.currentState!.canPop()) {
-                _navigatorKey.currentState!.pop();
-              }
-              return HomeUI(changeIndex: (index) => setScreen(index));
-          }
-        case AppRoutes.subCategories:
-          return const SubCategoriesUI();
-        case AppRoutes.detail:
-          return const DetailUi();
-        case AppRoutes.webview:
-          return const WebViewScreen();
-        case AppRoutes.mainBusiness:
-          return MainBusinessUI();
-        case AppRoutes.profile:
-          return const MyProfile();
-        default:
-          return HomeUI(changeIndex: (index) => setScreen(index));
-      }
+    if (args["categoryList"] != null && args["categoryList"]?.isNotEmpty) {
+      categoryList = List<AllCategoriesData>.from(args["categoryList"]);
+    }
+    if (args["topList"] != null && args["topList"]?.isNotEmpty) {
+      topList = List<TopHomeData>.from(args["topList"]);
     }
 
     return Stack(
@@ -96,26 +129,16 @@ class _BottomNavState extends State<BottomNav> {
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
             body: WillPopScope(
-              onWillPop: () async {
-                if (_navigatorKey.currentState!.canPop()) {
-                  _navigatorKey.currentState!.pop();
-                  return false;
-                }
-                return true;
-              },
+              onWillPop: () async =>
+                  !await _navigatorKey.currentState!.maybePop(),
               child: Navigator(
                 key: _navigatorKey,
                 onGenerateRoute: (settings) {
-                  printInfo(info: settings.toString());
+                  log("SETTINGS: ${settings}");
                   return MaterialPageRoute(
                     builder: (BuildContext context) => SafeArea(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: getScreen(settings.name!),
-                          ),
-                        ],
+                      child: Container(
+                        child: getScreen(settings.name!),
                       ),
                     ),
                     settings: settings,
@@ -138,35 +161,47 @@ class _BottomNavState extends State<BottomNav> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   menuItem(
-                    isSelected: _currentIndex == 0,
-                    icon: ImagesPaths.ic_notification,
-                    title: "Notification",
-                    onTap: () {
-                      ToastContext().init(context);
-                      Toast.show("No New Notifications");
-                    },
-                  ),
+                      isSelected: _currentIndex == 0,
+                      icon: ImagesPaths.ic_notification,
+                      title: "Notification",
+                      onTap: () {
+                        ToastContext().init(context);
+                        Toast.show("No New Notifications");
+                      },
+                      width: width),
                   menuItem(
                       isSelected: _currentIndex == 1,
                       icon: ImagesPaths.ic_search,
                       title: "Search",
-                      onTap: () => setScreen(1)),
+                      onTap: () {
+                        setScreen(1);
+                      },
+                      width: width),
                   menuItem(
                       isSelected: _currentIndex == 2,
                       icon: ImagesPaths.ic_home,
                       title: "Home",
                       isHighlighted: true,
-                      onTap: () => setScreen(2)),
+                      onTap: () {
+                        setScreen(2);
+                      },
+                      width: width),
                   menuItem(
                       isSelected: _currentIndex == 3,
                       icon: ImagesPaths.ic_category,
                       title: "Categories",
-                      onTap: () => setScreen(3)),
+                      onTap: () {
+                        setScreen(3);
+                      },
+                      width: width),
                   menuItem(
                       isSelected: _currentIndex == 4,
                       icon: ImagesPaths.ic_more,
                       title: "More",
-                      onTap: () => setScreen(4)),
+                      onTap: () {
+                        setScreen(4);
+                      },
+                      width: width),
                 ],
               ),
             ),
@@ -181,39 +216,45 @@ class _BottomNavState extends State<BottomNav> {
       required String title,
       bool isHighlighted = false,
       bool isSelected = false,
-      required Function onTap}) {
-    return Container(
-      width: (Get.width - 16) / 5,
-      // decoration: BoxDecoration(color: Colors.red),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Transform.translate(
-            offset: isHighlighted ? const Offset(0, -16) : const Offset(0, 0),
-            child: CircleAvatar(
-              backgroundColor: isHighlighted
-                  ? const Color(Constants.themeColorRed)
-                  : Colors.transparent,
-              radius: 25,
-              child: Image.asset(
-                icon,
-                width: 20,
-                color: isHighlighted ? Colors.white : null,
+      required Function onTap,
+      required double width}) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        width: (width - 16) / 5,
+        // decoration: BoxDecoration(color: Colors.red),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Transform.translate(
+              offset: isHighlighted ? const Offset(0, -16) : const Offset(0, 0),
+              child: CircleAvatar(
+                backgroundColor: isHighlighted
+                    ? const Color(Constants.themeColorRed)
+                    : Colors.transparent,
+                radius: 25,
+                child: Image.asset(
+                  icon,
+                  width: 20,
+                  color: isHighlighted ? Colors.white : null,
+                ),
               ),
             ),
-          ),
-          Text(
-            title,
-            style: TextStyle(
-                fontSize: 10,
-                color: isSelected
-                    ? const Color(Constants.themeColorRed)
-                    : const Color(0xff333333),
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
-          )
-        ],
+            Text(
+              title,
+              style: TextStyle(
+                  fontSize: 10,
+                  color: isSelected
+                      ? const Color(Constants.themeColorRed)
+                      : const Color(0xff333333),
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+            )
+          ],
+        ),
       ),
-    ).onTap(() => onTap());
+    );
   }
 }
 

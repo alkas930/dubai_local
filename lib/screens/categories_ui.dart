@@ -1,69 +1,62 @@
 import 'package:dubai_local/Constants.dart';
-import 'package:dubai_local/controllers/categories_controller.dart';
-import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
+import 'package:dubai_local/models/top_home_response_model.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
-import 'package:dubai_local/utils/localisations/images_paths.dart';
+import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:jovial_svg/jovial_svg.dart';
-import 'package:velocity_x/velocity_x.dart';
-
-import '../controllers/splash_controller.dart';
 import '../utils/localisations/app_colors.dart';
 import '../utils/search_widget.dart';
 
 class CategoriesUi extends StatelessWidget {
-  const CategoriesUi({Key? key}) : super(key: key);
+  final List<AllCategoriesData> categoryList;
+  final List<TopHomeData> topList;
+  const CategoriesUi(
+      {Key? key, required this.categoryList, required this.topList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    SplashController controller = Get.find();
-    HomeController homeController = Get.find();
+    void openSubCategory(BuildContext context, String catName, String slug) {
+      Navigator.pushNamed(context, AppRoutes.subCategories,
+          arguments: {"catName": catName, "slug": slug});
+    }
 
     return SingleChildScrollView(
       child: Column(
         children: [
           const HeaderWidget(isBackEnabled: false),
-          "Categories"
-              .text
-              .color(Colors.white)
-              .size(20)
-              .make()
-              .pOnly(top: 30, bottom: 20),
+          const Text(
+            "Categories",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
           const SearchWidget(isLight: false),
-          GetBuilder<CategoriesController>(
-              id: controller.updateListKey,
-              builder: (ctx) {
-                return GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: controller.categoryList.length,
-                        itemBuilder: (_, int index) {
-                          return items(
-                              context: context,
-                              categoryItems: controller.categoryList[index],
-                              homeController: homeController);
-                        },
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
-                                childAspectRatio: 10 / 6))
-                    .marginOnly(top: 10, bottom: 30);
-              }).pOnly(bottom: 48),
+          GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: categoryList.length,
+              itemBuilder: (_, int index) {
+                return items(
+                    context: context,
+                    categoryItems: categoryList[index],
+                    openSubCategory: openSubCategory);
+              },
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 10 / 6))
+          // .marginOnly(top: 10, bottom: 30).pOnly(bottom: 48),
         ],
       ),
     );
   }
 
-  Widget items({
-    required BuildContext context,
-    required AllCategoriesData categoryItems,
-    required HomeController homeController,
-  }) {
+  Widget items(
+      {required BuildContext context,
+      required AllCategoriesData categoryItems,
+      required Function openSubCategory}) {
     return InkButton(
       rippleColor: const Color(Constants.themeColorRed),
       backGroundColor: const Color(0xffEEF2F3),
@@ -100,10 +93,9 @@ class CategoriesUi extends StatelessWidget {
         ],
       ),
       onTap: () {
-        homeController.subCatSlug = categoryItems.slug;
-        homeController.subCatName = categoryItems.name;
-        homeController.openSubCategory(
+        openSubCategory(
           context,
+          categoryItems.name,
           categoryItems.slug,
         );
       },

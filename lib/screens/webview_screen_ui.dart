@@ -1,13 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:dubai_local/Constants.dart';
-import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import '../utils/localisations/images_paths.dart';
 
 class WebViewScreen extends StatefulWidget {

@@ -1,32 +1,69 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/Constants.dart';
-import 'package:dubai_local/controllers/detail_controllers.dart';
-import 'package:dubai_local/controllers/home_controller.dart';
-import 'package:dubai_local/controllers/sub_category_controller.dart';
 import 'package:dubai_local/models/sub_categories_response_model.dart';
+import 'package:dubai_local/services/networking_services/api_call.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
+import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:jovial_svg/jovial_svg.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import '../utils/localisations/app_colors.dart';
 
-class SubCategoriesUI extends StatelessWidget {
+class SubCategoriesUI extends StatefulWidget {
   const SubCategoriesUI({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    SubCategoryController controller = Get.find();
-    HomeController homeController = Get.find();
+  State<SubCategoriesUI> createState() => _SubCategoriesUIState();
+}
 
-    //  HomeController controller = Get.find();
-    //   SplashController mainHomeController = Get.find();
+class _SubCategoriesUIState extends State<SubCategoriesUI> {
+  List<SubcatData> subCategoryList = [];
+
+  callApi(String slug) {
+    CallAPI().getSubCategories(slug: slug).then((value) {
+      setState(() {
+        subCategoryList = value.subCatData;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final Map args =
+          (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+      callApi(args["slug"] ?? "");
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+
+    void openSubCategoryBusiness(
+        BuildContext context, String subCategory, String slug) {
+      Navigator.pushNamed(context, AppRoutes.detail, arguments: {
+        "catName": args["catName"],
+        "subCat": subCategory,
+        "slug": slug
+      });
+    }
+
     Future<bool> _onWillPop() async {
-      // Navigator.pop(context);
+      Navigator.pop(context);
       return false;
     }
 
@@ -37,43 +74,41 @@ class SubCategoriesUI extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const HeaderWidget(isBackEnabled: true),
-          homeController.subCatName.text
-              .color(Colors.white)
-              .size(20)
-              .make()
-              .pOnly(top: 30, bottom: 20),
+          Text(args["catName"] ?? ""),
+          // .text
+          //     .color(Colors.white)
+          //     .size(20)
+          //     .make()
+          //     .pOnly(top: 30, bottom: 20),
           const SearchWidget(isLight: true),
           Container(
-              width: Get.width,
-              constraints: BoxConstraints(minHeight: 0),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
+            width: width,
+            constraints: BoxConstraints(minHeight: 0),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
-              child: GetBuilder<SubCategoryController>(
-                  id: controller.updateListKey,
-                  builder: (ctx) {
-                    return GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: controller.subCategoryList.length,
-                      itemBuilder: (_, int index) {
-                        return items(
-                            context: context,
-                            categoryItem: controller.subCategoryList[index],
-                            index: index,
-                            homeController: homeController);
-                      },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              childAspectRatio: 5 / 4.5,
-                              mainAxisSpacing: 20 / 2,
-                              crossAxisSpacing: 10),
-                    ).marginOnly(top: 10, bottom: 30);
-                  })),
+            ),
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: subCategoryList.length,
+              itemBuilder: (_, int index) {
+                return items(
+                    context: context,
+                    categoryItem: subCategoryList[index],
+                    index: index,
+                    openSubCategoryBusiness: openSubCategoryBusiness);
+              },
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  childAspectRatio: 5 / 4.5,
+                  mainAxisSpacing: 20 / 2,
+                  crossAxisSpacing: 10),
+            ),
+            // .marginOnly(top: 10, bottom: 30);
+          ),
         ],
       ),
     );
@@ -83,7 +118,7 @@ class SubCategoriesUI extends StatelessWidget {
       {required BuildContext context,
       required SubcatData categoryItem,
       required int index,
-      required HomeController homeController}) {
+      required Function openSubCategoryBusiness}) {
     return InkButton(
       rippleColor: const Color(Constants.themeColorRed),
       backGroundColor: const Color(0xffEEF2F3),
@@ -120,10 +155,8 @@ class SubCategoriesUI extends StatelessWidget {
         ],
       ),
       onTap: () {
-        HomeController homeController = Get.find();
-        homeController.subCatBusinessSlug = categoryItem.slug ?? "";
-        homeController.subBusiness = categoryItem.subCatName ?? "";
-        homeController.openSubCategoryBusiness(context);
+        openSubCategoryBusiness(
+            context, categoryItem.subCatName, categoryItem.slug);
       },
     );
   }

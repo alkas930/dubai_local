@@ -1,14 +1,10 @@
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/utils/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
-import 'controllers/splash_controller.dart';
 
 void main() async {
   await GetStorage.init();
-  Get.put(SplashController());
   runApp(const MyApp());
 }
 
@@ -18,11 +14,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       theme: ThemeData(
         fontFamily: "Poppins",
       ),
-      getPages: AppPages.route,
+      routes: AppPages.route,
       initialRoute: AppPages.initialRoute,
     );
   }

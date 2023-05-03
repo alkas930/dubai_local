@@ -1,14 +1,9 @@
-import 'package:dubai_local/controllers/home_controller.dart';
 import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:velocity_x/velocity_x.dart';
-
-import '../controllers/more_controller.dart';
 import '../utils/localisations/images_paths.dart';
 
 class MoreUI extends StatelessWidget {
@@ -16,19 +11,15 @@ class MoreUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MoreController controller = Get.find();
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      child: Container(
-        height: Get.height,
-        width: Get.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
             const HeaderWidget(isBackEnabled: false),
             Container(
-              height: Get.height * .8,
-              width: Get.width,
+              width: width,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -39,6 +30,7 @@ class MoreUI extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     const SizedBox(
                       height: 20,
@@ -78,10 +70,7 @@ class MoreUI extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
+        );}
 
   Widget moreItems(
       {required BuildContext context,
@@ -92,8 +81,10 @@ class MoreUI extends StatelessWidget {
       tileColor: Colors.blueGrey.shade50,
       contentPadding: EdgeInsets.zero,
       visualDensity: VisualDensity(horizontal: -4, vertical: -3),
-      onTap: () => Navigator.pushNamed(context, AppRoutes.webview,
-          arguments: {"url": url}),
+      onTap: () {
+        Navigator.pushNamed(context, AppRoutes.webview,
+            arguments: {"url": url});
+      },
       leading: SizedBox(
         width: 24,
         height: 24,

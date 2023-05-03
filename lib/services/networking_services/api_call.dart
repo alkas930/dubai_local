@@ -20,9 +20,7 @@ class CallAPI {
       AllCategoriesResponseModel responseModel =
           AllCategoriesResponseModel.fromJson(json);
 
-      printData(json.toString());
       if (responseModel.status == 200) {
-        printData("CALLING_ENDPOINT: $endPoint ,RESPONSE:  $json");
         result = responseModel;
         return result;
       } else {
@@ -45,9 +43,7 @@ class CallAPI {
 
       TopHomeResponseModel responseModel = TopHomeResponseModel.fromJson(json);
 
-      printData(json.toString());
       if (responseModel.status == 200) {
-        printData("CALLING_ENDPOINT: $endPoint ,RESPONSE:  $json");
         result = responseModel;
         return result;
       } else {
@@ -73,9 +69,7 @@ class CallAPI {
       SubCategoryResponseModel responseModel =
           SubCategoryResponseModel.fromJson(json);
 
-      printData(json.toString());
       // if (responseModel == 200) {
-      printData("CALLING_ENDPOINT: $endPoint ,RESPONSE:  $json");
       result = responseModel;
       return result;
       // } else {
@@ -101,9 +95,7 @@ class CallAPI {
       SubCategoryBusinessResponseModel responseModel =
           SubCategoryBusinessResponseModel.fromJson(json);
 
-      printData(json.toString());
       // if (responseModel == 200) {
-      printData("CALLING_ENDPOINT: $endPoint ,RESPONSE:  $json");
       result = responseModel;
       return result;
       // } else {
@@ -128,9 +120,7 @@ class CallAPI {
       BusinessDetailResponseModel responseModel =
           BusinessDetailResponseModel.fromJson(json);
 
-      printData(json.toString());
       // if (responseModel == 200) {
-      printData("CALLING_ENDPOINT: $endPoint ,RESPONSE:  $json");
       result = responseModel;
       return result;
       // } else {
@@ -138,7 +128,7 @@ class CallAPI {
       //   return result;
       // }
     } on Exception catch (e) {
-      printData("DATETIME EXCEPTION: " + e.toString());
+      printData(e.toString());
       return result;
     }
   }

@@ -1,10 +1,6 @@
 import 'package:dubai_local/Constants.dart';
-import 'package:dubai_local/controllers/my_profile_controllers.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:velocity_x/velocity_x.dart';
-
 import '../utils/header_widgets.dart';
 import '../utils/localisations/images_paths.dart';
 
@@ -13,10 +9,11 @@ class MyProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MyProfileControllers controller = Get.find();
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Column(
       children: [
-        const HeaderWidget(isBackEnabled: true).px(10),
+        const HeaderWidget(isBackEnabled: true),
         const Text("My Profile",
             style: TextStyle(
                 color: Colors.white,
@@ -117,20 +114,35 @@ class MyProfile extends StatelessWidget {
                       )
                     ],
                   ),
-                  profileItems(title: "My Profile", icon: ImagesPaths.ic_star),
+                  profileItems(
+                      title: "My Profile",
+                      icon: ImagesPaths.ic_star,
+                      width: width),
                   const Divider(),
                   profileItems(
-                      title: "My Listings", icon: ImagesPaths.ic_listings),
-                  const Divider(),
-                  profileItems(title: "Favourites", icon: ImagesPaths.ic_star),
-                  const Divider(),
-                  profileItems(
-                      title: "My Membership", icon: ImagesPaths.ic_star),
-                  const Divider(),
-                  profileItems(title: "Payments", icon: ImagesPaths.ic_payment),
+                      title: "My Listings",
+                      icon: ImagesPaths.ic_listings,
+                      width: width),
                   const Divider(),
                   profileItems(
-                      title: "My Documents", icon: ImagesPaths.ic_document),
+                      title: "Favourites",
+                      icon: ImagesPaths.ic_star,
+                      width: width),
+                  const Divider(),
+                  profileItems(
+                      title: "My Membership",
+                      icon: ImagesPaths.ic_star,
+                      width: width),
+                  const Divider(),
+                  profileItems(
+                      title: "Payments",
+                      icon: ImagesPaths.ic_payment,
+                      width: width),
+                  const Divider(),
+                  profileItems(
+                      title: "My Documents",
+                      icon: ImagesPaths.ic_document,
+                      width: width),
                   const SizedBox(
                     height: 40,
                   ),
@@ -152,10 +164,8 @@ class MyProfile extends StatelessWidget {
                                   color: Colors.white),
                             ),
                           ],
-                        ).py(5).px(15),
-                      ).onTap(() {
-                        // controllers.onTapSendEnquiry();
-                      }),
+                        ),
+                      ),
                       const SizedBox(
                         width: 10,
                       ),
@@ -175,10 +185,8 @@ class MyProfile extends StatelessWidget {
                                   color: Colors.white),
                             ),
                           ],
-                        ).py(5).px(15),
-                      ).onTap(() {
-                        // controllers.onTapSendEnquiry();
-                      }),
+                        ),
+                      ),
                     ],
                   )
                 ],
@@ -190,15 +198,13 @@ class MyProfile extends StatelessWidget {
     );
   }
 
-  Widget profileItems({
-    required String title,
-    required String icon,
-  }) {
+  Widget profileItems(
+      {required String title, required String icon, required double width}) {
     return Padding(
       // ignore: prefer_const_constructors
       padding: EdgeInsets.only(top: 8),
       child: SizedBox(
-        width: Get.width * .94,
+        width: width * .94,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

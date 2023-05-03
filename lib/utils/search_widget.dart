@@ -1,7 +1,5 @@
 import 'package:dubai_local/Constants.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '../controllers/home_controller.dart';
 
 class SearchWidget extends StatefulWidget {
   final bool isLight;
@@ -17,8 +15,8 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidget extends State<SearchWidget> {
   @override
   Widget build(BuildContext context) {
-    HomeController homeController = Get.find();
-
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -26,7 +24,7 @@ class _SearchWidget extends State<SearchWidget> {
           boxShadow: const [
             BoxShadow(blurRadius: 0.5, offset: Offset(0, 8), spreadRadius: -8)
           ]),
-      width: Get.width * widget.width,
+      width: width * widget.width,
       child: TextFormField(
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
