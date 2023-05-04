@@ -144,72 +144,65 @@ class MyProfile extends StatelessWidget {
                         icon: ImagesPaths.ic_star,
                         width: width),
                     const Divider(),
-                    profileItems(
-                        title: "My Listings",
-                        icon: ImagesPaths.ic_listings,
-                        width: width),
-                    const Divider(),
-                    profileItems(
-                        title: "Favourites",
-                        icon: ImagesPaths.ic_star,
-                        width: width),
-                    const Divider(),
-                    profileItems(
-                        title: "My Membership",
-                        icon: ImagesPaths.ic_star,
-                        width: width),
-                    const Divider(),
-                    profileItems(
-                        title: "Payments",
-                        icon: ImagesPaths.ic_payment,
-                        width: width),
-                    const Divider(),
-                    profileItems(
-                        title: "My Documents",
-                        icon: ImagesPaths.ic_document,
-                        width: width),
-                    const SizedBox(
-                      height: 40,
-                    ),
+                    // profileItems(
+                    //     title: "My Listings",
+                    //     icon: ImagesPaths.ic_listings,
+                    //     width: width),
+                    // const Divider(),
+                    // profileItems(
+                    //     title: "Favourites",
+                    //     icon: ImagesPaths.ic_star,
+                    //     width: width),
+                    // const Divider(),
+                    // profileItems(
+                    //     title: "My Membership",
+                    //     icon: ImagesPaths.ic_star,
+                    //     width: width),
+                    // const Divider(),
+                    // profileItems(
+                    //     title: "Payments",
+                    //     icon: ImagesPaths.ic_payment,
+                    //     width: width),
+                    // const Divider(),
+                    // profileItems(
+                    //     title: "My Documents",
+                    //     icon: ImagesPaths.ic_document,
+                    //     width: width),
+                    // const SizedBox(
+                    //   height: 40,
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          height: 40,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          margin: EdgeInsets.only(right: 8),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: AppColors.greenTheme),
-                          child: Row(
-                            children: const [
-                              Text(
-                                " Logout",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
-                              ),
-                            ],
+                          child: const Text(
+                            "Logout",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
                         Container(
-                          height: 40,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          margin: EdgeInsets.only(left: 8),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: const Color(Constants.themeColorRed)),
-                          child: Row(
-                            children: const [
-                              Text(
-                                "Delete Account",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
-                              ),
-                            ],
+                          child: const Text(
+                            "Delete Account",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
                           ),
                         ),
                       ],

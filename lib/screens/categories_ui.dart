@@ -56,7 +56,11 @@ class CategoriesUi extends StatelessWidget {
               "Categories",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            const SearchWidget(isLight: false),
+            SearchWidget(
+              isLight: false,
+              changeIndex: changeIndex,
+              setArgs: setArgs,
+            ),
             GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

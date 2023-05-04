@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/business_details_response_model.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
@@ -7,8 +6,10 @@ import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'dart:developer';
 
 class MainBusinessUI extends StatefulWidget {
   final Function(int index)? changeIndex;
@@ -29,7 +30,13 @@ class MainBusinessUI extends StatefulWidget {
 }
 
 class _MainBusinessUIState extends State<MainBusinessUI> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController messageController = TextEditingController();
   BusinessDetailResponseModel? _businessDetail;
+  bool isVisible = false;
 
   void callAPI(String businessSlug) {
     CallAPI().getBusinessDetail(businessSlug: businessSlug).then((value) {
@@ -37,6 +44,54 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
         _businessDetail = value;
       });
     });
+  }
+
+  void sendEnquiry() {
+    CallAPI().sendEnquiry(body: {
+      "name": nameController.text,
+      "email": emailController.text,
+      "url": _businessDetail?.businessData?.url ?? "",
+      "query": messageController.text,
+      "mobile": phoneController.text,
+    }).then((value) {
+      if (value == null) {
+        ToastContext().init(context);
+        Toast.show("Something went wrong");
+      } else {
+        nameController.clear();
+        emailController.clear();
+        phoneController.clear();
+        messageController.clear();
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        ToastContext().init(context);
+        Toast.show(value["message"] ?? "Enquiry sent successfully");
+      }
+    }).catchError((onError) {});
+  }
+
+  void claimBusiness() {
+    CallAPI().claimBusiness(body: {
+      "name": nameController.text,
+      "email": emailController.text,
+      "phone_no": phoneController.text,
+      "busi_name": _businessDetail?.businessData?.name ?? "",
+      "busi_id": _businessDetail?.businessData?.id ?? "",
+      "busi_url": _businessDetail?.businessData?.url ?? "",
+      "source_from": "1",
+    }).then((value) {
+      if (value == null) {
+        ToastContext().init(context);
+        Toast.show("Something went wrong");
+      } else {
+        nameController.clear();
+        emailController.clear();
+        phoneController.clear();
+        messageController.clear();
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        ToastContext().init(context);
+        Toast.show(value["message"] ?? "Claim raised successfully");
+      }
+    }).catchError((onError) {});
   }
 
   double getRating(double? rating, double avgRating) {
@@ -66,13 +121,21 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
     super.dispose();
   }
 
+  bool validateAndSave() {
+    final FormState form = _formKey.currentState!;
+    if (form.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     // final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
 
-    bool isVisible = false;
     Future<bool> _onWillPop() async {
       // Navigator.pop(context);
       widget.onBack();
@@ -129,17 +192,17 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                   width: width,
                                   height: 150,
                                 ),
-                                Positioned(
-                                  bottom: 15,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15),
-                                    child: Text(
-                                      _businessDetail?.businessData?.name ?? "",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
+                                // Positioned(
+                                //   bottom: 15,
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.symmetric(
+                                //         horizontal: 15),
+                                //     child: Text(
+                                //       _businessDetail?.businessData?.name ?? "",
+                                //       style: TextStyle(color: Colors.white),
+                                //     ),
+                                //   ),
+                                // ),
                                 Positioned(
                                   bottom: 15,
                                   right: 15,
@@ -177,11 +240,15 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                               title:
                                   _businessDetail?.businessData?.address ?? "",
                               onTap: () {}),
-                          customContainer(
-                              width: width,
-                              icon: ImagesPaths.ic_phone,
-                              title: _businessDetail?.businessData?.phone ?? "",
-                              onTap: () {}),
+                          _businessDetail?.businessData?.phone != null &&
+                                  _businessDetail?.businessData?.phone != ""
+                              ? customContainer(
+                                  width: width,
+                                  icon: ImagesPaths.ic_phone,
+                                  title: _businessDetail?.businessData?.phone ??
+                                      "",
+                                  onTap: () {})
+                              : SizedBox.shrink(),
                           customContainer(
                               width: width,
                               icon: ImagesPaths.ic_web,
@@ -218,29 +285,162 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Container(
-                                  height: 40,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: AppColors.greenTheme),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 5),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          ImagesPaths.ic_send_enquiry,
-                                          width: 20,
-                                          color: Colors.white,
-                                        ),
-                                        const Text(
-                                          " Send Enquiry",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white),
-                                        ),
-                                      ],
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: SingleChildScrollView(
+                                            child: Form(
+                                              key: _formKey,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                    margin: const EdgeInsets
+                                                        .symmetric(vertical: 8),
+                                                    child: const Text(
+                                                        "Send Enquiry"),
+                                                  ),
+                                                  TextFormField(
+                                                    controller: nameController,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      labelText: "Name",
+                                                      errorMaxLines: 2,
+                                                    ),
+                                                    validator: (value) => value!
+                                                            .isEmpty
+                                                        ? 'Name cannot be blank'
+                                                        : null,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 4),
+                                                          child: TextFormField(
+                                                            controller:
+                                                                emailController,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              labelText:
+                                                                  "Email",
+                                                              errorMaxLines: 2,
+                                                            ),
+                                                            validator: (value) =>
+                                                                value!.isEmpty
+                                                                    ? 'Email cannot be blank'
+                                                                    : null,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        child: Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 4),
+                                                          child: TextFormField(
+                                                            controller:
+                                                                phoneController,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              labelText:
+                                                                  "Phone no.",
+                                                              errorMaxLines: 2,
+                                                            ),
+                                                            validator: (value) =>
+                                                                value!.isEmpty
+                                                                    ? 'Phone no. cannot be blank'
+                                                                    : null,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        messageController,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      labelText: "Message",
+                                                      errorMaxLines: 2,
+                                                    ),
+                                                    validator: (value) => value!
+                                                            .isEmpty
+                                                        ? 'Message cannot be blank'
+                                                        : null,
+                                                    maxLines: 5,
+                                                  ),
+                                                  GestureDetector(
+                                                    child: Container(
+                                                      decoration: const BoxDecoration(
+                                                          color: Color(Constants
+                                                              .themeColorRed),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          16))),
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 16),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 16,
+                                                          vertical: 4),
+                                                      child: const Text(
+                                                        "Submit",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    onTap: () {
+                                                      if (validateAndSave()) {
+                                                        sendEnquiry();
+                                                      }
+                                                    },
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: AppColors.greenTheme),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 5),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            ImagesPaths.ic_send_enquiry,
+                                            width: 20,
+                                            color: Colors.white,
+                                          ),
+                                          const Text(
+                                            " Send Enquiry",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -310,22 +510,139 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                 borderRadius: BorderRadius.circular(5),
                                 color: const Color(Constants.themeColorRed),
                               ),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  child: const Text(
-                                    "Own This Business?",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13,
-                                        color: Colors.white),
+                              child: GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        content: SingleChildScrollView(
+                                          child: Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(vertical: 8),
+                                                  child: const Text(
+                                                      "Claim This Business"),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                            .only(right: 4),
+                                                        child: TextFormField(
+                                                          controller:
+                                                              nameController,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            labelText: "Name",
+                                                            errorMaxLines: 2,
+                                                          ),
+                                                          validator: (value) =>
+                                                              value!.isEmpty
+                                                                  ? 'Name cannot be blank'
+                                                                  : null,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                            .only(left: 4),
+                                                        child: TextFormField(
+                                                          controller:
+                                                              emailController,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            labelText: "Email",
+                                                            errorMaxLines: 2,
+                                                          ),
+                                                          validator: (value) =>
+                                                              value!.isEmpty
+                                                                  ? 'Email cannot be blank'
+                                                                  : null,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                TextFormField(
+                                                  controller: phoneController,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    labelText: "Phone no.",
+                                                    errorMaxLines: 2,
+                                                  ),
+                                                  validator: (value) => value!
+                                                          .isEmpty
+                                                      ? 'Phone no. cannot be blank'
+                                                      : null,
+                                                ),
+                                                GestureDetector(
+                                                  child: Container(
+                                                    decoration: const BoxDecoration(
+                                                        color: Color(Constants
+                                                            .themeColorRed),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    16))),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 16),
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 4),
+                                                    child: const Text(
+                                                      "Submit",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    if (validateAndSave()) {
+                                                      claimBusiness();
+                                                    }
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 4),
+                                    child: FittedBox(
+                                      child: Text(
+                                        "Own This Business?",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12,
+                                            color: Colors.white),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                          getGallery(
+                              _businessDetail?.businessData?.moreImages ?? ""),
                         ],
                       ),
                     ),
@@ -348,14 +665,17 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
         width: width,
         child: Row(
           children: [
-            Image.asset(icon, width: 20),
+            Container(
+              margin: EdgeInsets.only(right: 10),
+              child: Image.asset(icon, width: 20),
+            ),
             SizedBox(
               child: Row(
                 children: [
                   SizedBox(
                       width: width * .76,
                       child: Text(
-                        isWeb ? "(Click to visit)" : "",
+                        isWeb ? "(Click to visit)" : title,
                         style: TextStyle(
                             fontSize: 11, overflow: TextOverflow.ellipsis),
                       )),
@@ -376,7 +696,6 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             alignment: Alignment.center,
@@ -462,7 +781,7 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
     try {
       timings.addAll(jsonDecode(businessDetail!.businessData!.timings!.trim()));
       widget = GridView.builder(
-        // padding: padding,
+        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
@@ -485,6 +804,40 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
       );
     } catch (e) {
       print(e.toString());
+    }
+    return widget;
+  }
+
+  Widget getGallery(String img) {
+    Widget widget = SizedBox.shrink();
+    List<String> images = img.split(",");
+    if (images.isNotEmpty) {
+      widget = Container(
+        height: 200,
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        margin: EdgeInsets.only(bottom: 32),
+        child: ListView.builder(
+          clipBehavior: Clip.none,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: images.length,
+          itemBuilder: (BuildContext context, int idx) => Container(
+            height: 200,
+            width: 200,
+            margin: EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+            ),
+            child: Image.network(
+              "https://dubailocal.ae/assets/more_images/${images[idx]}",
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            clipBehavior: Clip.hardEdge,
+          ),
+        ),
+      );
     }
     return widget;
   }

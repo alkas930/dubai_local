@@ -33,12 +33,16 @@ class DetailUi extends StatefulWidget {
 
 class _DetailUiState extends State<DetailUi> {
   List<SubcatBusinessData> detailList = [];
+  String category = "";
+  String subCategory = "";
 
   void getData(String slug) {
     CallAPI().getSubCategoriesBusiness(slug: slug).then((value) {
       if (value.subcatBusinessData!.isNotEmpty) {
         setState(() {
           detailList = value.subcatBusinessData!;
+          category = value.catName?[0].name! ?? "";
+          subCategory = value.catName?[0].subcatName! ?? "";
         });
       }
     }).onError((error, stackTrace) {
@@ -100,14 +104,14 @@ class _DetailUiState extends State<DetailUi> {
                       top: 30,
                     ),
                     child: Text(
-                      widget.args["catName"] ?? "",
+                      widget.args["catName"] ?? category ?? "",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
-                      "-" + widget.args["subCat"] ?? "" + "-",
+                      "-${widget.args["subCat"] ?? subCategory ?? ""}-",
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   )
@@ -154,7 +158,11 @@ class _DetailUiState extends State<DetailUi> {
                     child: Column(
                       children: [
                         const SizedBox(height: 15),
-                        const SearchWidget(isLight: true),
+                        SearchWidget(
+                          isLight: true,
+                          changeIndex: widget.changeIndex,
+                          setArgs: widget.setArgs,
+                        ),
                         ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,

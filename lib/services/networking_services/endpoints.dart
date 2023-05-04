@@ -14,11 +14,12 @@ class Endpoints {
   static const String epSubCategoryBusiness = "businesses/";
   static const String epSubCategory = "category/";
   static const String epBusinessDetails = "business/";
-  static const String epContactUs = "contact-us/";
+  static const String epClaimBusiness = "claim-business";
+  static const String epContactUs = "contact-us";
   static const String epAllCategories = "category";
   static const String epTopHome = "top-home";
   static const String epKeywords = "keywords";
-  static const String epSearch = "search";
+  static const String epSearch = "search-v2";
 
   GetStorage storage = GetStorage();
 

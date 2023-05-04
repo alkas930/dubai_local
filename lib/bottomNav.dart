@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
 import 'package:dubai_local/models/top_home_response_model.dart';
@@ -18,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
 import 'utils/localisations/images_paths.dart';
+import 'dart:developer';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -36,8 +35,6 @@ class _BottomNavState extends State<BottomNav> {
   int _currentIndex = 2;
 
   setScreen(index) {
-    log(_args.toString());
-    log(_prevArgs.toString());
     setState(() {
       _prevIndex.add(_currentIndex);
       _prevArgs.add(_args);
@@ -55,7 +52,6 @@ class _BottomNavState extends State<BottomNav> {
     if (_prevIndex.isNotEmpty) {
       setState(() {
         _prevArgs.removeLast();
-        log("LAST: ${_prevArgs.last}");
         _args = _prevArgs.last;
         _currentIndex = _prevIndex.last;
         _prevIndex.removeLast();
@@ -130,8 +126,6 @@ class _BottomNavState extends State<BottomNav> {
   // }
 
   Widget getScreenIndex() {
-    log(_args.toString());
-    log(_prevArgs.toString());
     switch (_currentIndex) {
       case 1:
         // if (_navigatorKey.currentState!.canPop()) {
@@ -257,6 +251,7 @@ class _BottomNavState extends State<BottomNav> {
         Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
             body: Column(
@@ -268,6 +263,7 @@ class _BottomNavState extends State<BottomNav> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(Constants.tabBarRadius),
@@ -439,7 +435,7 @@ class _BottomNavState extends State<BottomNav> {
         onTap();
       },
       child: Container(
-        width: (width - 16) / 5,
+        width: (width - 16 - 32) / 5,
         // decoration: BoxDecoration(color: Colors.red),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -458,15 +454,21 @@ class _BottomNavState extends State<BottomNav> {
                 ),
               ),
             ),
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: 10,
-                  color: isSelected
-                      ? const Color(Constants.themeColorRed)
-                      : const Color(0xff333333),
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
-            )
+            FittedBox(
+              // fit: BoxFit.fitWidth,
+              child: Text(
+                title,
+                style: TextStyle(
+                    fontSize: 10,
+                    color: isSelected
+                        ? const Color(Constants.themeColorRed)
+                        : const Color(0xff333333),
+                    fontWeight:
+                        isSelected ? FontWeight.bold : FontWeight.normal),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
       ),

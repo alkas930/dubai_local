@@ -38,7 +38,7 @@ class APIManager {
 
   Future<dynamic> postAPICall(
       {required String endPoint, required var request}) async {
-    String newBaseURL = storage.read(SharedPrefrencesKeys.BASE_URL_KEY);
+    String newBaseURL = Endpoints.BASE_URL + Endpoints.API_ENDPOINT;
 
     Uri urlForPost = Uri.parse("$newBaseURL$endPoint");
 
@@ -51,8 +51,8 @@ class APIManager {
     printData("HEADERS: $headers");
 
     try {
-      final response = await http.post(urlForPost,
-          headers: headers, body: jsonEncode(request));
+      final response =
+          await http.post(urlForPost, headers: headers, body: request);
       printData(response.body);
       responseJson = _response(response);
     } on SocketException {

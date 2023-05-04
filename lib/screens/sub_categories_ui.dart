@@ -104,7 +104,11 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
             //     .size(20)
             //     .make()
             //     .pOnly(top: 30, bottom: 20),
-            const SearchWidget(isLight: true),
+            SearchWidget(
+              isLight: true,
+              changeIndex: widget.changeIndex,
+              setArgs: widget.setArgs,
+            ),
             Container(
               width: width,
               constraints: BoxConstraints(minHeight: 0),

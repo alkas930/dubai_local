@@ -47,8 +47,18 @@ class _HomeUIState extends State<HomeUI> {
       widget.changeIndex!(5);
     }
 
-    void openSubCategoryBusiness(BuildContext context) {
-      // Navigator.pushNamed(context, AppRoutes.detail);
+    void openSubCategoryBusiness(
+        BuildContext context, String subCategory, String slug) {
+      // Navigator.pushNamed(context, AppRoutes.detail, arguments: {
+      //   "catName": args["catName"],
+      //   "subCat": subCategory,
+      //   "slug": slug
+      // });
+      widget.setArgs!({
+        "catName": widget.args["catName"],
+        "subCat": subCategory,
+        "slug": slug
+      });
       widget.changeIndex!(6);
     }
 
@@ -106,25 +116,25 @@ class _HomeUIState extends State<HomeUI> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    ImagesPaths.ic_location,
-                                    scale: 12,
-                                    color: const Color(0xff444444),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      data.res![index].name!,
-                                      style: const TextStyle(
-                                          fontSize: 10,
-                                          color: Color(0xff444444)),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Image.asset(
+                              //       ImagesPaths.ic_location,
+                              //       scale: 12,
+                              //       color: const Color(0xff444444),
+                              //     ),
+                              //     Expanded(
+                              //       child: Text(
+                              //         data.res![index].name!,
+                              //         style: const TextStyle(
+                              //             fontSize: 10,
+                              //             color: Color(0xff444444)),
+                              //         maxLines: 1,
+                              //         overflow: TextOverflow.ellipsis,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
@@ -144,7 +154,8 @@ class _HomeUIState extends State<HomeUI> {
                       onTap: () {
                         if (data.source == "business") {
                           if (data.res![index].slug != null) {
-                            openSubCategoryBusiness(context);
+                            openSubCategoryBusiness(
+                                context, "", data.res![index].slug!);
                           }
                         } else if (data.source == "blog") {
                           if (data.res![index].link != null) {
@@ -304,7 +315,11 @@ class _HomeUIState extends State<HomeUI> {
                             })
                         : const SizedBox.shrink(),
                   ),
-                  const SearchWidget(isLight: true),
+                  SearchWidget(
+                    isLight: true,
+                    changeIndex: widget.changeIndex,
+                    setArgs: widget.setArgs,
+                  ),
                   // .marginOnly(top: 16, bottom: 16),
 
                   widget.topList.isNotEmpty

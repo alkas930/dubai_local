@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dubai_local/models/SearchModel.dart';
 import 'package:dubai_local/models/SubCategoryBusinessResponseModel.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
 import 'package:dubai_local/models/business_details_response_model.dart';
@@ -130,6 +133,65 @@ class CallAPI {
     } on Exception catch (e) {
       printData(e.toString());
       return result;
+    }
+  }
+
+  Future<Map?> sendEnquiry({required Map body}) async {
+    // BusinessDetailResponseModel result = BusinessDetailResponseModel();
+
+    try {
+      String endPoint = "${Endpoints.epContactUs}";
+
+      var result =
+          await APIManager().postAPICall(endPoint: endPoint, request: body);
+      // if (responseModel == 200) {
+      return result;
+      // } else {
+      //   result = responseModel;
+      //   return result;
+      // }
+    } on Exception catch (e) {
+      printData(e.toString());
+      return null;
+    }
+  }
+
+  Future<Map?> claimBusiness({required Map body}) async {
+    // BusinessDetailResponseModel result = BusinessDetailResponseModel();
+
+    try {
+      String endPoint = "${Endpoints.epClaimBusiness}";
+
+      var result =
+          await APIManager().postAPICall(endPoint: endPoint, request: body);
+      // if (responseModel == 200) {
+      return result;
+      // } else {
+      //   result = responseModel;
+      //   return result;
+      // }
+    } on Exception catch (e) {
+      printData(e.toString());
+      return null;
+    }
+  }
+
+  Future<SearchModel> search({required Map body}) async {
+    try {
+      String endPoint = "${Endpoints.epSearch}";
+
+      var result =
+          await APIManager().postAPICall(endPoint: endPoint, request: body);
+      SearchModel responseModel = SearchModel.fromJson(result);
+      // if (responseModel == 200) {
+      return responseModel;
+      // } else {
+      //   result = responseModel;
+      //   return result;
+      // }
+    } on Exception catch (e) {
+      printData(e.toString());
+      return new SearchModel();
     }
   }
 }
