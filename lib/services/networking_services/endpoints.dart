@@ -20,6 +20,8 @@ class Endpoints {
   static const String epTopHome = "top-home";
   static const String epKeywords = "keywords";
   static const String epSearch = "search-v2";
+  static const String createUser = "create-user";
+  static const String deleteUser = "delete-user";
 
   GetStorage storage = GetStorage();
 

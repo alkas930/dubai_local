@@ -78,67 +78,66 @@ class _HomeUIState extends State<HomeUI> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [
-                        if (data.res![index].icon != null) ...[
-                          Image.network(
-                            data.res![index].icon!,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                        Container(
-                          decoration: const BoxDecoration(color: Colors.white),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 4),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                data.res![index].name!,
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    color: Color(Constants.themeColorRed),
-                                    fontWeight: FontWeight.bold),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                    if (data.res![index].icon != null) ...[
+                      Expanded(
+                        child: Image.network(
+                          data.res![index].icon!,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
                               ),
-                              // Row(
-                              //   children: [
-                              //     Image.asset(
-                              //       ImagesPaths.ic_location,
-                              //       scale: 12,
-                              //       color: const Color(0xff444444),
-                              //     ),
-                              //     Expanded(
-                              //       child: Text(
-                              //         data.res![index].name!,
-                              //         style: const TextStyle(
-                              //             fontSize: 10,
-                              //             color: Color(0xff444444)),
-                              //         maxLines: 1,
-                              //         overflow: TextOverflow.ellipsis,
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                      ],
+                      )
+                    ],
+                    Center(
+                      child: Container(
+                        // decoration: const BoxDecoration(color: Colors.transparent),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 4),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data.res![index].name!,
+                              style: const TextStyle(
+                                  fontSize: 10,
+                                  color: Color(Constants.themeColorRed),
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            // Row(
+                            //   children: [
+                            //     Image.asset(
+                            //       ImagesPaths.ic_location,
+                            //       scale: 12,
+                            //       color: const Color(0xff444444),
+                            //     ),
+                            //     Expanded(
+                            //       child: Text(
+                            //         data.res![index].name!,
+                            //         style: const TextStyle(
+                            //             fontSize: 10,
+                            //             color: Color(0xff444444)),
+                            //         maxLines: 1,
+                            //         overflow: TextOverflow.ellipsis,
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -173,8 +172,8 @@ class _HomeUIState extends State<HomeUI> {
 
     Widget WebviewBanner(String image, String url) => GestureDetector(
           onTap: () {
-            widget.changeIndex!(7);
             widget.setArgs!({"url": url});
+            widget.changeIndex!(7);
 
             // Navigator.pushNamed(context, AppRoutes.webview,
             //     arguments: {"url": url});

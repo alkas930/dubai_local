@@ -10,8 +10,33 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../services/networking_services/api_call.dart';
+
 class LoginSignUpUI extends StatelessWidget {
   const LoginSignUpUI({Key? key}) : super(key: key);
+
+  void saveUser(GoogleSignInAccount? data, BuildContext context, args,
+      GetStorage storage) {
+    CallAPI().createUser(body: {
+      "userid": data?.id ?? "",
+      "social_media_type": "gmail",
+      "username": data?.displayName ?? "",
+      "emailid": data?.email ?? "",
+      "phonenumber": "",
+      "password": "",
+    }).then((value) {
+      if (value["data"] != null) {
+        storage.write(SharedPrefrencesKeys.IS_LOGGED_BY, Constants.googleLogin);
+        storage.write(SharedPrefrencesKeys.USER_NAME, data!.displayName ?? "");
+        storage.write(SharedPrefrencesKeys.USER_ID, data.id ?? "");
+        storage.write(SharedPrefrencesKeys.USER_IMAGE, data.photoUrl ?? "");
+        storage.write(SharedPrefrencesKeys.USER_EMAIL, data.email ?? "");
+        Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.main, (Route<dynamic> route) => false,
+            arguments: args);
+      }
+    }).catchError((onError) {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +83,7 @@ class LoginSignUpUI extends StatelessWidget {
                     imagePath: ImagesPaths.ic_google,
                     onTap: () {
                       googleSignIn.signIn().then((value) {
-                        storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
-                            Constants.googleLogin);
-                        storage.write(SharedPrefrencesKeys.USER_NAME,
-                            value!.displayName ?? "");
-                        storage.write(
-                            SharedPrefrencesKeys.USER_ID, value.id ?? "");
-                        storage.write(SharedPrefrencesKeys.USER_IMAGE,
-                            value.photoUrl ?? "");
-                        storage.write(
-                            SharedPrefrencesKeys.USER_EMAIL, value.email ?? "");
+                        saveUser(value, context, args, storage);
                       }).onError((error, stackTrace) {});
                     },
                     width: width),

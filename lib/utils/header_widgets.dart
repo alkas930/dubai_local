@@ -1,6 +1,8 @@
 import 'package:dubai_local/Constants.dart';
+import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import '../utils/localisations/images_paths.dart';
 
 class HeaderWidget extends StatefulWidget {
@@ -20,6 +22,9 @@ class HeaderWidget extends StatefulWidget {
 }
 
 class _HeaderWidget extends State<HeaderWidget> {
+  final userImage = GetStorage().read(SharedPrefrencesKeys.USER_IMAGE);
+  final userLoggedIn = GetStorage().read(SharedPrefrencesKeys.IS_LOGGED_BY);
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -50,8 +55,10 @@ class _HeaderWidget extends State<HeaderWidget> {
             Image.asset(ImagesPaths.app_logo_d, width: width * .5),
             GestureDetector(
               onTap: () {
-                widget.changeIndex!(9);
-                // Navigator.pushNamed(context, AppRoutes.profile);
+                if (userLoggedIn != Constants.guestLogin)
+                  widget.changeIndex!(9);
+                else
+                  Navigator.pushNamed(context, AppRoutes.loginSignUp);
               },
               child: Container(
                 width: Constants.iconSize,
@@ -60,28 +67,48 @@ class _HeaderWidget extends State<HeaderWidget> {
                   border: Border.all(color: Colors.white, width: 1),
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
-                child: ClipOval(
-                  child: Image.network(
-                    "https://source.unsplash.com/random",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
+                child: userLoggedIn == Constants.guestLogin ||
+                        userImage.toString().trim().isEmpty
+                    ? FittedBox(
+                        fit: BoxFit.fill,
+                        child: Icon(
+                          Icons.account_circle_rounded,
+                          color: Colors.grey.shade100,
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      )
+                    : ClipOval(
+                        child: Image.network(
+                          userImage.toString().trim(),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return FittedBox(
+                              fit: BoxFit.fill,
+                              child: Icon(
+                                Icons.account_circle_rounded,
+                                color: Colors.grey.shade100,
+                              ),
+                            );
+                          },
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
               ),
             ),
           ],

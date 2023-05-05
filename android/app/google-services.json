@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "387827751249",
-    "project_id": "dubai-local-cbd6e",
-    "storage_bucket": "dubai-local-cbd6e.appspot.com"
+    "project_number": "852201429788",
+    "project_id": "dubailocal-a6a46",
+    "storage_bucket": "dubailocal-a6a46.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:387827751249:android:43920cdb1b76883f911b70",
+        "mobilesdk_app_id": "1:852201429788:android:46b0f861eee682370cb8d9",
         "android_client_info": {
-          "package_name": "com.example.dubai_local"
+          "package_name": "com.eseo.dubailocal"
         }
       },
       "oauth_client": [
         {
-          "client_id": "387827751249-fbeau4i1nob9c0qa3rci7fq454c555g8.apps.googleusercontent.com",
+          "client_id": "852201429788-hi0brddr1rjm8ocvf2p1ojkuuur6rkif.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBskyWtGpywMoOCzh1EN2sczeIumNu9l4U"
+          "current_key": "AIzaSyCVzK-Yk28NtpYg_qzcYzJcQ6tXUnSgflo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "387827751249-fbeau4i1nob9c0qa3rci7fq454c555g8.apps.googleusercontent.com",
+              "client_id": "852201429788-hi0brddr1rjm8ocvf2p1ojkuuur6rkif.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

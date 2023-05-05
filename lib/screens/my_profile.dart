@@ -1,8 +1,12 @@
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import '../services/networking_services/api_call.dart';
 import '../utils/header_widgets.dart';
+import '../utils/localisations/SharedPrefKeys.dart';
 import '../utils/localisations/images_paths.dart';
+import '../utils/routes/app_routes.dart';
 
 class MyProfile extends StatelessWidget {
   final Function(int index)? changeIndex;
@@ -24,10 +28,41 @@ class MyProfile extends StatelessWidget {
     return false;
   }
 
+  void deleteUser(BuildContext context, GetStorage storage) {
+    String id = storage.read(SharedPrefrencesKeys.USER_EMAIL);
+    CallAPI().deleteUser(body: {
+      "userid": id ?? "",
+    }).then((value) {
+      if (value["data"] != null) {
+        storage.remove(SharedPrefrencesKeys.IS_LOGGED_BY);
+        storage.remove(SharedPrefrencesKeys.USER_NAME);
+        storage.remove(SharedPrefrencesKeys.USER_ID);
+        storage.remove(SharedPrefrencesKeys.USER_IMAGE);
+        storage.remove(SharedPrefrencesKeys.USER_EMAIL);
+        Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.splash, (Route<dynamic> route) => false);
+      }
+    }).catchError((onError) {});
+  }
+
+  void logOut(BuildContext context, GetStorage storage) {
+    storage.remove(SharedPrefrencesKeys.IS_LOGGED_BY);
+    storage.remove(SharedPrefrencesKeys.USER_NAME);
+    storage.remove(SharedPrefrencesKeys.USER_ID);
+    storage.remove(SharedPrefrencesKeys.USER_IMAGE);
+    storage.remove(SharedPrefrencesKeys.USER_EMAIL);
+    Navigator.pushNamedAndRemoveUntil(
+        context, AppRoutes.splash, (Route<dynamic> route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    final GetStorage storage = GetStorage();
+    final userImage = storage.read(SharedPrefrencesKeys.USER_IMAGE);
+    final userLoggedIn = storage.read(SharedPrefrencesKeys.IS_LOGGED_BY);
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Column(
@@ -65,53 +100,46 @@ class MyProfile extends StatelessWidget {
                           width: 90,
                           height: 90,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white, width: 4),
+                            border: Border.all(color: Colors.white, width: 1),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(50)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              ),
-                            ],
                           ),
-                          child: Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 1),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(50)),
-                            ),
-                            child: ClipOval(
-                              child: Image.network(
-                                "https://source.unsplash.com/random",
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  }
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
+                          child: userLoggedIn == Constants.guestLogin ||
+                                  userImage.toString().trim().isEmpty
+                              ? FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: Icon(
+                                    Icons.account_circle_rounded,
+                                    color: Colors.grey.shade100,
+                                  ),
+                                )
+                              : ClipOval(
+                                  child: Image.network(
+                                    userImage.toString().trim(),
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      }
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
                                                   null
                                               ? loadingProgress
                                                       .cumulativeBytesLoaded /
                                                   loadingProgress
                                                       .expectedTotalBytes!
                                               : null,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
                         ),
                         const SizedBox(
                           width: 10,
@@ -174,35 +202,45 @@ class MyProfile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          margin: EdgeInsets.only(right: 8),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColors.greenTheme),
-                          child: const Text(
-                            "Logout",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
+                        GestureDetector(
+                          onTap: () {
+                            logOut(context, storage);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            margin: EdgeInsets.only(right: 8),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: AppColors.greenTheme),
+                            child: const Text(
+                              "Logout",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          margin: EdgeInsets.only(left: 8),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: const Color(Constants.themeColorRed)),
-                          child: const Text(
-                            "Delete Account",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
+                        GestureDetector(
+                          onTap: () {
+                            deleteUser(context, storage);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            margin: EdgeInsets.only(left: 8),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: const Color(Constants.themeColorRed)),
+                            child: const Text(
+                              "Delete Account",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
                       ],

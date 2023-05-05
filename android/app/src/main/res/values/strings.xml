@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dubai Local</string>
-    <string name="facebook_app_id">753376072855560</string>
-    <string name="fb_login_protocol_scheme">fb8a79b845a78e6032490b1a22b731d8a0</string>
-    <string name="facebook_client_token">4530577668cce252ae78ee0ca3797437</string>
-
+    <string name="facebook_app_id">608415941189919</string>
+    <string name="facebook_client_token">7409b3dcd1bb81fee3bf4e05edfca8a3</string>
 </resources>

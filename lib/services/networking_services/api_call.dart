@@ -194,4 +194,42 @@ class CallAPI {
       return new SearchModel();
     }
   }
+
+  Future<Map> createUser({required Map body}) async {
+    try {
+      String endPoint = "${Endpoints.createUser}";
+
+      var result =
+          await APIManager().postAPICall(endPoint: endPoint, request: body);
+      // SearchModel responseModel = SearchModel.fromJson(result);
+      // if (responseModel == 200) {
+      return result;
+      // } else {
+      //   result = responseModel;
+      //   return result;
+      // }
+    } on Exception catch (e) {
+      printData(e.toString());
+      return new Map();
+    }
+  }
+
+  Future<Map> deleteUser({required Map body}) async {
+    try {
+      String endPoint = "${Endpoints.deleteUser}";
+
+      var result =
+          await APIManager().postAPICall(endPoint: endPoint, request: body);
+      // SearchModel responseModel = SearchModel.fromJson(result);
+      // if (responseModel == 200) {
+      return result;
+      // } else {
+      //   result = responseModel;
+      //   return result;
+      // }
+    } on Exception catch (e) {
+      printData(e.toString());
+      return new Map();
+    }
+  }
 }
