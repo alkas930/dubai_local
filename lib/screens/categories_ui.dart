@@ -45,6 +45,7 @@ class CategoriesUi extends StatelessWidget {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 16),
         child: Column(
           children: [
             HeaderWidget(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/services/networking_services/api_manager.dart';
 import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
@@ -84,7 +86,10 @@ class LoginSignUpUI extends StatelessWidget {
                     onTap: () {
                       googleSignIn.signIn().then((value) {
                         saveUser(value, context, args, storage);
-                      }).onError((error, stackTrace) {});
+                      }).onError((error, stackTrace) {
+                        log(error.toString());
+                        log(stackTrace.toString());
+                      });
                     },
                     width: width),
               ),
@@ -105,7 +110,7 @@ class LoginSignUpUI extends StatelessWidget {
                     ),
                     onTap: () {
                       storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
-                          Constants.guestLogin);
+                          Constants.loggedOut);
                       Navigator.pushNamedAndRemoveUntil(context, AppRoutes.main,
                           (Route<dynamic> route) => false,
                           arguments: args);
