@@ -6,6 +6,7 @@ import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
@@ -474,30 +475,39 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  height: 40,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: AppColors.greenTheme),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 5),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          ImagesPaths.ic_send_enquiry,
-                                          width: 20,
-                                          color: Colors.white,
-                                        ),
-                                        const Text(
-                                          " Send to Friend",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white),
-                                        ),
-                                      ],
+                                GestureDetector(
+                                  onTap: () {
+                                    Share.share(
+                                        "https://dubailocal.ae/business/${_businessDetail?.businessData?.slug ?? ""}",
+                                        subject: _businessDetail
+                                                ?.businessData?.name ??
+                                            "");
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: AppColors.greenTheme),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 5),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            ImagesPaths.ic_send_enquiry,
+                                            width: 20,
+                                            color: Colors.white,
+                                          ),
+                                          const Text(
+                                            " Send to Friend",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

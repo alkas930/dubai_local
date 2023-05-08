@@ -57,8 +57,8 @@ class _HeaderWidget extends State<HeaderWidget> {
               onTap: () {
                 if (userLoggedIn != Constants.guestLogin)
                   widget.changeIndex!(9);
-                else
-                  Navigator.pushNamed(context, AppRoutes.loginSignUp);
+                // else
+                //   Navigator.pushNamed(context, AppRoutes.loginSignUp);
               },
               child: Container(
                 width: Constants.iconSize,
