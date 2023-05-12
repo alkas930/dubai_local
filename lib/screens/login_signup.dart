@@ -68,16 +68,16 @@ class LoginSignUpUI extends StatelessWidget {
                   width: width * 0.5,
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 55),
-                child: facebookLoginButton(
-                    title: "Facebook",
-                    imagePath: ImagesPaths.ic_facebook,
-                    onTap: () {
-                      facebookLoginHandler(context: context, storage: storage);
-                    },
-                    width: width),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.only(top: 55),
+              //   child: facebookLoginButton(
+              //       title: "Facebook",
+              //       imagePath: ImagesPaths.ic_facebook,
+              //       onTap: () {
+              //         facebookLoginHandler(context: context, storage: storage);
+              //       },
+              //       width: width),
+              // ),
               Container(
                 margin: const EdgeInsets.only(top: 35),
                 child: googleLogin(

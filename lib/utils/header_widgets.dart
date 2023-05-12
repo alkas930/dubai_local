@@ -55,7 +55,8 @@ class _HeaderWidget extends State<HeaderWidget> {
             Image.asset(ImagesPaths.app_logo_d, width: width * .5),
             GestureDetector(
               onTap: () {
-                if (userLoggedIn != Constants.guestLogin)
+                if (userLoggedIn == Constants.facebookLogin ||
+                    userLoggedIn == Constants.googleLogin)
                   widget.changeIndex!(9);
                 // else
                 //   Navigator.pushNamed(context, AppRoutes.loginSignUp);

@@ -61,7 +61,40 @@ class MyProfile extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final GetStorage storage = GetStorage();
     final userImage = storage.read(SharedPrefrencesKeys.USER_IMAGE);
+    final userName = storage.read(SharedPrefrencesKeys.USER_NAME);
     final userLoggedIn = storage.read(SharedPrefrencesKeys.IS_LOGGED_BY);
+
+    showAlertDialog(BuildContext context) {
+      // set up the buttons
+      Widget cancelButton = TextButton(
+        child: const Text("Cancel"),
+        onPressed: () {
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+        },
+      );
+      Widget continueButton = TextButton(
+        child: const Text("Continue"),
+        onPressed: () {
+          logOut(context, storage);
+        },
+      );
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: const Text("AlertDialog"),
+        content: const Text("Do you want to logout ?"),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      );
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -148,9 +181,9 @@ class MyProfile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Imran Hijbul",
-                              style: TextStyle(
+                            Text(
+                              userName ?? "",
+                              style: const TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -204,12 +237,12 @@ class MyProfile extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            logOut(context, storage);
+                            showAlertDialog(context);
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
-                            margin: EdgeInsets.only(right: 8),
+                            margin: const EdgeInsets.only(right: 8),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
@@ -227,9 +260,9 @@ class MyProfile extends StatelessWidget {
                             deleteUser(context, storage);
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
-                            margin: EdgeInsets.only(left: 8),
+                            margin: const EdgeInsets.only(left: 8),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),

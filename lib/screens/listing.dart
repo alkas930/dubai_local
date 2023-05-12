@@ -108,13 +108,13 @@ class _DetailUiState extends State<DetailUi> {
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "-${widget.args["subCat"] ?? subCategory ?? ""}-",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  )
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 10),
+                  //   child: Text(
+                  //     "-${widget.args["subCat"] ?? subCategory ?? ""}-",
+                  //     style: TextStyle(color: Colors.white, fontSize: 12),
+                  //   ),
+                  // )
                 ],
               ),
             ],

@@ -74,7 +74,7 @@ class _HomeUIState extends State<HomeUI> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: SizedBox(
-                width: (width / 3) - 16,
+                width: (width - 32 - 8) / 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -210,7 +210,7 @@ class _HomeUIState extends State<HomeUI> {
               onBack: () {},
             ),
             const Padding(
-              padding: EdgeInsets.only(top: 48),
+              padding: EdgeInsets.only(top: 32),
               child: Text(
                 "Choose A Category",
                 style: TextStyle(color: Colors.white, fontSize: 20),
@@ -229,13 +229,11 @@ class _HomeUIState extends State<HomeUI> {
               ),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: widget.categoryList.isNotEmpty
                         ? GridView.builder(
+                            padding: EdgeInsets.only(top: 8),
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
