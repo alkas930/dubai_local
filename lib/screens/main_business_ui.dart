@@ -328,11 +328,43 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Container(
-                                                    margin: const EdgeInsets
-                                                        .symmetric(vertical: 8),
-                                                    child: const Text(
-                                                        "Send Enquiry"),
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Stack(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          children: [
+                                                            Container(
+                                                              margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 8),
+                                                              child: const Text(
+                                                                  "Send Enquiry"),
+                                                            ),
+                                                            Positioned(
+                                                              right: 0,
+                                                              child:
+                                                                  GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator.of(
+                                                                          context,
+                                                                          rootNavigator:
+                                                                              true)
+                                                                      .pop(
+                                                                          'dialog');
+                                                                },
+                                                                child: const Icon(
+                                                                    Icons
+                                                                        .close),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                   TextFormField(
                                                     controller: nameController,
@@ -562,11 +594,44 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                             child: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Container(
-                                                  margin: const EdgeInsets
-                                                      .symmetric(vertical: 8),
-                                                  child: const Text(
-                                                      "Claim This Business"),
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Stack(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        8),
+                                                            child: const Text(
+                                                                "Claim This Business"),
+                                                          ),
+                                                          Positioned(
+                                                            right: 0,
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                Navigator.of(
+                                                                        context,
+                                                                        rootNavigator:
+                                                                            true)
+                                                                    .pop(
+                                                                        'dialog');
+                                                              },
+                                                              child: const Icon(
+                                                                  Icons.close),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                                 Row(
                                                   children: [
