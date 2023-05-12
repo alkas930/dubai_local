@@ -80,7 +80,7 @@ class MyProfile extends StatelessWidget {
       );
       // set up the AlertDialog
       AlertDialog alert = AlertDialog(
-        title: const Text("AlertDialog"),
+        title: const Text("Logout"),
         content: const Text("Do you want to logout ?"),
         actions: [
           cancelButton,
