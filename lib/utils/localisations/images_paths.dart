@@ -23,7 +23,7 @@ class ImagesPaths {
   static const String img_bg = "assets/images/bg_image.jpg";
   static const String app_logo_d = "assets/images/logo.png";
   static const String ic_more_svg = "assets/images/ic_more.png";
-  static const String splash_img = "assets/images/splash_image.jpg";
+  static const String splash_img = "assets/images/splash_image.webp";
   static const String more_explore = "assets/images/explore-dubai.png";
   static const String more_blog = "assets/images/blog.png";
   static const String more_important_phone =
