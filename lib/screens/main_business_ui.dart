@@ -53,7 +53,7 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
       "email": emailController.text,
       "url": _businessDetail?.businessData?.url ?? "",
       "query": messageController.text,
-      "mobile": phoneController.text,
+      "mobile": "+971${phoneController.text}",
     }).then((value) {
       if (value == null) {
         ToastContext().init(context);
@@ -74,7 +74,7 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
     CallAPI().claimBusiness(body: {
       "name": nameController.text,
       "email": emailController.text,
-      "phone_no": phoneController.text,
+      "phone_no": "+971${phoneController.text}",
       "busi_name": _businessDetail?.businessData?.name ?? "",
       "busi_id": _businessDetail?.businessData?.id ?? "",
       "busi_url": _businessDetail?.businessData?.url ?? "",
@@ -370,12 +370,14 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                     controller: nameController,
                                                     decoration:
                                                         const InputDecoration(
-                                                      labelText: "Name",
+                                                      labelText: "Enter Name",
                                                       errorMaxLines: 2,
                                                     ),
                                                     validator: (value) => value!
-                                                            .isEmpty
-                                                        ? 'Name cannot be blank'
+                                                                .isEmpty ||
+                                                            !RegExp(r"^[a-zA-Z\s]+$")
+                                                                .hasMatch(value)
+                                                        ? 'Please enter a valid name'
                                                         : null,
                                                   ),
                                                   Row(
@@ -392,13 +394,16 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                             decoration:
                                                                 const InputDecoration(
                                                               labelText:
-                                                                  "Email",
+                                                                  "Enter Email",
                                                               errorMaxLines: 2,
                                                             ),
-                                                            validator: (value) =>
-                                                                value!.isEmpty
-                                                                    ? 'Email cannot be blank'
-                                                                    : null,
+                                                            validator: (value) => value!
+                                                                        .isEmpty ||
+                                                                    !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                                                        .hasMatch(
+                                                                            value)
+                                                                ? 'Please enter valid email'
+                                                                : null,
                                                           ),
                                                         ),
                                                       ),
@@ -414,12 +419,13 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                             decoration:
                                                                 const InputDecoration(
                                                               labelText:
-                                                                  "Phone no.",
+                                                                  "Enter Phone",
                                                               errorMaxLines: 2,
                                                             ),
                                                             validator: (value) =>
-                                                                value!.isEmpty
-                                                                    ? 'Phone no. cannot be blank'
+                                                                value!.length !=
+                                                                        9
+                                                                    ? 'Please enter valid phone no.'
                                                                     : null,
                                                           ),
                                                         ),
@@ -431,7 +437,8 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                         messageController,
                                                     decoration:
                                                         const InputDecoration(
-                                                      labelText: "Message",
+                                                      labelText:
+                                                          "Enter Message",
                                                       errorMaxLines: 2,
                                                     ),
                                                     validator: (value) => value!
@@ -644,13 +651,17 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                               nameController,
                                                           decoration:
                                                               const InputDecoration(
-                                                            labelText: "Name",
+                                                            labelText:
+                                                                "Enter Name",
                                                             errorMaxLines: 2,
                                                           ),
-                                                          validator: (value) =>
-                                                              value!.isEmpty
-                                                                  ? 'Name cannot be blank'
-                                                                  : null,
+                                                          validator: (value) => value!
+                                                                      .isEmpty ||
+                                                                  !RegExp(r"^[a-zA-Z\s]+$")
+                                                                      .hasMatch(
+                                                                          value)
+                                                              ? 'Please enter a valid name'
+                                                              : null,
                                                         ),
                                                       ),
                                                     ),
@@ -663,13 +674,17 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                               emailController,
                                                           decoration:
                                                               const InputDecoration(
-                                                            labelText: "Email",
+                                                            labelText:
+                                                                "Enter Email",
                                                             errorMaxLines: 2,
                                                           ),
-                                                          validator: (value) =>
-                                                              value!.isEmpty
-                                                                  ? 'Email cannot be blank'
-                                                                  : null,
+                                                          validator: (value) => value!
+                                                                      .isEmpty ||
+                                                                  !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                                                      .hasMatch(
+                                                                          value)
+                                                              ? 'Please enter valid email'
+                                                              : null,
                                                         ),
                                                       ),
                                                     ),
@@ -679,12 +694,13 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                   controller: phoneController,
                                                   decoration:
                                                       const InputDecoration(
-                                                    labelText: "Phone no.",
+                                                    labelText: "Enter Phone",
                                                     errorMaxLines: 2,
                                                   ),
                                                   validator: (value) => value!
-                                                          .isEmpty
-                                                      ? 'Phone no. cannot be blank'
+                                                              .length !=
+                                                          9
+                                                      ? 'Please enter valid phone no.'
                                                       : null,
                                                 ),
                                                 GestureDetector(
