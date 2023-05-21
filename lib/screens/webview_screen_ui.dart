@@ -4,6 +4,7 @@ import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../utils/localisations/images_paths.dart';
 
@@ -50,35 +51,49 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       left: 0,
                       right: 0,
                       child: Container(
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.only(top: 8),
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
                           ),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator(
                             color: Color(Constants.themeColorRed),
                           ),
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
-              WebView(
-                backgroundColor: Colors.transparent,
-                initialUrl: widget.args?["url"] != null &&
-                        widget.args?["url"]?.isNotEmpty
-                    ? widget.args["url"]
-                    : Endpoints.BASE_URL,
-                javascriptMode: JavascriptMode.unrestricted,
-                onPageFinished: (finish) {
-                  setState(() {
-                    isLoading = false;
-                  });
-                },
-                // onWebViewCreated: (WebViewController webViewController) {
-                // },
+                  : const SizedBox.shrink(),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: WebView(
+                  navigationDelegate: (NavigationRequest request) {
+                    if (request.url.contains("mailto:")) {
+                      launchUrl(Uri.parse(request.url));
+                      return NavigationDecision.prevent;
+                    } else if (request.url.contains("tel:")) {
+                      launchUrl(Uri.parse(request.url));
+                      return NavigationDecision.prevent;
+                    }
+                    return NavigationDecision.navigate;
+                  },
+                  backgroundColor: Colors.transparent,
+                  initialUrl: widget.args?["url"] != null &&
+                          widget.args?["url"]?.isNotEmpty
+                      ? widget.args["url"]
+                      : Endpoints.BASE_URL,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onPageFinished: (finish) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                  },
+                  // onWebViewCreated: (WebViewController webViewController) {
+                  // },
+                ),
               ),
             ],
           )),
