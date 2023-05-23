@@ -30,6 +30,7 @@ class SearchModel {
 class SearchModelData {
   String? id;
   String? name;
+  String? keyword;
   String? slug;
   String? isClaimed;
   String? isVerified;
@@ -41,10 +42,13 @@ class SearchModelData {
   String? countRating;
   String? districtName;
   String? catId;
+  String? subcat_slug;
+  String? keyword_source;
 
   SearchModelData(
       {this.id,
       this.name,
+      this.keyword,
       this.slug,
       this.isClaimed,
       this.isVerified,
@@ -55,11 +59,14 @@ class SearchModelData {
       this.aeverageRating,
       this.countRating,
       this.districtName,
-      this.catId});
+      this.catId,
+      this.subcat_slug,
+      this.keyword_source});
 
   SearchModelData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    keyword = json['keyword'];
     slug = json['slug'];
     isClaimed = json['is_claimed'];
     isVerified = json['is_verified'];
@@ -71,12 +78,15 @@ class SearchModelData {
     countRating = json['count_rating'];
     districtName = json['district_name'];
     catId = json['cat_id'];
+    subcat_slug = json['subcat_slug'];
+    keyword_source = json['keyword_source'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    data['keyword'] = this.keyword;
     data['slug'] = this.slug;
     data['is_claimed'] = this.isClaimed;
     data['is_verified'] = this.isVerified;
@@ -88,6 +98,8 @@ class SearchModelData {
     data['count_rating'] = this.countRating;
     data['district_name'] = this.districtName;
     data['cat_id'] = this.catId;
+    data['subcat_slug'] = this.subcat_slug;
+    data['keyword_source'] = this.keyword_source;
     return data;
   }
 }

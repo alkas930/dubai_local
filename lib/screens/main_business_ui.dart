@@ -39,8 +39,10 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
   BusinessDetailResponseModel? _businessDetail;
   bool isVisible = false;
 
-  void callAPI(String businessSlug) {
-    CallAPI().getBusinessDetail(businessSlug: businessSlug).then((value) {
+  void callAPI(String businessSlug, bool isSearch) {
+    CallAPI()
+        .getBusinessDetail(businessSlug: businessSlug, isSearch: isSearch)
+        .then((value) {
       setState(() {
         _businessDetail = value;
       });
@@ -112,7 +114,7 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // final Map args =
       //     (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
-      callAPI(widget.args["slug"] ?? "");
+      callAPI(widget.args["slug"] ?? "", widget.args["isSearch"] ?? false);
     });
   }
 

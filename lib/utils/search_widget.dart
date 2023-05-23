@@ -1,6 +1,7 @@
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/SearchModel.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
+import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {
@@ -28,8 +29,48 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidget extends State<SearchWidget> {
   List<SearchModelData> searchList = [];
 
+  void openBusinessDetails(BuildContext context, String businessSlug) {
+    // Navigator.pushNamed(context, AppRoutes.mainBusiness,
+    //     arguments: {"slug": businessSlug});
+    widget.setArgs!({"slug": businessSlug, "isSearch": true});
+    widget.changeIndex!(8);
+  }
+
+  void openSubCategoryBusiness(
+      BuildContext context, String subCategory, String slug) {
+    // Navigator.pushNamed(context, AppRoutes.detail, arguments: {
+    //   "catName": args["catName"],
+    //   "subCat": subCategory,
+    //   "slug": slug
+    // });
+    widget.setArgs!({"catName": "", "subCat": "", "slug": slug});
+    widget.changeIndex!(6);
+  }
+
   void searchData(String query) {
     CallAPI().search(body: {"query": query}).then((value) {
+      if (widget.isListEnabled == true) {
+        if (value.error == null) {
+          setState(() {
+            searchList = value.data ?? [];
+          });
+        } else {
+          setState(() {
+            searchList = [];
+          });
+        }
+      } else {
+        widget.updateListing!(value.data ?? []);
+      }
+    }).catchError((onError) {
+      setState(() {
+        searchList = [];
+      });
+    });
+  }
+
+  void searchKeyword(String query) {
+    CallAPI().searchKeywords(keyword: query).then((value) {
       if (widget.isListEnabled == true) {
         if (value.error == null) {
           setState(() {
@@ -96,7 +137,17 @@ class _SearchWidget extends State<SearchWidget> {
                 ),
                 style: const TextStyle(fontSize: 12),
                 onChanged: (query) {
-                  if (query.length >= 3) searchData(query);
+                  if (query.length >= 3) {
+                    if (widget.isListEnabled) {
+                      searchKeyword(query);
+                    } else {
+                      searchData(query);
+                    }
+                  } else {
+                    setState(() {
+                      searchList = [];
+                    });
+                  }
                 },
               ),
             ),
@@ -107,19 +158,20 @@ class _SearchWidget extends State<SearchWidget> {
                       keyboardDismissBehavior:
                           ScrollViewKeyboardDismissBehavior.onDrag,
                       physics: const BouncingScrollPhysics(),
-                      padding: EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.only(top: 8, bottom: 64),
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemCount: searchList.length,
                       itemBuilder: (BuildContext ctx, int index) {
                         return GestureDetector(
                           onTap: () {
-                            widget.setArgs!({
-                              "catName": "",
-                              "subCat": "",
-                              "slug": searchList[index].slug
-                            });
-                            widget.changeIndex!(8);
+                            if (searchList[index].keyword_source == "2") {
+                              openBusinessDetails(
+                                  context, searchList[index].keyword!);
+                            } else {
+                              openSubCategoryBusiness(
+                                  context, "", searchList[index].subcat_slug!);
+                            }
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -127,7 +179,7 @@ class _SearchWidget extends State<SearchWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  searchList[index].name ?? "",
+                                  searchList[index].keyword ?? "",
                                   style: const TextStyle(fontSize: 10),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,

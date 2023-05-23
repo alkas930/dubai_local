@@ -112,14 +112,19 @@ class CallAPI {
   }
 
   Future<BusinessDetailResponseModel> getBusinessDetail(
-      {required String businessSlug}) async {
+      {bool isSearch = false, required String businessSlug}) async {
     BusinessDetailResponseModel result = BusinessDetailResponseModel();
 
     try {
-      String endPoint = "${Endpoints.epBusinessDetails}$businessSlug";
+      String endPoint =
+          "${isSearch ? Endpoints.epFindBusinessDetails : Endpoints.epBusinessDetails}$businessSlug";
 
-      var json = await APIManager().getAllCall(endPoint: endPoint);
-
+      var json;
+      if (isSearch) {
+        json = await APIManager().postAPICall(endPoint: endPoint, request: {});
+      } else {
+        json = await APIManager().getAllCall(endPoint: endPoint);
+      }
       BusinessDetailResponseModel responseModel =
           BusinessDetailResponseModel.fromJson(json);
 
@@ -182,6 +187,24 @@ class CallAPI {
 
       var result =
           await APIManager().postAPICall(endPoint: endPoint, request: body);
+      SearchModel responseModel = SearchModel.fromJson(result);
+      // if (responseModel == 200) {
+      return responseModel;
+      // } else {
+      //   result = responseModel;
+      //   return result;
+      // }
+    } on Exception catch (e) {
+      printData(e.toString());
+      return new SearchModel();
+    }
+  }
+
+  Future<SearchModel> searchKeywords({required String keyword}) async {
+    try {
+      String endPoint = "${Endpoints.epKeyword}${keyword}";
+
+      var result = await APIManager().getAllCall(endPoint: endPoint);
       SearchModel responseModel = SearchModel.fromJson(result);
       // if (responseModel == 200) {
       return responseModel;

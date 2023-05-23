@@ -45,7 +45,6 @@ class _SearchUiState extends State<SearchUi> {
       return false;
     }
 
-    print("SEARCs: ${searchList}");
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Column(
