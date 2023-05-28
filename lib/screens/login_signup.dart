@@ -78,21 +78,21 @@ class LoginSignUpUI extends StatelessWidget {
               //       },
               //       width: width),
               // ),
-              Container(
-                margin: const EdgeInsets.only(top: 35),
-                child: googleLogin(
-                    title: "Google",
-                    imagePath: ImagesPaths.ic_google,
-                    onTap: () {
-                      googleSignIn.signIn().then((value) {
-                        saveUser(value, context, args, storage);
-                      }).onError((error, stackTrace) {
-                        log(error.toString());
-                        log(stackTrace.toString());
-                      });
-                    },
-                    width: width),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.only(top: 35),
+              //   child: googleLogin(
+              //       title: "Google",
+              //       imagePath: ImagesPaths.ic_google,
+              //       onTap: () {
+              //         googleSignIn.signIn().then((value) {
+              //           saveUser(value, context, args, storage);
+              //         }).onError((error, stackTrace) {
+              //           log(error.toString());
+              //           log(stackTrace.toString());
+              //         });
+              //       },
+              //       width: width),
+              // ),
               Container(
                 margin: EdgeInsets.only(top: 85),
                 child: InkButton(
