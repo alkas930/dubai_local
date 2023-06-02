@@ -224,7 +224,7 @@ class _DetailUiState extends State<DetailUi> {
                       ),
                       child: ClipOval(
                         child: Image.network(
-                          "${Endpoints.BASE_URL}assets/logo/${searchItems.banner!}",
+                          searchItems.full_banner!,
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,

@@ -8,11 +8,11 @@ class SubCategoryBusinessResponseModel {
 
   SubCategoryBusinessResponseModel(
       {this.subcatBusinessData,
-        this.catName,
-        this.metaTitle,
-        this.title,
-        this.metaDesc,
-        this.appData});
+      this.catName,
+      this.metaTitle,
+      this.title,
+      this.metaDesc,
+      this.appData});
 
   SubCategoryBusinessResponseModel.fromJson(Map<String, dynamic> json) {
     if (json['subcat_business_data'] != null) {
@@ -30,9 +30,8 @@ class SubCategoryBusinessResponseModel {
     metaTitle = json['meta_title'];
     title = json['title'];
     metaDesc = json['meta_desc'];
-    appData = json['app_data'] != null
-        ? AppData.fromJson(json['app_data'])
-        : null;
+    appData =
+        json['app_data'] != null ? AppData.fromJson(json['app_data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +61,7 @@ class SubcatBusinessData {
   String? email;
   String? phone;
   String? banner;
+  String? full_banner;
   String? aeverageRating;
   String? avgRating;
   String? categoryId;
@@ -69,16 +69,17 @@ class SubcatBusinessData {
 
   SubcatBusinessData(
       {this.id,
-        this.name,
-        this.address,
-        this.slug,
-        this.email,
-        this.phone,
-        this.banner,
-        this.aeverageRating,
-        this.avgRating,
-        this.categoryId,
-        this.countRating});
+      this.name,
+      this.address,
+      this.slug,
+      this.email,
+      this.phone,
+      this.banner,
+      this.full_banner,
+      this.aeverageRating,
+      this.avgRating,
+      this.categoryId,
+      this.countRating});
 
   SubcatBusinessData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -88,6 +89,7 @@ class SubcatBusinessData {
     email = json['email'];
     phone = json['phone'];
     banner = json['banner'];
+    full_banner = json['full_banner'];
     aeverageRating = json['aeverage_rating'];
     avgRating = json['avg_rating'];
     categoryId = json['category_id'];
@@ -103,6 +105,7 @@ class SubcatBusinessData {
     data['email'] = email;
     data['phone'] = phone;
     data['banner'] = banner;
+    data['full_banner'] = full_banner;
     data['aeverage_rating'] = aeverageRating;
     data['avg_rating'] = avgRating;
     data['category_id'] = categoryId;
@@ -149,17 +152,17 @@ class AppData {
 
   AppData(
       {this.id,
-        this.email,
-        this.phoneNo,
-        this.facebookUrl,
-        this.youtubeUrl,
-        this.linkedinUrl,
-        this.twitterUrl,
-        this.instagramUrl,
-        this.address,
-        this.captchaKey,
-        this.logoPath,
-        this.modifiedAt});
+      this.email,
+      this.phoneNo,
+      this.facebookUrl,
+      this.youtubeUrl,
+      this.linkedinUrl,
+      this.twitterUrl,
+      this.instagramUrl,
+      this.address,
+      this.captchaKey,
+      this.logoPath,
+      this.modifiedAt});
 
   AppData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
