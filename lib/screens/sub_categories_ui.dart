@@ -98,7 +98,15 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
               changeIndex: widget.changeIndex,
               onBack: widget.onBack,
             ),
-            Text(widget.args["catName"] ?? ""),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+              ),
+              child: Text(
+                widget.args["catName"] ?? "",
+                style: const TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
             // .text
             //     .color(Colors.white)
             //     .size(20)

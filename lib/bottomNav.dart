@@ -49,10 +49,11 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   onBack() {
+    print("SCREEN ADDED ");
     if (_prevIndex.isNotEmpty) {
       setState(() {
         _prevArgs.removeLast();
-        _args = _prevArgs.last;
+        if (_prevArgs.isNotEmpty) _args = _prevArgs.last;
         _currentIndex = _prevIndex.last;
         _prevIndex.removeLast();
       });
