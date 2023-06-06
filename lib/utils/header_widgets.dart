@@ -64,10 +64,10 @@ class _HeaderWidget extends State<HeaderWidget> {
               child: Container(
                 width: Constants.iconSize,
                 height: Constants.iconSize,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                ),
+                // decoration: BoxDecoration(
+                //   border: Border.all(color: Colors.white, width: 1),
+                //   borderRadius: BorderRadius.all(Radius.circular(50)),
+                // ),
                 child: userLoggedIn == Constants.guestLogin ||
                         userImage.toString().trim().isEmpty
                     ? FittedBox(
@@ -85,13 +85,14 @@ class _HeaderWidget extends State<HeaderWidget> {
                           height: double.infinity,
                           errorBuilder: (BuildContext context, Object exception,
                               StackTrace? stackTrace) {
-                            return FittedBox(
-                              fit: BoxFit.fill,
-                              child: Icon(
-                                Icons.account_circle_rounded,
-                                color: Colors.grey.shade100,
-                              ),
-                            );
+                            return SizedBox.shrink();
+                            // return FittedBox(
+                            //   fit: BoxFit.fill,
+                            //   child: Icon(
+                            //     Icons.account_circle_rounded,
+                            //     color: Colors.grey.shade100,
+                            //   ),
+                            // );
                           },
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {

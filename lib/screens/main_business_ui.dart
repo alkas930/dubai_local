@@ -646,6 +646,15 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                 ),
                                                 Row(
                                                   children: [
+                                                    Text("Name: "),
+                                                    Text(_businessDetail
+                                                            ?.businessData
+                                                            ?.name ??
+                                                        ""),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
                                                     Expanded(
                                                       child: Container(
                                                         margin: const EdgeInsets
