@@ -55,7 +55,7 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
       "email": emailController.text,
       "url": _businessDetail?.businessData?.url ?? "",
       "query": messageController.text,
-      "mobile": "+971${phoneController.text}",
+      "mobile": phoneController.text,
     }).then((value) {
       if (value == null) {
         ToastContext().init(context);
@@ -76,7 +76,7 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
     CallAPI().claimBusiness(body: {
       "name": nameController.text,
       "email": emailController.text,
-      "phone_no": "+971${phoneController.text}",
+      "phone_no": phoneController.text,
       "busi_name": _businessDetail?.businessData?.name ?? "",
       "busi_id": _businessDetail?.businessData?.id ?? "",
       "busi_url": _businessDetail?.businessData?.url ?? "",
@@ -425,8 +425,10 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                               errorMaxLines: 2,
                                                             ),
                                                             validator: (value) =>
-                                                                value!.length !=
-                                                                        9
+                                                                value!.length >
+                                                                            15 ||
+                                                                        value.length <
+                                                                            9
                                                                     ? 'Please enter valid phone no.'
                                                                     : null,
                                                           ),
@@ -700,8 +702,9 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                     errorMaxLines: 2,
                                                   ),
                                                   validator: (value) => value!
-                                                              .length !=
-                                                          9
+                                                                  .length >
+                                                              15 ||
+                                                          value.length < 9
                                                       ? 'Please enter valid phone no.'
                                                       : null,
                                                 ),

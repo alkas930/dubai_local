@@ -30,7 +30,8 @@ class _SplashUIState extends State<SplashUI> {
         setState(() {
           topList = value.data;
         });
-      })
+      }),
+      Future.delayed(const Duration(seconds: 3)),
     ]);
     navigateToNextScreen();
   }
