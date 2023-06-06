@@ -368,6 +368,20 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                       ),
                                                     ],
                                                   ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        _businessDetail
+                                                                ?.businessData
+                                                                ?.name ??
+                                                            "",
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
+                                                  ),
                                                   TextFormField(
                                                     controller: nameController,
                                                     decoration:
@@ -646,11 +660,15 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Text("Name: "),
-                                                    Text(_businessDetail
-                                                            ?.businessData
-                                                            ?.name ??
-                                                        ""),
+                                                    Text(
+                                                      _businessDetail
+                                                              ?.businessData
+                                                              ?.name ??
+                                                          "",
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
                                                   ],
                                                 ),
                                                 Row(
