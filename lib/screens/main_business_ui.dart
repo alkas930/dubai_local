@@ -65,7 +65,6 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
         emailController.clear();
         phoneController.clear();
         messageController.clear();
-        Navigator.of(context, rootNavigator: true).pop('dialog');
         ToastContext().init(context);
         Toast.show(value["message"] ?? "Enquiry sent successfully",
             duration: 5);
@@ -91,7 +90,6 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
         emailController.clear();
         phoneController.clear();
         messageController.clear();
-        Navigator.of(context, rootNavigator: true).pop('dialog');
         ToastContext().init(context);
         Toast.show(value["message"] ?? "Claim raised successfully",
             duration: 5);
@@ -519,6 +517,10 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                       ),
                                                       onTap: () {
                                                         if (validateAndSave()) {
+                                                          Navigator.of(context,
+                                                                  rootNavigator:
+                                                                      true)
+                                                              .pop('dialog');
                                                           sendEnquiry();
                                                         }
                                                       },
@@ -809,6 +811,10 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                     ),
                                                     onTap: () {
                                                       if (validateAndSave()) {
+                                                        Navigator.of(context,
+                                                                rootNavigator:
+                                                                    true)
+                                                            .pop('dialog');
                                                         claimBusiness();
                                                       }
                                                     },
