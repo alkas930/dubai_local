@@ -67,7 +67,8 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
         messageController.clear();
         Navigator.of(context, rootNavigator: true).pop('dialog');
         ToastContext().init(context);
-        Toast.show(value["message"] ?? "Enquiry sent successfully");
+        Toast.show(value["message"] ?? "Enquiry sent successfully",
+            duration: 5000);
       }
     }).catchError((onError) {});
   }
@@ -92,7 +93,8 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
         messageController.clear();
         Navigator.of(context, rootNavigator: true).pop('dialog');
         ToastContext().init(context);
-        Toast.show(value["message"] ?? "Claim raised successfully");
+        Toast.show(value["message"] ?? "Claim raised successfully",
+            duration: 5000);
       }
     }).catchError((onError) {});
   }
@@ -372,16 +374,22 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                     ),
                                                     Row(
                                                       children: [
-                                                        Text(
-                                                          _businessDetail
-                                                                  ?.businessData
-                                                                  ?.name ??
-                                                              "",
-                                                          style: const TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                        Expanded(
+                                                          child: Text(
+                                                            _businessDetail
+                                                                    ?.businessData
+                                                                    ?.name ??
+                                                                "",
+                                                            style: const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -680,15 +688,22 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Text(
-                                                        _businessDetail
-                                                                ?.businessData
-                                                                ?.name ??
-                                                            "",
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 14),
+                                                      Expanded(
+                                                        child: Text(
+                                                          _businessDetail
+                                                                  ?.businessData
+                                                                  ?.name ??
+                                                              "",
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 14),
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
