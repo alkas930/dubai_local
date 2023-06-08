@@ -68,7 +68,7 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
         Navigator.of(context, rootNavigator: true).pop('dialog');
         ToastContext().init(context);
         Toast.show(value["message"] ?? "Enquiry sent successfully",
-            duration: 5000);
+            duration: 5);
       }
     }).catchError((onError) {});
   }
@@ -94,7 +94,7 @@ class _MainBusinessUIState extends State<MainBusinessUI> {
         Navigator.of(context, rootNavigator: true).pop('dialog');
         ToastContext().init(context);
         Toast.show(value["message"] ?? "Claim raised successfully",
-            duration: 5000);
+            duration: 5);
       }
     }).catchError((onError) {});
   }
