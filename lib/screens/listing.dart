@@ -38,6 +38,7 @@ class _DetailUiState extends State<DetailUi> {
 
   void getData(String slug) {
     CallAPI().getSubCategoriesBusiness(slug: slug).then((value) {
+      print("DATA: ${value}");
       if (value.subcatBusinessData!.isNotEmpty) {
         setState(() {
           detailList = value.subcatBusinessData!;
@@ -104,7 +105,7 @@ class _DetailUiState extends State<DetailUi> {
                       top: 30,
                     ),
                     child: Text(
-                      widget.args["catName"] ?? category ?? "",
+                      category ?? "",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
