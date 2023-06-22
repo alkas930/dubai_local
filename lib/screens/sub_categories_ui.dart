@@ -169,12 +169,12 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
             child: ScalableImageWidget.fromSISource(
               si: ScalableImageSource.fromSvgHttpUrl(
                   Uri.parse(categoryItem.fullIcon!)),
-              onLoading: (ctx) {
-                return SizedBox(
-                    child: CircularProgressIndicator(
-                  color: AppColors.accentRipple,
-                ));
-              },
+              // onLoading: (ctx) {
+              //   return SizedBox(
+              //       child: CircularProgressIndicator(
+              //     color: AppColors.accentRipple,
+              //   ));
+              // },
             ),
           ),
           const SizedBox(

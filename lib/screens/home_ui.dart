@@ -267,13 +267,13 @@ class _HomeUIState extends State<HomeUI> {
                                                   .fromSvgHttpUrl(Uri.parse(
                                                       widget.categoryList[index]
                                                           .fullIcon)),
-                                              onLoading: (ctx) {
-                                                return SizedBox(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                  color: AppColors.accentRipple,
-                                                ));
-                                              },
+                                              // onLoading: (ctx) {
+                                              //   return SizedBox(
+                                              //       child:
+                                              //           CircularProgressIndicator(
+                                              //     color: AppColors.accentRipple,
+                                              //   ));
+                                              // },
                                             ),
                                           ),
                                     const SizedBox(

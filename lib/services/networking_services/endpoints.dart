@@ -24,6 +24,7 @@ class Endpoints {
   static const String epKeyword = "keyword?query=";
   static const String createUser = "create-user";
   static const String deleteUser = "delete-user";
+  static const String submitReview = "review-user";
 
   GetStorage storage = GetStorage();
 

@@ -47,6 +47,10 @@ dependencies:
   intl: ^0.17.0
   velocity_x: ^3.6.0
   share_plus: ^4.5.3
+  five_pointed_star: ^1.0.3
+  flutter_rating_bar: ^4.0.1
+  map_launcher: ^2.5.0
+  google_maps_flutter: ^2.3.0
 
 dev_dependencies:
   flutter_test:

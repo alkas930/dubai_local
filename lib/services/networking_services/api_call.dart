@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dubai_local/models/SearchModel.dart';
 import 'package:dubai_local/models/SubCategoryBusinessResponseModel.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
@@ -245,14 +243,29 @@ class CallAPI {
           await APIManager().postAPICall(endPoint: endPoint, request: body);
       // SearchModel responseModel = SearchModel.fromJson(result);
       // if (responseModel == 200) {
+      print(result);
       return result;
       // } else {
       //   result = responseModel;
       //   return result;
       // }
     } on Exception catch (e) {
-      printData(e.toString());
+      printData('Error' + e.toString());
       return new Map();
+    }
+  }
+
+  Future<Map?> SubmitReview({required Map body}) async {
+    try {
+      String endPoint = "${Endpoints.submitReview}";
+
+      var result =
+          await APIManager().postAPICall(endPoint: endPoint, request: body);
+      return result;
+    } on Exception catch (e) {
+      printData('Error' + e.toString());
+
+      return Map();
     }
   }
 }
