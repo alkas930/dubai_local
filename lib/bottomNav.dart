@@ -240,6 +240,7 @@ class _BottomNavState extends State<BottomNav> {
     if (args["topList"] != null && args["topList"]?.isNotEmpty) {
       topList = List<TopHomeData>.from(args["topList"]);
     }
+    print("HOME ARGS: ${args}");
 
     return Stack(
       children: <Widget>[

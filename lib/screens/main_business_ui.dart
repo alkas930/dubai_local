@@ -17,21 +17,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-// GOOGLE MAP
-Completer<GoogleMapController> _controller = Completer();
-
-const CameraPosition _cameraPosition = CameraPosition(
-  target: LatLng(25.2048, 55.2708),
-  zoom: 13,
-);
-List<Marker> _marker = [];
-List<Marker> _list = const [
-  Marker(
-      markerId: MarkerId("1"),
-      position: LatLng(25.2048, 55.2708),
-      infoWindow: InfoWindow(title: "Dubai location"))
-];
-
 class MainBusinessUI extends StatefulWidget {
   final Function(int index)? changeIndex;
   final Function(Map args)? setArgs;
@@ -64,6 +49,8 @@ class _MainBusinessUIState extends State<MainBusinessUI>
   final TextEditingController nameControllerReview = TextEditingController();
   final TextEditingController messageControllerReview = TextEditingController();
 
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
   BusinessDetailResponseModel? _businessDetail;
   bool isVisible = false;
 
@@ -71,6 +58,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
     CallAPI()
         .getBusinessDetail(businessSlug: businessSlug, isSearch: isSearch)
         .then((value) {
+      print(value);
       setState(() {
         _businessDetail = value;
       });
@@ -156,7 +144,6 @@ class _MainBusinessUIState extends State<MainBusinessUI>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _marker.addAll(_list);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // final Map args =
       //     (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
@@ -195,11 +182,10 @@ class _MainBusinessUIState extends State<MainBusinessUI>
     }
 
     TabController tabController =
-        TabController(length: 3, vsync: this, initialIndex: 2);
+        TabController(length: 3, vsync: this, initialIndex: 0);
     tabController.addListener(() {});
     var stars = _businessDetail?.businessData?.avgRating;
     double result = double.parse(stars!);
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: SingleChildScrollView(
@@ -701,25 +687,27 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                     style: const TextStyle(fontSize: 15),
                                   ),
                                   // GOOGLE MAP
-                                  Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    height: 30,
-                                    child: GoogleMap(
-                                      // markers: ,
-                                      mapType: MapType.normal,
-                                      onMapCreated:
-                                          (GoogleMapController controller) {
-                                        _controller.complete(controller);
-                                      },
-                                      initialCameraPosition: _cameraPosition,
-                                      markers: Set<Marker>.of(_marker),
+                                  GoogleMap(
+                                    mapType: MapType.normal,
+                                    initialCameraPosition: CameraPosition(
+                                      target: LatLng(
+                                          double.parse(_businessDetail!
+                                              .businessData!.lat
+                                              .toString()),
+                                          double.parse(_businessDetail!
+                                              .businessData!.lng
+                                              .toString())),
+                                      zoom: 14.4746,
                                     ),
+                                    onMapCreated:
+                                        (GoogleMapController controller) {
+                                      _controller.complete(controller);
+                                    },
                                   ),
-
                                   // SUBMIT REVIEW
                                   Container(
                                     color: AppColors.lightGrey,
-                                    padding: EdgeInsets.all(30.0),
+                                    padding: const EdgeInsets.all(30.0),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,

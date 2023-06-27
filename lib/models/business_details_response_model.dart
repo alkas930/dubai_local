@@ -71,6 +71,7 @@ class BusinessData {
   String? subCatName;
   String? catName;
   String? districtName;
+  String? location_url;
 
   BusinessData(
       {this.id,
@@ -100,7 +101,8 @@ class BusinessData {
       this.countRating,
       this.subCatName,
       this.catName,
-      this.districtName});
+      this.districtName,
+      this.location_url});
 
   BusinessData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -131,6 +133,7 @@ class BusinessData {
     subCatName = json['sub_cat_name'];
     catName = json['cat_name'];
     districtName = json['district_name'];
+    location_url = json['location_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -163,6 +166,7 @@ class BusinessData {
     data['sub_cat_name'] = subCatName;
     data['cat_name'] = catName;
     data['district_name'] = districtName;
+    data['location_url'] = location_url;
     return data;
   }
 }

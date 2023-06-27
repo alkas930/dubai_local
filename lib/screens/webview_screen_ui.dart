@@ -69,30 +69,35 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   : const SizedBox.shrink(),
               Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: WebView(
-                  navigationDelegate: (NavigationRequest request) {
-                    if (request.url.contains("mailto:")) {
-                      launchUrl(Uri.parse(request.url));
-                      return NavigationDecision.prevent;
-                    } else if (request.url.contains("tel:")) {
-                      launchUrl(Uri.parse(request.url));
-                      return NavigationDecision.prevent;
-                    }
-                    return NavigationDecision.navigate;
-                  },
-                  backgroundColor: Colors.transparent,
-                  initialUrl: widget.args?["url"] != null &&
-                          widget.args?["url"]?.isNotEmpty
-                      ? widget.args["url"]
-                      : Endpoints.BASE_URL,
-                  javascriptMode: JavascriptMode.unrestricted,
-                  onPageFinished: (finish) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
-                  // onWebViewCreated: (WebViewController webViewController) {
-                  // },
+                child: WebViewWidget(
+                  controller: WebViewController()
+                    ..loadRequest(
+                      widget.args?["url"] != null &&
+                              widget.args?["url"]?.isNotEmpty
+                          ? widget.args["url"]
+                          : Endpoints.BASE_URL,
+                    )
+                    ..setNavigationDelegate(
+                      NavigationDelegate(
+                        onNavigationRequest: (request) {
+                          if (request.url.contains("mailto:")) {
+                            launchUrl(Uri.parse(request.url));
+                            return NavigationDecision.prevent;
+                          } else if (request.url.contains("tel:")) {
+                            launchUrl(Uri.parse(request.url));
+                            return NavigationDecision.prevent;
+                          }
+                          return NavigationDecision.navigate;
+                        },
+                        onPageFinished: (url) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                      ),
+                    )
+                    ..setBackgroundColor(Colors.transparent)
+                    ..setJavaScriptMode(JavaScriptMode.unrestricted),
                 ),
               ),
             ],

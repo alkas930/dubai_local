@@ -14,13 +14,13 @@ class MyProfile extends StatelessWidget {
   final Function() onBack;
   final Map args;
 
-  const MyProfile(
-      {Key? key,
-      required this.changeIndex,
-      required this.setArgs,
-      required this.onBack,
-      required this.args})
-      : super(key: key);
+  const MyProfile({
+    Key? key,
+    required this.changeIndex,
+    required this.setArgs,
+    required this.onBack,
+    required this.args,
+  }) : super(key: key);
 
   Future<bool> _onWillPop() async {
     // Navigator.pop(context);
