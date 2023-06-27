@@ -53,12 +53,26 @@ class _MainBusinessUIState extends State<MainBusinessUI>
       Completer<GoogleMapController>();
   BusinessDetailResponseModel? _businessDetail;
   bool isVisible = false;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   void callAPI(String businessSlug, bool isSearch) {
     CallAPI()
         .getBusinessDetail(businessSlug: businessSlug, isSearch: isSearch)
         .then((value) {
-      print(value);
+      final marker = Marker(
+        markerId: MarkerId(value.businessData!.name ?? ""),
+        position: LatLng(double.parse(value.businessData!.lat.toString()),
+            double.parse(value.businessData!.lng.toString())),
+        // icon: BitmapDescriptor.,
+        infoWindow: InfoWindow(
+          title: value.businessData!.name ?? "",
+          snippet: value.businessData!.address ?? "",
+        ),
+      );
+
+      setState(() {
+        markers[MarkerId(value.businessData!.name ?? "")] = marker;
+      });
       setState(() {
         _businessDetail = value;
       });
@@ -688,6 +702,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                   ),
                                   // GOOGLE MAP
                                   GoogleMap(
+                                    markers: markers.values.toSet(),
                                     mapType: MapType.normal,
                                     initialCameraPosition: CameraPosition(
                                       target: LatLng(
@@ -697,7 +712,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                           double.parse(_businessDetail!
                                               .businessData!.lng
                                               .toString())),
-                                      zoom: 14.4746,
+                                      zoom: 18.5,
                                     ),
                                     onMapCreated:
                                         (GoogleMapController controller) {
