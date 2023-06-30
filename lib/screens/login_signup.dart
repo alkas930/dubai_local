@@ -33,7 +33,6 @@ class LoginSignUpUI extends StatelessWidget {
         storage.write(SharedPrefrencesKeys.USER_ID, data.id ?? "");
         storage.write(SharedPrefrencesKeys.USER_IMAGE, data.photoUrl ?? "");
         storage.write(SharedPrefrencesKeys.USER_EMAIL, data.email ?? "");
-        print("ARGS: ${args}");
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.main, (Route<dynamic> route) => false,
             arguments: args);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/SearchModel.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
@@ -28,6 +30,28 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidget extends State<SearchWidget> {
   List<SearchModelData> searchList = [];
+  Timer? _debounce;
+
+  _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (query.trim().length >= 3 || query.trim().isNotEmpty) {
+        if (widget.isListEnabled) {
+          searchKeyword(query);
+        } else {
+          searchData(query);
+        }
+      } else {
+        if (widget.isListEnabled == true) {
+          setState(() {
+            searchList = [];
+          });
+        } else {
+          widget.updateListing!([]);
+        }
+      }
+    });
+  }
 
   void openBusinessDetails(BuildContext context, String businessSlug) {
     // Navigator.pushNamed(context, AppRoutes.mainBusiness,
@@ -92,6 +116,12 @@ class _SearchWidget extends State<SearchWidget> {
   }
 
   @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
@@ -137,17 +167,7 @@ class _SearchWidget extends State<SearchWidget> {
                 ),
                 style: const TextStyle(fontSize: 12),
                 onChanged: (query) {
-                  if (query.length >= 3) {
-                    if (widget.isListEnabled) {
-                      searchKeyword(query);
-                    } else {
-                      searchData(query);
-                    }
-                  } else {
-                    setState(() {
-                      searchList = [];
-                    });
-                  }
+                  _onSearchChanged(query);
                 },
               ),
             ),

@@ -99,6 +99,8 @@ class CategoriesUi extends StatelessWidget {
           SizedBox(
             height: 35,
             child: ScalableImageWidget.fromSISource(
+              scale: 0.5,
+              reload: false,
               si: ScalableImageSource.fromSvgHttpUrl(
                   Uri.parse(categoryItems.fullIcon)),
               onLoading: (ctx) {
