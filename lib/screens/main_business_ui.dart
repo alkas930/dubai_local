@@ -198,7 +198,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
     TabController tabController =
         TabController(length: 3, vsync: this, initialIndex: 0);
     tabController.addListener(() {});
-    var stars = _businessDetail?.businessData?.avgRating;
+    var stars = _businessDetail?.businessData?.average_rating;
     double result = double.parse(stars!);
     return WillPopScope(
       onWillPop: _onWillPop,

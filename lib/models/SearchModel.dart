@@ -35,6 +35,7 @@ class SearchModelData {
   String? isClaimed;
   String? isVerified;
   String? avgRating;
+  String? average_rating;
   String? address;
   String? phone;
   String? banner;
@@ -57,6 +58,7 @@ class SearchModelData {
       this.phone,
       this.banner,
       this.aeverageRating,
+      this.average_rating,
       this.countRating,
       this.districtName,
       this.catId,
@@ -75,6 +77,7 @@ class SearchModelData {
     phone = json['phone'];
     banner = json['banner'];
     aeverageRating = json['aeverage_rating'];
+    average_rating = json['average_rating'];
     countRating = json['count_rating'];
     districtName = json['district_name'];
     catId = json['cat_id'];
@@ -95,6 +98,7 @@ class SearchModelData {
     data['phone'] = this.phone;
     data['banner'] = this.banner;
     data['aeverage_rating'] = this.aeverageRating;
+    data['average_rating'] = this.average_rating;
     data['count_rating'] = this.countRating;
     data['district_name'] = this.districtName;
     data['cat_id'] = this.catId;

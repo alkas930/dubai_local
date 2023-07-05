@@ -63,6 +63,7 @@ class SubcatBusinessData {
   String? banner;
   String? full_banner;
   String? aeverageRating;
+  String? average_rating;
   String? avgRating;
   String? categoryId;
   String? countRating;
@@ -77,6 +78,7 @@ class SubcatBusinessData {
       this.banner,
       this.full_banner,
       this.aeverageRating,
+      this.average_rating,
       this.avgRating,
       this.categoryId,
       this.countRating});
@@ -91,6 +93,7 @@ class SubcatBusinessData {
     banner = json['banner'];
     full_banner = json['full_banner'];
     aeverageRating = json['aeverage_rating'];
+    average_rating = json['average_rating'];
     avgRating = json['avg_rating'];
     categoryId = json['category_id'];
     countRating = json['count_rating'];
@@ -107,6 +110,7 @@ class SubcatBusinessData {
     data['banner'] = banner;
     data['full_banner'] = full_banner;
     data['aeverage_rating'] = aeverageRating;
+    data['average_rating'] = average_rating;
     data['avg_rating'] = avgRating;
     data['category_id'] = categoryId;
     data['count_rating'] = countRating;

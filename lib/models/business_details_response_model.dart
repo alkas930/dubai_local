@@ -67,6 +67,7 @@ class BusinessData {
   String? numRating;
   String? averageRating;
   String? avgRating;
+  String? average_rating;
   String? countRating;
   String? subCatName;
   String? catName;
@@ -97,6 +98,7 @@ class BusinessData {
       this.timings,
       this.numRating,
       this.averageRating,
+      this.average_rating,
       this.avgRating,
       this.countRating,
       this.subCatName,
@@ -128,6 +130,7 @@ class BusinessData {
     timings = json['timings'];
     numRating = json['num_rating'];
     averageRating = json['aeverage_rating'];
+    average_rating = json['average_rating'];
     avgRating = json['avg_rating'];
     countRating = json['count_rating'];
     subCatName = json['sub_cat_name'];
@@ -161,6 +164,7 @@ class BusinessData {
     data['timings'] = timings;
     data['num_rating'] = numRating;
     data['aeverage_rating'] = averageRating;
+    data['average_rating'] = average_rating;
     data['avg_rating'] = avgRating;
     data['count_rating'] = countRating;
     data['sub_cat_name'] = subCatName;

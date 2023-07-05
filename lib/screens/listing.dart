@@ -258,9 +258,9 @@ class _DetailUiState extends State<DetailUi> {
                                       selectionColor: AppColors.yellow,
                                       maxRating: 5,
                                       count: 5,
-                                      value: searchItems.avgRating != null
+                                      value: searchItems.average_rating != null
                                           ? double.parse(double.parse(
-                                                  searchItems.avgRating!)
+                                                  searchItems.average_rating!)
                                               .toStringAsFixed(2))
                                           : 0,
                                       isSelectable: false,
@@ -275,7 +275,7 @@ class _DetailUiState extends State<DetailUi> {
                                             borderRadius:
                                                 BorderRadius.circular(50)),
                                         child: Text(
-                                          "${double.tryParse(searchItems.avgRating!) ?? 0.toStringAsFixed(1)}",
+                                          "${double.tryParse(searchItems.average_rating!) ?? 0.toStringAsFixed(1)}",
                                           style: const TextStyle(
                                               fontSize: 6,
                                               color: Colors.white,

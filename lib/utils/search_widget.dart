@@ -212,7 +212,7 @@ class _SearchWidget extends State<SearchWidget> {
                       },
                     ),
                   )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
           ],
         ));
   }

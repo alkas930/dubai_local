@@ -236,76 +236,88 @@ class _SearchUiState extends State<SearchUi> {
                   searchList.isEmpty
                       ? Expanded(
                           child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 10,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 16),
+                              alignment: Alignment.topCenter,
+                              width: width,
+                              constraints: BoxConstraints(minHeight: height),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
                                 ),
-                                topList.isNotEmpty
-                                    ? ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: topList.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) =>
-                                                Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            if (index == 2)
-                                              WebviewBanner(
-                                                  ImagesPaths.ic_explore_dubai,
-                                                  Endpoints.ExploreDubai),
-                                            if (index == 3)
-                                              WebviewBanner(
-                                                  ImagesPaths.ic_things_to_do,
-                                                  Endpoints.ThingsToDo),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                              child: Text(
-                                                  topList[index].heading!,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  textAlign: TextAlign.start),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 24),
-                                              child: SizedBox(
-                                                height: 128,
-                                                child: ListView.builder(
-                                                  clipBehavior: Clip.none,
-                                                  physics:
-                                                      const ClampingScrollPhysics(),
-                                                  shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: topList[index]
-                                                          .res!
-                                                          .isNotEmpty
-                                                      ? topList[index]
-                                                          .res
-                                                          ?.length
-                                                      : 0,
-                                                  itemBuilder: (BuildContext
-                                                              context,
-                                                          int idx) =>
-                                                      ListingCard(
-                                                          data: topList[index],
-                                                          index: idx),
+                              ),
+                              child: Column(
+                                children: [
+                                  topList.isNotEmpty
+                                      ? ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: topList.length,
+                                          itemBuilder: (BuildContext context,
+                                                  int index) =>
+                                              Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              if (index == 2)
+                                                WebviewBanner(
+                                                    ImagesPaths
+                                                        .ic_explore_dubai,
+                                                    Endpoints.ExploreDubai),
+                                              if (index == 3)
+                                                WebviewBanner(
+                                                    ImagesPaths.ic_things_to_do,
+                                                    Endpoints.ThingsToDo),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8),
+                                                child: Text(
+                                                    topList[index].heading!,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    textAlign: TextAlign.start),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 24),
+                                                child: SizedBox(
+                                                  height: 128,
+                                                  child: ListView.builder(
+                                                    clipBehavior: Clip.none,
+                                                    physics:
+                                                        const ClampingScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount: topList[index]
+                                                            .res!
+                                                            .isNotEmpty
+                                                        ? topList[index]
+                                                            .res
+                                                            ?.length
+                                                        : 0,
+                                                    itemBuilder: (BuildContext
+                                                                context,
+                                                            int idx) =>
+                                                        ListingCard(
+                                                            data:
+                                                                topList[index],
+                                                            index: idx),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : const SizedBox.shrink(),
-                              ],
+                                            ],
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                ],
+                              ),
                             ),
                           ),
                         )
@@ -404,7 +416,7 @@ class _SearchUiState extends State<SearchUi> {
                                             borderRadius:
                                                 BorderRadius.circular(50)),
                                         child: Text(
-                                          "${double.tryParse(searchItems.avgRating!) ?? 0.toStringAsFixed(1)}",
+                                          "${double.tryParse(searchItems.average_rating!) ?? 0.toStringAsFixed(1)}",
                                           style: const TextStyle(
                                               fontSize: 6,
                                               color: Colors.white,
