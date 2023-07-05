@@ -6,7 +6,6 @@ import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:jovial_svg/jovial_svg.dart';
 
 import '../models/top_home_response_model.dart';
 import '../utils/localisations/app_colors.dart';
@@ -261,21 +260,8 @@ class _HomeUIState extends State<HomeUI> {
                                           )
                                         : SizedBox(
                                             height: 35,
-                                            child: ScalableImageWidget
-                                                .fromSISource(
-                                              si: ScalableImageSource
-                                                  .fromSvgHttpUrl(Uri.parse(
-                                                      widget.categoryList[index]
-                                                          .fullIcon)),
-                                              // onLoading: (ctx) {
-                                              //   return SizedBox(
-                                              //       child:
-                                              //           CircularProgressIndicator(
-                                              //     color: AppColors.accentRipple,
-                                              //   ));
-                                              // },
-                                            ),
-                                          ),
+                                            child: Image.network(widget
+                                                .categoryList[index].fullIcon)),
                                     const SizedBox(
                                       height: 5,
                                     ),

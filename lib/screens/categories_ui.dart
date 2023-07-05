@@ -5,7 +5,6 @@ import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:jovial_svg/jovial_svg.dart';
 import '../utils/localisations/app_colors.dart';
 import '../utils/search_widget.dart';
 
@@ -96,21 +95,7 @@ class CategoriesUi extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 35,
-            child: ScalableImageWidget.fromSISource(
-              scale: 0.5,
-              reload: false,
-              si: ScalableImageSource.fromSvgHttpUrl(
-                  Uri.parse(categoryItems.fullIcon)),
-              onLoading: (ctx) {
-                return SizedBox(
-                    child: CircularProgressIndicator(
-                  color: AppColors.accentRipple,
-                ));
-              },
-            ),
-          ),
+          SizedBox(height: 35, child: Image.network(categoryItems.fullIcon)),
           const SizedBox(
             height: 5,
           ),

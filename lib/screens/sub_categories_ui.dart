@@ -8,7 +8,6 @@ import 'package:dubai_local/utils/localisations/images_paths.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:jovial_svg/jovial_svg.dart';
 
 import '../utils/localisations/app_colors.dart';
 
@@ -164,19 +163,7 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 35,
-            child: ScalableImageWidget.fromSISource(
-              si: ScalableImageSource.fromSvgHttpUrl(
-                  Uri.parse(categoryItem.fullIcon!)),
-              // onLoading: (ctx) {
-              //   return SizedBox(
-              //       child: CircularProgressIndicator(
-              //     color: AppColors.accentRipple,
-              //   ));
-              // },
-            ),
-          ),
+          SizedBox(height: 35, child: Image.network(categoryItem.fullIcon!)),
           const SizedBox(
             height: 5,
           ),
