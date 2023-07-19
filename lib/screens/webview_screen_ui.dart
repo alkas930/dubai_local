@@ -74,8 +74,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     ..loadRequest(
                       widget.args?["url"] != null &&
                               widget.args?["url"]?.isNotEmpty
-                          ? widget.args["url"]
-                          : Endpoints.BASE_URL,
+                          ? Uri.parse(widget.args["url"])
+                          : Uri.parse(Endpoints.BASE_URL),
                     )
                     ..setNavigationDelegate(
                       NavigationDelegate(
