@@ -1193,10 +1193,12 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             child: Container(
               alignment: Alignment.center,
               decoration: const BoxDecoration(color: Color(0xffEEF1F8)),
-              child: Text(
-                time,
-                style: const TextStyle(fontSize: 8),
-                textAlign: TextAlign.center,
+              child: FittedBox(
+                child: Text(
+                  time,
+                  style: const TextStyle(fontSize: 8),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           )
