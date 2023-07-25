@@ -1298,17 +1298,61 @@ class _MainBusinessUIState extends State<MainBusinessUI>
               borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
             clipBehavior: Clip.hardEdge,
-            child: Image.network(
-              "https://dubailocal.ae/assets/more_images/${images[idx]}",
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
+            child: GestureDetector(
+              onTap: () async {
+                await showDialog(
+                    context: context,
+                    builder: (_) => ImageDialog(
+                        image:
+                            "https://dubailocal.ae/assets/more_images/${images[idx]}"));
+              },
+              child: Image.network(
+                "https://dubailocal.ae/assets/more_images/${images[idx]}",
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
             ),
           ),
         ),
       );
     }
     return widget;
+  }
+}
+
+class ImageDialog extends StatelessWidget {
+  final String image;
+  const ImageDialog({required this.image, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _transformationController = TransformationController();
+    late TapDownDetails _doubleTapDetails;
+
+    handleDoubleTap() {
+      if (_transformationController.value != Matrix4.identity()) {
+        _transformationController.value = Matrix4.identity();
+      } else {
+        final position = _doubleTapDetails.localPosition;
+        // For a 3x zoom
+        _transformationController.value = Matrix4.identity()
+          ..translate(-position.dx * 2, -position.dy * 2)
+          ..scale(3.0);
+        // Fox a 2x zoom
+        // ..translate(-position.dx, -position.dy)
+        // ..scale(2.0);
+      }
+    }
+
+    return GestureDetector(
+      onDoubleTapDown: (d) => _doubleTapDetails = d,
+      onDoubleTap: handleDoubleTap,
+      child: InteractiveViewer(
+        transformationController: _transformationController,
+        child: Image.network(image),
+      ),
+    );
   }
 }
 
