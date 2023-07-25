@@ -1121,12 +1121,13 @@ class _MainBusinessUIState extends State<MainBusinessUI>
     );
   }
 
-  Widget customContainer(
-      {required String icon,
-      required String title,
-      required Function onTap,
-      bool isWeb = false,
-      required double width}) {
+  Widget customContainer({
+    required String icon,
+    required String title,
+    required Function onTap,
+    bool isWeb = false,
+    required double width,
+  }) {
     return GestureDetector(
       onTap: () {
         onTap();
@@ -1145,12 +1146,17 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                 child: Row(
                   children: [
                     SizedBox(
-                        width: width * .76,
-                        child: Text(
-                          isWeb ? "$title (Click to visit)" : title,
-                          style: const TextStyle(
-                              fontSize: 11, overflow: TextOverflow.ellipsis),
-                        )),
+                      width: width * .76,
+                      child: Text(
+                        isWeb ? "$title (Click to visit)" : title,
+                        style: TextStyle(
+                            fontSize: 11,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight:
+                                isWeb ? FontWeight.bold : FontWeight.normal,
+                            color: isWeb ? Colors.blue.shade800 : Colors.black),
+                      ),
+                    ),
                   ],
                 ),
               ),
