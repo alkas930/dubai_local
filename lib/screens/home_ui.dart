@@ -619,8 +619,8 @@ class _HomeUIState extends State<HomeUI> {
                                                     .res!.isNotEmpty
                                                 ? widget.topList[index].res!
                                                             .length >
-                                                        2
-                                                    ? 2
+                                                        4
+                                                    ? 4
                                                     : widget.topList[index].res
                                                         ?.length
                                                 : 0,
