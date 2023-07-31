@@ -59,27 +59,52 @@ class TopHomeData {
 class Res {
   String? id;
   String? name;
+  String? title;
   String? slug;
   String? icon;
+  String? image;
+  String? full_banner;
+  String? average_rating;
   String? link;
+  String? url;
 
-  Res({this.id, this.name, this.slug, this.icon, this.link});
+  Res(
+      {this.id,
+      this.name,
+      this.title,
+      this.slug,
+      this.icon,
+      this.image,
+      this.full_banner,
+      this.average_rating,
+      this.link,
+      this.url});
 
   Res.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    title = json['title'];
     slug = json['slug'];
     icon = json['icon'];
+    image = json['image'];
+    full_banner = json['full_banner'];
+    average_rating = json['average_rating'];
     link = json['link'];
+    url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    data['title'] = this.title;
     data['slug'] = this.slug;
     data['icon'] = this.icon;
+    data['image'] = this.image;
+    data['full_banner'] = this.full_banner;
+    data['average_rating'] = this.average_rating;
     data['link'] = this.link;
+    data['url'] = this.url;
     return data;
   }
 }
