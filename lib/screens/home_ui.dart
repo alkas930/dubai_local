@@ -6,8 +6,10 @@ import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 import '../models/top_home_response_model.dart';
+import '../services/networking_services/api_call.dart';
 import '../utils/localisations/app_colors.dart';
 import '../utils/localisations/images_paths.dart';
 
@@ -38,6 +40,191 @@ class _HomeUIState extends State<HomeUI> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    final _formKey = GlobalKey<FormState>();
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController phoneController = TextEditingController();
+    final TextEditingController messageController = TextEditingController();
+
+    void sendEnquiry() {
+      CallAPI().sendEnquiry(body: {
+        "name": nameController.text,
+        "email": emailController.text,
+        // "url": _businessDetail?.businessData?.url ?? "",
+        "query": messageController.text,
+        "mobile": phoneController.text,
+      }).then((value) {
+        if (value == null) {
+          ToastContext().init(context);
+          Toast.show("Something went wrong");
+        } else {
+          nameController.clear();
+          emailController.clear();
+          phoneController.clear();
+          messageController.clear();
+          ToastContext().init(context);
+          Toast.show(value["message"] ?? "Enquiry sent successfully",
+              duration: 5);
+        }
+      }).catchError((onError) {});
+    }
+
+    bool validateAndSave() {
+      final FormState form = _formKey.currentState!;
+      if (form.validate()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    openDialog() {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: SizedBox(
+                width: width,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: const Text("Send Enquiry"),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop('dialog');
+                                    },
+                                    child: const Icon(Icons.close),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "",
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        controller: nameController,
+                        decoration: const InputDecoration(
+                          labelText: "Enter Name",
+                          errorMaxLines: 2,
+                        ),
+                        validator: (value) => value!.isEmpty ||
+                                !RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)
+                            ? 'Please enter a valid name'
+                            : null,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 4),
+                              child: TextFormField(
+                                controller: emailController,
+                                decoration: const InputDecoration(
+                                  labelText: "Enter Email",
+                                  errorMaxLines: 2,
+                                ),
+                                validator: (value) => value!.isEmpty ||
+                                        !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                            .hasMatch(value)
+                                    ? 'Please enter valid email'
+                                    : null,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 4),
+                              child: TextFormField(
+                                controller: phoneController,
+                                decoration: const InputDecoration(
+                                  labelText: "Enter Phone",
+                                  errorMaxLines: 2,
+                                ),
+                                validator: (value) =>
+                                    value!.length > 15 || value.length < 9
+                                        ? 'Please enter valid phone no.'
+                                        : null,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        controller: messageController,
+                        decoration: const InputDecoration(
+                          labelText: "Enter Message",
+                          errorMaxLines: 2,
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Message cannot be blank' : null,
+                        maxLines: 3,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Color(Constants.themeColorRed),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          margin: const EdgeInsets.only(top: 16),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 4),
+                          child: const Text(
+                            "Submit",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        onTap: () {
+                          if (validateAndSave()) {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
+                            sendEnquiry();
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
 
     void openSubCategory(BuildContext context, String catName, String slug) {
       // Navigator.pushNamed(context, AppRoutes.subCategories,
@@ -645,7 +832,7 @@ class _HomeUIState extends State<HomeUI> {
                                                             int idx) =>
                                                         ListingCardBlog(
                                                             data: widget
-                                                                .topList[idx],
+                                                                .topList[index],
                                                             index: idx),
                                               ),
                                               if (widget.topList[index].res!
@@ -704,6 +891,32 @@ class _HomeUIState extends State<HomeUI> {
                                           ),
                                   ),
                                 ),
+                                if (widget.topList[index].source
+                                        ?.toLowerCase() ==
+                                    "recent_businesses") ...[
+                                  GestureDetector(
+                                    onTap: () {
+                                      openDialog();
+                                    },
+                                    child: Center(
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xff318805),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(2))),
+                                        child: const Text(
+                                          "List Your Business Now",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ]
                               ],
                             ),
                           ),
