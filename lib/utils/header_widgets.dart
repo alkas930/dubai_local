@@ -65,7 +65,7 @@ class _HeaderWidget extends State<HeaderWidget> {
                         ),
                       )
                     : null),
-            Image.asset(ImagesPaths.app_logo_d, width: width * .25),
+            Image.asset(ImagesPaths.app_logo_d, width: width * .40),
             GestureDetector(
               onTap: () {
                 if (userLoggedIn == Constants.facebookLogin ||

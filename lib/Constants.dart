@@ -5,7 +5,7 @@ class Constants {
   static const googleLogin = 2;
 
   //HEADER ICON SIZE W=H
-  static const double iconSize = 28.0;
+  static const double iconSize = 32.0;
 
   //BOTTOM TAB BAR HEIGHT
   static const double tabBarHeight = 72.0;

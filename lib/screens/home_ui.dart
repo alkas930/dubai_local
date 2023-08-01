@@ -682,6 +682,7 @@ class _HomeUIState extends State<HomeUI> {
                                 backGroundColor: const Color(0xffffffff),
                                 borderRadius: 10,
                                 child: Container(
+                                  clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
                                       border: Border.all(
                                           color: Color(0xffD5DEF2),
@@ -708,13 +709,11 @@ class _HomeUIState extends State<HomeUI> {
                                                       .categoryList[index]
                                                       .fullIcon)),
                                             ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
                                       Container(
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                            color: Color(0xffD5DEF2)),
+                                          color: Color(0xffD5DEF2),
+                                        ),
                                         child: Text(
                                           (() {
                                             if (index == 9) {
@@ -894,24 +893,26 @@ class _HomeUIState extends State<HomeUI> {
                                 if (widget.topList[index].source
                                         ?.toLowerCase() ==
                                     "recent_businesses") ...[
-                                  GestureDetector(
-                                    onTap: () {
-                                      openDialog();
-                                    },
-                                    child: Center(
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 8),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 4),
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xff318805),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(2))),
-                                        child: const Text(
-                                          "List Your Business Now",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10),
+                                  Transform.translate(
+                                    offset: Offset(0, -8),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        openDialog();
+                                      },
+                                      child: Center(
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 4),
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xff318805),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(2))),
+                                          child: const Text(
+                                            "List Your Business Now",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10),
+                                          ),
                                         ),
                                       ),
                                     ),
