@@ -301,6 +301,7 @@ class _HomeUIState extends State<HomeUI> {
             ),
             child: SizedBox(
               width: (width - 32 - 8) / 3,
+              height: ((width - 32 - 8) / 3) * .90,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -340,9 +341,9 @@ class _HomeUIState extends State<HomeUI> {
                                 ? data.res![index].title!
                                 : data.res![index].name!,
                             style: const TextStyle(
-                                fontSize: 10,
-                                color: Color(Constants.themeColorRed),
-                                fontWeight: FontWeight.bold),
+                                fontSize: 8,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -413,7 +414,7 @@ class _HomeUIState extends State<HomeUI> {
             padding: const EdgeInsets.only(bottom: 24),
             child: SizedBox(
               width: width,
-              height: 130,
+              height: 72,
               child: Image.asset(
                 image,
                 fit: BoxFit.cover,
@@ -440,11 +441,18 @@ class _HomeUIState extends State<HomeUI> {
               changeIndex: widget.changeIndex,
               onBack: () {},
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 32),
-              child: Text(
-                "Choose A Category",
-                style: TextStyle(color: Colors.white, fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 16, bottom: 16),
+              child: RichText(
+                text: const TextSpan(
+                  children: [
+                    TextSpan(text: "Welcome to "),
+                    TextSpan(
+                        text: "Dubai Local",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
               ),
             ),
             Container(
@@ -591,49 +599,91 @@ class _HomeUIState extends State<HomeUI> {
                                     child: Text(
                                         widget.topList[index].heading ?? "",
                                         style: const TextStyle(
+                                            fontSize: 12,
                                             fontWeight: FontWeight.bold),
                                         textAlign: TextAlign.center),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 24),
+                                  padding: const EdgeInsets.only(bottom: 8),
                                   child: SizedBox(
                                     height: widget.topList[index].source
                                                     ?.toLowerCase() ==
                                                 "blog" &&
                                             widget.topList[index].res!.length >
                                                 2
-                                        ? (128 * 2)
+                                        ? (128 * 2) + 32
                                         : 128,
                                     child: widget.topList[index].source
                                                 ?.toLowerCase() ==
                                             "blog"
-                                        ? GridView.builder(
-                                            padding:
-                                                const EdgeInsets.only(top: 8),
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: widget.topList[index]
-                                                    .res!.isNotEmpty
-                                                ? widget.topList[index].res!
-                                                            .length >
-                                                        4
-                                                    ? 4
-                                                    : widget.topList[index].res
-                                                        ?.length
-                                                : 0,
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              childAspectRatio: 2 / 1.3,
-                                            ),
-                                            itemBuilder: (BuildContext context,
-                                                    int idx) =>
-                                                ListingCardBlog(
-                                                    data: widget.topList[idx],
-                                                    index: idx),
+                                        ? Column(
+                                            children: [
+                                              GridView.builder(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8),
+                                                shrinkWrap: true,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: widget.topList[index]
+                                                        .res!.isNotEmpty
+                                                    ? widget.topList[index].res!
+                                                                .length >
+                                                            4
+                                                        ? 4
+                                                        : widget.topList[index]
+                                                            .res?.length
+                                                    : 0,
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  childAspectRatio: 2 / 1.3,
+                                                ),
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                            int idx) =>
+                                                        ListingCardBlog(
+                                                            data: widget
+                                                                .topList[idx],
+                                                            index: idx),
+                                              ),
+                                              if (widget.topList[index].res!
+                                                      .length >
+                                                  2) ...[
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    widget.setArgs!({
+                                                      "url": Endpoints.Blog
+                                                    });
+                                                    widget.changeIndex!(7);
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        EdgeInsets.only(top: 8),
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                            color: Color(
+                                                                0xff318805),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            2))),
+                                                    child: const Text(
+                                                      "Check All Events",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10),
+                                                    ),
+                                                  ),
+                                                )
+                                              ]
+                                            ],
                                           )
                                         : ListView.builder(
                                             clipBehavior: Clip.none,
