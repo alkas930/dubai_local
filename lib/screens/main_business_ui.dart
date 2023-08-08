@@ -21,6 +21,7 @@ class MainBusinessUI extends StatefulWidget {
   final Function(int index)? changeIndex;
   final Function(Map args)? setArgs;
   final Function() onBack;
+  final Function() returnToHome;
   final Map args;
 
   const MainBusinessUI(
@@ -28,6 +29,7 @@ class MainBusinessUI extends StatefulWidget {
       required this.changeIndex,
       required this.setArgs,
       required this.onBack,
+      required this.returnToHome,
       required this.args})
       : super(key: key);
 
@@ -209,6 +211,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
               isBackEnabled: true,
               changeIndex: widget.changeIndex,
               onBack: widget.onBack,
+              returnToHome: widget.returnToHome,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),

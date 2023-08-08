@@ -12,6 +12,7 @@ class WebViewScreen extends StatefulWidget {
   final Function(int index)? changeIndex;
   final Function(Map args)? setArgs;
   final Function() onBack;
+  final Function() returnToHome;
   final Map args;
 
   const WebViewScreen(
@@ -19,6 +20,7 @@ class WebViewScreen extends StatefulWidget {
       required this.changeIndex,
       required this.setArgs,
       required this.onBack,
+      required this.returnToHome,
       required this.args})
       : super(key: key);
 
@@ -40,6 +42,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
             isBackEnabled: true,
             changeIndex: widget.changeIndex,
             onBack: widget.onBack,
+            returnToHome: widget.returnToHome,
           ),
           Expanded(
               child: Stack(

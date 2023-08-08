@@ -14,6 +14,7 @@ class SearchUi extends StatefulWidget {
   final Function(int index)? changeIndex;
   final Function(Map args)? setArgs;
   final Function() onBack;
+  final Function() returnToHome;
   final Map args;
 
   const SearchUi(
@@ -21,6 +22,7 @@ class SearchUi extends StatefulWidget {
       required this.changeIndex,
       required this.setArgs,
       required this.onBack,
+      required this.returnToHome,
       required this.args})
       : super(key: key);
 
@@ -205,6 +207,7 @@ class _SearchUiState extends State<SearchUi> {
           HeaderWidget(
             isBackEnabled: false,
             changeIndex: widget.changeIndex,
+            returnToHome: widget.returnToHome,
             onBack: () {},
           ),
           Text(

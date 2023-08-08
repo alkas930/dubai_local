@@ -14,6 +14,7 @@ class CategoriesUi extends StatelessWidget {
   final List<AllCategoriesData> categoryList;
   final List<TopHomeData> topList;
   final Function() onBack;
+  final Function() returnToHome;
   final Map args;
 
   const CategoriesUi(
@@ -22,6 +23,7 @@ class CategoriesUi extends StatelessWidget {
       required this.topList,
       required this.changeIndex,
       required this.onBack,
+      required this.returnToHome,
       required this.setArgs,
       required this.args})
       : super(key: key);
@@ -50,6 +52,7 @@ class CategoriesUi extends StatelessWidget {
             HeaderWidget(
               isBackEnabled: false,
               changeIndex: changeIndex,
+              returnToHome: returnToHome,
               onBack: () {},
             ),
             const Text(

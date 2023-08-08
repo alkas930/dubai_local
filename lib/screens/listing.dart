@@ -17,6 +17,7 @@ class DetailUi extends StatefulWidget {
   final Function(int index)? changeIndex;
   final Function(Map args)? setArgs;
   final Function() onBack;
+  final Function() returnToHome;
   final Map args;
 
   const DetailUi(
@@ -24,6 +25,7 @@ class DetailUi extends StatefulWidget {
       required this.changeIndex,
       required this.setArgs,
       required this.onBack,
+      required this.returnToHome,
       required this.args})
       : super(key: key);
 
@@ -97,6 +99,7 @@ class _DetailUiState extends State<DetailUi> {
                 isBackEnabled: true,
                 changeIndex: widget.changeIndex,
                 onBack: widget.onBack,
+                returnToHome: widget.returnToHome,
               ),
               Column(
                 children: [

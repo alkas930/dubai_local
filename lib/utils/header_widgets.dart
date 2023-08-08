@@ -11,12 +11,14 @@ class HeaderWidget extends StatefulWidget {
   final bool isBackEnabled;
   final Function(int index)? changeIndex;
   final Function() onBack;
+  final Function() returnToHome;
 
   const HeaderWidget({
     Key? key,
     required this.isBackEnabled,
     required this.changeIndex,
     required this.onBack,
+    required this.returnToHome,
   }) : super(key: key);
 
   @override
@@ -65,7 +67,11 @@ class _HeaderWidget extends State<HeaderWidget> {
                         ),
                       )
                     : null),
-            Image.asset(ImagesPaths.app_logo_d, width: width * .40),
+            GestureDetector(
+                onTap: () {
+                  widget.returnToHome();
+                },
+                child: Image.asset(ImagesPaths.app_logo_d, width: width * .40)),
             GestureDetector(
               onTap: () {
                 if (userLoggedIn == Constants.facebookLogin ||

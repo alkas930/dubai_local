@@ -10,6 +10,7 @@ class MoreUI extends StatelessWidget {
   final Function(int index)? changeIndex;
   final Function(Map args)? setArgs;
   final Function() onBack;
+  final Function() returnToHome;
   final Map args;
 
   const MoreUI(
@@ -17,6 +18,7 @@ class MoreUI extends StatelessWidget {
       required this.changeIndex,
       required this.setArgs,
       required this.onBack,
+      required this.returnToHome,
       required this.args})
       : super(key: key);
 
@@ -39,6 +41,7 @@ class MoreUI extends StatelessWidget {
           HeaderWidget(
             isBackEnabled: false,
             changeIndex: changeIndex,
+            returnToHome: returnToHome,
             onBack: () {},
           ),
           Expanded(

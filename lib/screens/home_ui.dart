@@ -19,6 +19,7 @@ class HomeUI extends StatefulWidget {
   final List<AllCategoriesData> categoryList;
   final List<TopHomeData> topList;
   final Function() onBack;
+  final Function() returnToHome;
   final Map args;
 
   const HomeUI(
@@ -27,6 +28,7 @@ class HomeUI extends StatefulWidget {
       required this.categoryList,
       required this.setArgs,
       required this.onBack,
+      required this.returnToHome,
       required this.topList,
       required this.args})
       : super(key: key);
@@ -626,6 +628,7 @@ class _HomeUIState extends State<HomeUI> {
             HeaderWidget(
               isBackEnabled: false,
               changeIndex: widget.changeIndex,
+              returnToHome: widget.returnToHome,
               onBack: () {},
             ),
             Padding(

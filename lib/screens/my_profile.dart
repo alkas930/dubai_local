@@ -13,12 +13,14 @@ class MyProfile extends StatelessWidget {
   final Function(Map args)? setArgs;
   final Function() onBack;
   final Map args;
+  final Function() returnToHome;
 
   const MyProfile({
     Key? key,
     required this.changeIndex,
     required this.setArgs,
     required this.onBack,
+    required this.returnToHome,
     required this.args,
   }) : super(key: key);
 
@@ -104,6 +106,7 @@ class MyProfile extends StatelessWidget {
             isBackEnabled: true,
             changeIndex: changeIndex,
             onBack: onBack,
+            returnToHome: returnToHome,
           ),
           const Text("My Profile",
               style: TextStyle(

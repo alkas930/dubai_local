@@ -48,6 +48,18 @@ class _BottomNavState extends State<BottomNav> {
     });
   }
 
+  returnToHome() {
+    if (_prevIndex.isNotEmpty) {
+      setState(() {
+        _prevArgs.removeLast();
+        if (_prevArgs.isNotEmpty) _args = _prevArgs.last;
+        _currentIndex = _prevIndex.last;
+        _prevIndex.removeLast();
+      });
+      returnToHome();
+    }
+  }
+
   onBack() {
     print("SCREEN ADDED ");
     if (_prevIndex.isNotEmpty) {
@@ -134,6 +146,7 @@ class _BottomNavState extends State<BottomNav> {
         //       ?.popUntil(ModalRoute.withName(AppRoutes.main));
         // }
         return SearchUi(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
@@ -145,6 +158,7 @@ class _BottomNavState extends State<BottomNav> {
         //       ?.popUntil(ModalRoute.withName(AppRoutes.main));
         // }
         return HomeUI(
+          returnToHome: returnToHome,
           onBack: onBack,
           changeIndex: (index) => setScreen(index),
           setArgs: setArgs,
@@ -158,6 +172,7 @@ class _BottomNavState extends State<BottomNav> {
         //       ?.popUntil(ModalRoute.withName(AppRoutes.main));
         // }
         return CategoriesUi(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
@@ -171,6 +186,7 @@ class _BottomNavState extends State<BottomNav> {
         //       ?.popUntil(ModalRoute.withName(AppRoutes.main));
         // }
         return MoreUI(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
@@ -178,6 +194,7 @@ class _BottomNavState extends State<BottomNav> {
         );
       case 5:
         return SubCategoriesUI(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
@@ -185,6 +202,7 @@ class _BottomNavState extends State<BottomNav> {
         );
       case 6:
         return DetailUi(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
@@ -192,6 +210,7 @@ class _BottomNavState extends State<BottomNav> {
         );
       case 7:
         return WebViewScreen(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
@@ -199,6 +218,7 @@ class _BottomNavState extends State<BottomNav> {
         );
       case 8:
         return MainBusinessUI(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
@@ -206,6 +226,7 @@ class _BottomNavState extends State<BottomNav> {
         );
       case 9:
         return MyProfile(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
@@ -217,6 +238,7 @@ class _BottomNavState extends State<BottomNav> {
         //       ?.popUntil(ModalRoute.withName(AppRoutes.main));
         // }
         return HomeUI(
+          returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,
           args: _args,
