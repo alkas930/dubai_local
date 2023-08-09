@@ -226,14 +226,14 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
-                    height: 150,
+                    height: height * 0.18,
                     child: Stack(
                       children: [
                         Image.network(
                           _businessDetail?.businessData?.fullBanner ?? "",
                           fit: BoxFit.cover,
                           width: width,
-                          height: 150,
+                          height: height * 0.18,
                         ),
                         Container(
                           decoration: const BoxDecoration(
@@ -406,9 +406,10 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                       scrollDirection: Axis.horizontal,
                       children: [
                         // ABOUT
-                        aboutContent(width, context),
+                        aboutContent(width, context, height),
                         // GOOGLE MAP
                         GoogleMap(
+                          liteModeEnabled: true,
                           markers: markers.values.toSet(),
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
@@ -572,7 +573,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
     );
   }
 
-  Column aboutContent(double width, BuildContext context) {
+  Column aboutContent(double width, BuildContext context, double height) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -873,10 +874,13 @@ class _MainBusinessUIState extends State<MainBusinessUI>
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: SingleChildScrollView(
-              child: Text(
-                _businessDetail?.businessData?.description ?? "",
-                style: const TextStyle(fontSize: 10),
+            child: Scrollbar(
+              isAlwaysShown: true,
+              child: SingleChildScrollView(
+                child: Text(
+                  _businessDetail?.businessData?.description ?? "",
+                  style: const TextStyle(fontSize: 10),
+                ),
               ),
             ),
           ),
@@ -1050,7 +1054,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             ),
           ),
         ),
-        getGallery(_businessDetail?.businessData?.moreImages ?? ""),
+        getGallery(_businessDetail?.businessData?.moreImages ?? "", height),
       ],
     );
   }
@@ -1228,12 +1232,12 @@ class _MainBusinessUIState extends State<MainBusinessUI>
     return widget;
   }
 
-  Widget getGallery(String img) {
+  Widget getGallery(String img, double height) {
     Widget widget = const SizedBox.shrink();
     List<String> images = img.split(",");
     if (images.isNotEmpty) {
       widget = Container(
-        height: 132,
+        height: height * 0.15,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         margin: const EdgeInsets.only(bottom: 32),
         child: ListView.builder(
@@ -1242,8 +1246,8 @@ class _MainBusinessUIState extends State<MainBusinessUI>
           scrollDirection: Axis.horizontal,
           itemCount: images.length,
           itemBuilder: (BuildContext context, int idx) => Container(
-            height: 132,
-            width: 132,
+            height: height * 0.15,
+            width: height * 0.15,
             margin: const EdgeInsets.only(right: 16),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -1252,10 +1256,11 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             child: GestureDetector(
               onTap: () async {
                 await showDialog(
-                    context: context,
-                    builder: (_) => ImageDialog(
-                        image:
-                            "https://dubailocal.ae/assets/more_images/${images[idx]}"));
+                  context: context,
+                  builder: (_) => ImageDialog(
+                      image:
+                          "https://dubailocal.ae/assets/more_images/${images[idx]}"),
+                );
               },
               child: Image.network(
                 "https://dubailocal.ae/assets/more_images/${images[idx]}",
@@ -1296,14 +1301,34 @@ class ImageDialog extends StatelessWidget {
       }
     }
 
-    return GestureDetector(
-      onDoubleTapDown: (d) => _doubleTapDetails = d,
-      onDoubleTap: handleDoubleTap,
-      child: InteractiveViewer(
-        transformationController: _transformationController,
-        child: Image.network(image),
+    return Stack(children: [
+      Align(
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: GestureDetector(
+            onDoubleTapDown: (d) => _doubleTapDetails = d,
+            onDoubleTap: handleDoubleTap,
+            child: InteractiveViewer(
+              transformationController: _transformationController,
+              child: Image.network(image),
+            ),
+          ),
+        ),
       ),
-    );
+      Positioned(
+          right: 15,
+          top: 15,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).pop('dialog');
+            },
+            child: Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+          )),
+    ]);
   }
 }
 
