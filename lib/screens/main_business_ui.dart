@@ -207,27 +207,6 @@ class _MainBusinessUIState extends State<MainBusinessUI>
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            HeaderWidget(
-              isBackEnabled: true,
-              changeIndex: widget.changeIndex,
-              onBack: widget.onBack,
-              returnToHome: widget.returnToHome,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                children: [
-                  Text(
-                    "-${_businessDetail?.businessData?.subCatName ?? ""}-",
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                  Text(
-                    _businessDetail?.businessData?.name ?? "",
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
             Container(
               clipBehavior: Clip.hardEdge,
               alignment: Alignment.topCenter,
@@ -339,7 +318,8 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                       style: TextStyle(
                                           color: pageIndex == 0
                                               ? Colors.white
-                                              : Colors.black)),
+                                              : Colors.black,
+                                          fontSize: 12)),
                                 ),
                               ),
                             ),
@@ -371,7 +351,8 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                       style: TextStyle(
                                           color: pageIndex == 1
                                               ? Colors.white
-                                              : Colors.black)),
+                                              : Colors.black,
+                                          fontSize: 12)),
                                 ),
                               ),
                             ),
@@ -403,7 +384,8 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                       style: TextStyle(
                                           color: pageIndex == 2
                                               ? Colors.white
-                                              : Colors.black)),
+                                              : Colors.black,
+                                          fontSize: 12)),
                                 ),
                               ),
                             ),
@@ -669,7 +651,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
         Container(
           // color: AppColors.lightGrey,
           // height: 60,
-          margin: const EdgeInsets.only(top: 8),
+          margin: const EdgeInsets.only(top: 8, bottom: 8),
           alignment: Alignment.center,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -902,12 +884,15 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             ],
           ),
         ),
-        Text(
-          _businessDetail?.businessData?.description ?? "",
-          style: const TextStyle(fontSize: 15),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            _businessDetail?.businessData?.description ?? "",
+            style: const TextStyle(fontSize: 12),
+          ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 30, bottom: 15),
+          padding: const EdgeInsets.only(top: 30, bottom: 30),
           child: Container(
             height: 40,
             width: 160,
