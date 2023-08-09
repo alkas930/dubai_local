@@ -202,389 +202,372 @@ class _MainBusinessUIState extends State<MainBusinessUI>
     double result = double.parse(stars!);
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              clipBehavior: Clip.hardEdge,
-              alignment: Alignment.topCenter,
-              constraints:
-                  BoxConstraints(minHeight: height, maxHeight: height * 2.5),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        alignment: Alignment.topCenter,
+        constraints: BoxConstraints(minHeight: height, maxHeight: height),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: _businessDetail?.businessData == null
+            ? const Padding(
+                padding: EdgeInsets.all(32),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Color(Constants.themeColorRed),
+                  ),
                 ),
-              ),
-              child: _businessDetail?.businessData == null
-                  ? const Padding(
-                      padding: EdgeInsets.all(32),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Color(Constants.themeColorRed),
-                        ),
-                      ),
-                    )
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 150,
+                    child: Stack(
                       children: [
-                        SizedBox(
+                        Image.network(
+                          _businessDetail?.businessData?.fullBanner ?? "",
+                          fit: BoxFit.cover,
+                          width: width,
                           height: 150,
-                          child: Stack(
-                            children: [
-                              Image.network(
-                                _businessDetail?.businessData?.fullBanner ?? "",
-                                fit: BoxFit.cover,
-                                width: width,
-                                height: 150,
-                              ),
-                              Positioned(
-                                bottom: 15,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15),
-                                      child: Text(
-                                        _businessDetail?.businessData?.name ??
-                                            "",
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: AppColors.greenTheme,
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 1, horizontal: 8),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.star,
-                                              size: 14,
-                                              color: Colors.white,
-                                            ),
-                                            Text(
-                                              " ${result.toStringAsFixed(1)}",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                        ),
+                        Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.transparent, Colors.black54],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
                           ),
                         ),
-                        // TABBAR
-                        Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  pageController.animateToPage(0,
-                                      duration:
-                                          const Duration(milliseconds: 250),
-                                      curve: Curves.linear);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: pageIndex == 0
-                                              ? Color(0xff1D1810)
-                                              : Color(0xffEEF1F8),
-                                          width: 3.0,
-                                        ),
-                                      ),
-                                      color: pageIndex == 0
-                                          ? AppColors.greenTheme
-                                          : const Color(0xffEEF1F8)),
-                                  child: Text("About",
-                                      style: TextStyle(
-                                          color: pageIndex == 0
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontSize: 12)),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  pageController.animateToPage(1,
-                                      duration:
-                                          const Duration(milliseconds: 250),
-                                      curve: Curves.linear);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: pageIndex == 1
-                                              ? Color(0xff1D1810)
-                                              : Color(0xffEEF1F8),
-                                          width: 3.0,
-                                        ),
-                                      ),
-                                      color: pageIndex == 1
-                                          ? AppColors.greenTheme
-                                          : const Color(0xffEEF1F8)),
-                                  child: Text("Get Direction",
-                                      style: TextStyle(
-                                          color: pageIndex == 1
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontSize: 12)),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  pageController.animateToPage(2,
-                                      duration:
-                                          const Duration(milliseconds: 250),
-                                      curve: Curves.linear);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: pageIndex == 2
-                                              ? Color(0xff1D1810)
-                                              : Color(0xffEEF1F8),
-                                          width: 3.0,
-                                        ),
-                                      ),
-                                      color: pageIndex == 2
-                                          ? AppColors.greenTheme
-                                          : const Color(0xffEEF1F8)),
-                                  child: Text("Submit a Review",
-                                      style: TextStyle(
-                                          color: pageIndex == 2
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontSize: 12)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Flexible(
-                          child: PageView(
-                            onPageChanged: (value) {
-                              setState(() {
-                                pageIndex = value;
-                              });
-                            },
-                            physics: const NeverScrollableScrollPhysics(),
-                            controller: pageController,
-                            scrollDirection: Axis.horizontal,
+                        Positioned(
+                          bottom: 15,
+                          child: Row(
                             children: [
-                              // ABOUT
-                              aboutContent(width, context),
-                              // GOOGLE MAP
-                              GoogleMap(
-                                markers: markers.values.toSet(),
-                                mapType: MapType.normal,
-                                initialCameraPosition: CameraPosition(
-                                  target: LatLng(
-                                      double.parse(_businessDetail!
-                                          .businessData!.lat
-                                          .toString()),
-                                      double.parse(_businessDetail!
-                                          .businessData!.lng
-                                          .toString())),
-                                  zoom: 18.5,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: Text(
+                                  _businessDetail?.businessData?.name ?? "",
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                onMapCreated: (GoogleMapController controller) {
-                                  _controller.complete(controller);
-                                },
                               ),
-                              // SUBMIT REVIEW
                               Container(
-                                color: AppColors.lightGrey,
-                                padding: const EdgeInsets.all(30.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                            color: const Color(
-                                                Constants.themeColorRed),
-                                            height: 80,
-                                            width: 80,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  result.toStringAsFixed(1),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                VxRating(
-                                                  onRatingUpdate: (v) {},
-                                                  size: 10,
-                                                  normalColor: AppColors.grey,
-                                                  selectionColor:
-                                                      AppColors.yellow,
-                                                  maxRating: 5,
-                                                  count: 5,
-                                                  value: result,
-                                                  isSelectable: false,
-                                                ),
-                                              ],
-                                            )),
-                                        Container(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              RatingBar.builder(
-                                                initialRating: _rating ?? 0.0,
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: false,
-                                                itemCount: 5,
-                                                itemSize: 22,
-                                                itemPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 5),
-                                                itemBuilder: (context, _) =>
-                                                    Icon(
-                                                  _selectedIcon ?? Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                                onRatingUpdate: (rating) {
-                                                  _rating = rating;
-                                                },
-                                              ),
-                                              const Text(
-                                                "Click on stars to give rating",
-                                                style: TextStyle(fontSize: 11),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Form(
-                                      key: _formKey,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            color: Colors.white,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0),
-                                              child: TextFormField(
-                                                controller:
-                                                    nameControllerReview,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  enabledBorder:
-                                                      InputBorder.none,
-                                                  focusedBorder:
-                                                      InputBorder.none,
-                                                  labelText: "Enter Name*",
-                                                  labelStyle: TextStyle(
-                                                      color: Colors.black),
-                                                  errorMaxLines: 2,
-                                                ),
-                                                validator: (value) => value!
-                                                        .isEmpty
-                                                    ? 'Please enter your name'
-                                                    : null,
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                          Container(
-                                            color: Colors.white,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0),
-                                              child: TextFormField(
-                                                controller:
-                                                    messageControllerReview,
-                                                decoration:
-                                                    const InputDecoration(
-                                                        enabledBorder:
-                                                            InputBorder.none,
-                                                        focusedBorder:
-                                                            InputBorder.none,
-                                                        labelText:
-                                                            "Your Message*",
-                                                        labelStyle: TextStyle(
-                                                            color:
-                                                                Colors.black)),
-                                                validator: (value) => value!
-                                                        .isEmpty
-                                                    ? 'Please enter your review'
-                                                    : null,
-                                                maxLines: 5,
-                                                minLines: 1,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              width: double.infinity,
-                                              child: SubmitReviewButton(
-                                                onPressed: () => {
-                                                  if (validateAndSave())
-                                                    {submitReview()}
-                                                },
-                                              ))
-                                        ],
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: AppColors.greenTheme,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 1, horizontal: 8),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        size: 14,
+                                        color: Colors.white,
                                       ),
-                                    )
-                                  ],
+                                      Text(
+                                        " ${result.toStringAsFixed(1)}",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
-                            // onPageChanged: (value) => setState(() {
-                            //   _pageIndex = value;
-                            // }),
                           ),
                         ),
                       ],
                     ),
-            ),
-          ],
-        ),
+                  ),
+                  // TABBAR
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            pageController.animateToPage(0,
+                                duration: const Duration(milliseconds: 250),
+                                curve: Curves.linear);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: pageIndex == 0
+                                        ? Color(0xff1D1810)
+                                        : Color(0xffEEF1F8),
+                                    width: 3.0,
+                                  ),
+                                ),
+                                color: pageIndex == 0
+                                    ? AppColors.greenTheme
+                                    : const Color(0xffEEF1F8)),
+                            child: Text("About",
+                                style: TextStyle(
+                                    color: pageIndex == 0
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 12)),
+                          ),
+                        ),
+                      ),
+                      VerticalDivider(
+                        width: 1,
+                        color: Colors.white,
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            pageController.animateToPage(1,
+                                duration: const Duration(milliseconds: 250),
+                                curve: Curves.linear);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: pageIndex == 1
+                                        ? Color(0xff1D1810)
+                                        : Color(0xffEEF1F8),
+                                    width: 3.0,
+                                  ),
+                                ),
+                                color: pageIndex == 1
+                                    ? AppColors.greenTheme
+                                    : const Color(0xffEEF1F8)),
+                            child: Text("Get Direction",
+                                style: TextStyle(
+                                    color: pageIndex == 1
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 12)),
+                          ),
+                        ),
+                      ),
+                      VerticalDivider(
+                        width: 1,
+                        color: Colors.white,
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            pageController.animateToPage(2,
+                                duration: const Duration(milliseconds: 250),
+                                curve: Curves.linear);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: pageIndex == 2
+                                        ? Color(0xff1D1810)
+                                        : Color(0xffEEF1F8),
+                                    width: 3.0,
+                                  ),
+                                ),
+                                color: pageIndex == 2
+                                    ? AppColors.greenTheme
+                                    : const Color(0xffEEF1F8)),
+                            child: Text("Post a Review",
+                                style: TextStyle(
+                                    color: pageIndex == 2
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 12)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Flexible(
+                    child: PageView(
+                      onPageChanged: (value) {
+                        setState(() {
+                          pageIndex = value;
+                        });
+                      },
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: pageController,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        // ABOUT
+                        aboutContent(width, context),
+                        // GOOGLE MAP
+                        GoogleMap(
+                          markers: markers.values.toSet(),
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(
+                                double.parse(_businessDetail!.businessData!.lat
+                                    .toString()),
+                                double.parse(_businessDetail!.businessData!.lng
+                                    .toString())),
+                            zoom: 18.5,
+                          ),
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                          },
+                        ),
+                        // SUBMIT REVIEW
+                        Container(
+                          color: AppColors.lightGrey,
+                          padding: const EdgeInsets.all(30.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                      color:
+                                          const Color(Constants.themeColorRed),
+                                      height: 80,
+                                      width: 80,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            result.toStringAsFixed(1),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          VxRating(
+                                            onRatingUpdate: (v) {},
+                                            size: 10,
+                                            normalColor: AppColors.grey,
+                                            selectionColor: AppColors.yellow,
+                                            maxRating: 5,
+                                            count: 5,
+                                            value: result,
+                                            isSelectable: false,
+                                          ),
+                                        ],
+                                      )),
+                                  Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        RatingBar.builder(
+                                          initialRating: _rating ?? 0.0,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: false,
+                                          itemCount: 5,
+                                          itemSize: 22,
+                                          itemPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 5),
+                                          itemBuilder: (context, _) => Icon(
+                                            _selectedIcon ?? Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            _rating = rating;
+                                          },
+                                        ),
+                                        const Text(
+                                          "Click on stars to give rating",
+                                          style: TextStyle(fontSize: 11),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      color: Colors.white,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: TextFormField(
+                                          controller: nameControllerReview,
+                                          decoration: const InputDecoration(
+                                            enabledBorder: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            labelText: "Enter Name*",
+                                            labelStyle:
+                                                TextStyle(color: Colors.black),
+                                            errorMaxLines: 2,
+                                          ),
+                                          validator: (value) => value!.isEmpty
+                                              ? 'Please enter your name'
+                                              : null,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Container(
+                                      color: Colors.white,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: TextFormField(
+                                          controller: messageControllerReview,
+                                          decoration: const InputDecoration(
+                                              enabledBorder: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              labelText: "Your Message*",
+                                              labelStyle: TextStyle(
+                                                  color: Colors.black)),
+                                          validator: (value) => value!.isEmpty
+                                              ? 'Please enter your review'
+                                              : null,
+                                          maxLines: 5,
+                                          minLines: 1,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        width: double.infinity,
+                                        child: SubmitReviewButton(
+                                          onPressed: () => {
+                                            if (validateAndSave())
+                                              {submitReview()}
+                                          },
+                                        ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                      // onPageChanged: (value) => setState(() {
+                      //   _pageIndex = value;
+                      // }),
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -646,7 +629,10 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             }),
         // isVisible
         //     ?
-        getTimings(_businessDetail, width),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: getTimings(_businessDetail, width),
+        ),
         // : const SizedBox.shrink(),
         Container(
           // color: AppColors.lightGrey,
@@ -884,18 +870,22 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(
-            _businessDetail?.businessData?.description ?? "",
-            style: const TextStyle(fontSize: 12),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: SingleChildScrollView(
+              child: Text(
+                _businessDetail?.businessData?.description ?? "",
+                style: const TextStyle(fontSize: 10),
+              ),
+            ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 30, bottom: 30),
+          padding: const EdgeInsets.only(top: 16, bottom: 16),
           child: Container(
-            height: 40,
             width: 160,
+            padding: EdgeInsets.symmetric(vertical: 8),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
@@ -1046,21 +1036,15 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                   },
                 );
               },
-              child: Container(
-                alignment: Alignment.center,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                  child: FittedBox(
-                    child: Text(
-                      "Own This Business?",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          color: Colors.white),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
+              child: const FittedBox(
+                child: Text(
+                  "Own This Business?",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 10,
+                      color: Colors.white),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -1130,7 +1114,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
         children: [
           Container(
             alignment: Alignment.center,
-            width: ((width - 16) / 3) * 0.25,
+            width: ((width - 16) / 3) * 0.2,
             decoration: const BoxDecoration(color: Color(0xffDAE0EE)),
             child: Text(
               dayName,
@@ -1249,7 +1233,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
     List<String> images = img.split(",");
     if (images.isNotEmpty) {
       widget = Container(
-        height: 200,
+        height: 132,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         margin: const EdgeInsets.only(bottom: 32),
         child: ListView.builder(
@@ -1258,8 +1242,8 @@ class _MainBusinessUIState extends State<MainBusinessUI>
           scrollDirection: Axis.horizontal,
           itemCount: images.length,
           itemBuilder: (BuildContext context, int idx) => Container(
-            height: 200,
-            width: 200,
+            height: 132,
+            width: 132,
             margin: const EdgeInsets.only(right: 16),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(8)),
