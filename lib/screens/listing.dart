@@ -105,11 +105,14 @@ class _DetailUiState extends State<DetailUi> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: 30,
+                      top: 24,
                     ),
                     child: Text(
                       category ?? "",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                      ),
                     ),
                   ),
                   // Padding(

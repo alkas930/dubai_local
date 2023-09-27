@@ -2,10 +2,12 @@ import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import '../Constants.dart';
 import '../models/SearchModel.dart';
 import '../models/all_categories_response_model.dart';
 import '../models/top_home_response_model.dart';
+import '../services/networking_services/api_call.dart';
 import '../services/networking_services/endpoints.dart';
 import '../utils/localisations/custom_widgets.dart';
 import '../utils/localisations/images_paths.dart';
@@ -47,6 +49,11 @@ class _SearchUiState extends State<SearchUi> {
     final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    final _formKey = GlobalKey<FormState>();
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController phoneController = TextEditingController();
+    final TextEditingController messageController = TextEditingController();
 
     if (args["categoryList"] != null && args["categoryList"]?.isNotEmpty) {
       categoryList = List<AllCategoriesData>.from(args["categoryList"]);
@@ -200,6 +207,301 @@ class _SearchUiState extends State<SearchUi> {
           ),
         );
 
+    Widget ListingCardBlog({required TopHomeData data, required int index}) {
+      return Stack(
+        children: [
+          Card(
+            clipBehavior: Clip.hardEdge,
+            elevation: 8,
+            shadowColor: Colors.black,
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: SizedBox(
+              width: (width - 32 - 8) / 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (data.res![index].image != null ||
+                      data.res![index].icon != null) ...[
+                    Expanded(
+                      child: Image.network(
+                        width: (width - 32 - 8) / 2,
+                        data.source?.toLowerCase() == "blog"
+                            ? data.res![index].image!
+                            : data.res![index].icon!,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                  Center(
+                    child: Container(
+                      // decoration: const BoxDecoration(color: Colors.transparent),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data.source?.toLowerCase() == "blog"
+                                ? data.res![index].title!
+                                : data.res![index].name!,
+                            style: const TextStyle(
+                                fontSize: 8,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          // Row(
+                          //   children: [
+                          //     Image.asset(
+                          //       ImagesPaths.ic_location,
+                          //       scale: 12,
+                          //       color: const Color(0xff444444),
+                          //     ),
+                          //     Expanded(
+                          //       child: Text(
+                          //         data.res![index].name!,
+                          //         style: const TextStyle(
+                          //             fontSize: 10,
+                          //             color: Color(0xff444444)),
+                          //         maxLines: 1,
+                          //         overflow: TextOverflow.ellipsis,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: InkButton(
+                    rippleColor: Color.fromARGB(80, 255, 255, 255),
+                    backGroundColor: Colors.transparent,
+                    borderRadius: 10,
+                    onTap: () {
+                      if (data.source?.toLowerCase() == "business") {
+                        if (data.res![index].slug != null) {
+                          openSubCategoryBusiness(
+                              context, "", data.res![index].slug!);
+                        }
+                      } else if (data.source?.toLowerCase() == "blog") {
+                        if (data.res![index].url != null) {
+                          widget.changeIndex!(7);
+                          widget.setArgs!({"url": data.res![index].url!});
+                        }
+                        // Navigator.pushNamed(context, AppRoutes.webview,
+                        //     arguments: {"url": data.res![index].link!});
+                      }
+                    },
+                    child: SizedBox.shrink())),
+          )
+        ],
+      );
+    }
+
+    void sendEnquiry() {
+      CallAPI().sendEnquiry(body: {
+        "name": nameController.text,
+        "email": emailController.text,
+        // "url": _businessDetail?.businessData?.url ?? "",
+        "query": messageController.text,
+        "mobile": phoneController.text,
+      }).then((value) {
+        if (value == null) {
+          ToastContext().init(context);
+          Toast.show("Something went wrong");
+        } else {
+          nameController.clear();
+          emailController.clear();
+          phoneController.clear();
+          messageController.clear();
+          ToastContext().init(context);
+          Toast.show(value["message"] ?? "Enquiry sent successfully",
+              duration: 5);
+        }
+      }).catchError((onError) {});
+    }
+
+    bool validateAndSave() {
+      final FormState form = _formKey.currentState!;
+      if (form.validate()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    openDialog() {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: SizedBox(
+                width: width,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: const Text("Send Enquiry"),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop('dialog');
+                                    },
+                                    child: const Icon(Icons.close),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "",
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        controller: nameController,
+                        decoration: const InputDecoration(
+                          labelText: "Enter Name",
+                          errorMaxLines: 2,
+                        ),
+                        validator: (value) => value!.isEmpty ||
+                                !RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)
+                            ? 'Please enter a valid name'
+                            : null,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 4),
+                              child: TextFormField(
+                                controller: emailController,
+                                decoration: const InputDecoration(
+                                  labelText: "Enter Email",
+                                  errorMaxLines: 2,
+                                ),
+                                validator: (value) => value!.isEmpty ||
+                                        !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                            .hasMatch(value)
+                                    ? 'Please enter valid email'
+                                    : null,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 4),
+                              child: TextFormField(
+                                controller: phoneController,
+                                decoration: const InputDecoration(
+                                  labelText: "Enter Phone",
+                                  errorMaxLines: 2,
+                                ),
+                                validator: (value) =>
+                                    value!.length > 15 || value.length < 9
+                                        ? 'Please enter valid phone no.'
+                                        : null,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        controller: messageController,
+                        decoration: const InputDecoration(
+                          labelText: "Enter Message",
+                          errorMaxLines: 2,
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Message cannot be blank' : null,
+                        maxLines: 3,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Color(Constants.themeColorRed),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          margin: const EdgeInsets.only(top: 16),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 4),
+                          child: const Text(
+                            "Submit",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        onTap: () {
+                          if (validateAndSave()) {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
+                            sendEnquiry();
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Column(
@@ -210,9 +512,17 @@ class _SearchUiState extends State<SearchUi> {
             returnToHome: widget.returnToHome,
             onBack: () {},
           ),
-          Text(
-            "Search Results",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 24,
+            ),
+            child: Text(
+              "Search Results",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 19,
+              ),
+            ),
           ),
           Expanded(
             child: Container(
@@ -255,6 +565,7 @@ class _SearchUiState extends State<SearchUi> {
                                 children: [
                                   topList.isNotEmpty
                                       ? ListView.builder(
+                                          // padding: EdgeInsets.only(top: 16),
                                           scrollDirection: Axis.vertical,
                                           shrinkWrap: true,
                                           physics:
@@ -262,60 +573,221 @@ class _SearchUiState extends State<SearchUi> {
                                           itemCount: topList.length,
                                           itemBuilder: (BuildContext context,
                                                   int index) =>
-                                              Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              if (index == 2)
-                                                WebviewBanner(
-                                                    ImagesPaths
-                                                        .ic_explore_dubai,
-                                                    Endpoints.ExploreDubai),
-                                              if (index == 3)
-                                                WebviewBanner(
-                                                    ImagesPaths.ic_things_to_do,
-                                                    Endpoints.ThingsToDo),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 8),
-                                                child: Text(
-                                                    topList[index].heading!,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    textAlign: TextAlign.start),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 24),
-                                                child: SizedBox(
-                                                  height: 128,
-                                                  child: ListView.builder(
-                                                    clipBehavior: Clip.none,
-                                                    physics:
-                                                        const ClampingScrollPhysics(),
-                                                    shrinkWrap: true,
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    itemCount: topList[index]
-                                                            .res!
-                                                            .isNotEmpty
-                                                        ? topList[index]
-                                                            .res
-                                                            ?.length
-                                                        : 0,
-                                                    itemBuilder: (BuildContext
-                                                                context,
-                                                            int idx) =>
-                                                        ListingCard(
-                                                            data:
-                                                                topList[index],
-                                                            index: idx),
+                                              Container(
+                                            color: topList[index]
+                                                        .source
+                                                        ?.toLowerCase() ==
+                                                    "recent_businesses"
+                                                ? const Color(0xffEEF1F8)
+                                                : Colors.white,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: topList[index]
+                                                            .source
+                                                            ?.toLowerCase() ==
+                                                        "recent_businesses"
+                                                    ? 8
+                                                    : 0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                if (index == 2)
+                                                  WebviewBanner(
+                                                      ImagesPaths
+                                                          .ic_explore_dubai,
+                                                      Endpoints.ExploreDubai),
+                                                if (index == 4)
+                                                  WebviewBanner(
+                                                      ImagesPaths
+                                                          .ic_things_to_do,
+                                                      Endpoints.ThingsToDo),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 8),
+                                                  child: SizedBox(
+                                                    width: double.infinity,
+                                                    child: Text(
+                                                        topList[index]
+                                                                .heading ??
+                                                            "",
+                                                        style: const TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        textAlign:
+                                                            TextAlign.center),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 8),
+                                                  child: SizedBox(
+                                                    height: topList[index]
+                                                                    .source
+                                                                    ?.toLowerCase() ==
+                                                                "blog" &&
+                                                            topList[index]
+                                                                    .res!
+                                                                    .length >
+                                                                2
+                                                        ? (128 * 2) + 32
+                                                        : 128,
+                                                    child: topList[index]
+                                                                .source
+                                                                ?.toLowerCase() ==
+                                                            "blog"
+                                                        ? Column(
+                                                            children: [
+                                                              GridView.builder(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        top: 8),
+                                                                shrinkWrap:
+                                                                    true,
+                                                                physics:
+                                                                    const NeverScrollableScrollPhysics(),
+                                                                scrollDirection:
+                                                                    Axis.vertical,
+                                                                itemCount: topList[
+                                                                            index]
+                                                                        .res!
+                                                                        .isNotEmpty
+                                                                    ? topList[index].res!.length >
+                                                                            4
+                                                                        ? 4
+                                                                        : topList[index]
+                                                                            .res
+                                                                            ?.length
+                                                                    : 0,
+                                                                gridDelegate:
+                                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                                  crossAxisCount:
+                                                                      2,
+                                                                  childAspectRatio:
+                                                                      2 / 1.3,
+                                                                ),
+                                                                itemBuilder: (BuildContext
+                                                                            context,
+                                                                        int
+                                                                            idx) =>
+                                                                    ListingCardBlog(
+                                                                        data: topList[
+                                                                            index],
+                                                                        index:
+                                                                            idx),
+                                                              ),
+                                                              if (topList[index]
+                                                                      .res!
+                                                                      .length >
+                                                                  2) ...[
+                                                                GestureDetector(
+                                                                  onTap: () {
+                                                                    widget
+                                                                        .setArgs!({
+                                                                      "url": Endpoints
+                                                                          .Blog
+                                                                    });
+                                                                    widget.changeIndex!(
+                                                                        7);
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets
+                                                                        .only(
+                                                                            top:
+                                                                                8),
+                                                                    padding: const EdgeInsets
+                                                                            .symmetric(
+                                                                        horizontal:
+                                                                            8,
+                                                                        vertical:
+                                                                            4),
+                                                                    decoration: const BoxDecoration(
+                                                                        color: Color(
+                                                                            0xff318805),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(2))),
+                                                                    child:
+                                                                        const Text(
+                                                                      "Check All Events",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              10),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ]
+                                                            ],
+                                                          )
+                                                        : ListView.builder(
+                                                            clipBehavior:
+                                                                Clip.none,
+                                                            physics:
+                                                                const ClampingScrollPhysics(),
+                                                            shrinkWrap: true,
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemCount: topList[
+                                                                        index]
+                                                                    .res!
+                                                                    .isNotEmpty
+                                                                ? topList[index]
+                                                                    .res
+                                                                    ?.length
+                                                                : 0,
+                                                            itemBuilder: (BuildContext
+                                                                        context,
+                                                                    int idx) =>
+                                                                ListingCard(
+                                                                    data: topList[
+                                                                        index],
+                                                                    index: idx),
+                                                          ),
+                                                  ),
+                                                ),
+                                                if (topList[index]
+                                                        .source
+                                                        ?.toLowerCase() ==
+                                                    "recent_businesses") ...[
+                                                  Transform.translate(
+                                                    offset: Offset(0, -8),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        openDialog();
+                                                      },
+                                                      child: Center(
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 4),
+                                                          decoration: const BoxDecoration(
+                                                              color: Color(
+                                                                  0xff318805),
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          2))),
+                                                          child: const Text(
+                                                            "List Your Business Now",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 10),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ]
+                                              ],
+                                            ),
                                           ),
                                         )
                                       : const SizedBox.shrink(),

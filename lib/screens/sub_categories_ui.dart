@@ -102,11 +102,14 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                top: 30,
+                top: 24,
               ),
               child: Text(
                 widget.args["catName"] ?? "",
-                style: const TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 19,
+                ),
               ),
             ),
             // .text

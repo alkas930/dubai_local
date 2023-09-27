@@ -108,13 +108,21 @@ class MyProfile extends StatelessWidget {
             onBack: onBack,
             returnToHome: returnToHome,
           ),
-          const Text("My Profile",
+          const Padding(
+            padding: EdgeInsets.only(
+              top: 24,
+            ),
+            child: Text(
+              "My Profile",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400)),
+                color: Colors.white,
+                fontSize: 19,
+              ),
+            ),
+          ),
           Expanded(
             child: Container(
+              clipBehavior: Clip.hardEdge,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -122,23 +130,31 @@ class MyProfile extends StatelessWidget {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    color: Color(0xffF7F7F7),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: 90,
-                          height: 90,
+                          width: 72,
+                          height: 72,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.white, width: 1),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(50)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(1),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              ),
+                            ],
                           ),
                           child: userLoggedIn == Constants.guestLogin ||
                                   userImage.toString().trim().isEmpty
@@ -181,108 +197,110 @@ class MyProfile extends StatelessWidget {
                           width: 10,
                         ),
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              userName ?? "",
-                              style: const TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w500,
-                              ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userName ?? "",
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    changeIndex!(10);
+                                  },
+                                  child: Text(
+                                    "Edit Profile",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.greenTheme,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "Edit Profile",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textColorGrey,
-                                  decoration: TextDecoration.underline),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    deleteUser(context, storage);
+                                  },
+                                  child: const Text(
+                                    "Delete Account",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xff818181)),
+                                  ),
+                                ),
+                                const Text(" | ",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xff4c4c4c))),
+                                GestureDetector(
+                                  onTap: () {
+                                    showAlertDialog(context);
+                                  },
+                                  child: const Text(
+                                    "Logout",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xff4c4c4c)),
+                                  ),
+                                ),
+                              ],
                             )
                           ],
                         )
                       ],
                     ),
-                    profileItems(
-                        title: "My Profile",
-                        icon: ImagesPaths.ic_star,
-                        width: width),
-                    const Divider(),
-                    // profileItems(
-                    //     title: "My Listings",
-                    //     icon: ImagesPaths.ic_listings,
-                    //     width: width),
-                    // const Divider(),
-                    // profileItems(
-                    //     title: "Favourites",
-                    //     icon: ImagesPaths.ic_star,
-                    //     width: width),
-                    // const Divider(),
-                    // profileItems(
-                    //     title: "My Membership",
-                    //     icon: ImagesPaths.ic_star,
-                    //     width: width),
-                    // const Divider(),
-                    // profileItems(
-                    //     title: "Payments",
-                    //     icon: ImagesPaths.ic_payment,
-                    //     width: width),
-                    // const Divider(),
-                    // profileItems(
-                    //     title: "My Documents",
-                    //     icon: ImagesPaths.ic_document,
-                    //     width: width),
-                    // const SizedBox(
-                    //   height: 40,
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            showAlertDialog(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            margin: const EdgeInsets.only(right: 8),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppColors.greenTheme),
-                            child: const Text(
-                              "Logout",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            deleteUser(context, storage);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            margin: const EdgeInsets.only(left: 8),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: const Color(Constants.themeColorRed)),
-                            child: const Text(
-                              "Delete Account",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                  ),
+                  // profileItems(
+                  //     title: "My Profile",
+                  //     icon: ImagesPaths.ic_star,
+                  //     width: width),
+                  // const Divider(),
+                  // profileItems(
+                  //     title: "My Listings",
+                  //     icon: ImagesPaths.ic_listings,
+                  //     width: width),
+                  // const Divider(),
+                  // profileItems(
+                  //     title: "Favourites",
+                  //     icon: ImagesPaths.ic_star,
+                  //     width: width),
+                  // const Divider(),
+                  // profileItems(
+                  //     title: "My Membership",
+                  //     icon: ImagesPaths.ic_star,
+                  //     width: width),
+                  // const Divider(),
+                  // profileItems(
+                  //     title: "Payments",
+                  //     icon: ImagesPaths.ic_payment,
+                  //     width: width),
+                  // const Divider(),
+                  // profileItems(
+                  //     title: "My Documents",
+                  //     icon: ImagesPaths.ic_document,
+                  //     width: width),
+                  // const SizedBox(
+                  //   height: 40,
+                  // ),
+                ],
               ),
             ),
           ),

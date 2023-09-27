@@ -57,7 +57,8 @@ class _MainBusinessUIState extends State<MainBusinessUI>
   BusinessDetailResponseModel? _businessDetail;
   bool isVisible = false;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-
+  bool isLoading = true;
+  double result = 0;
   void callAPI(String businessSlug, bool isSearch) {
     CallAPI()
         .getBusinessDetail(businessSlug: businessSlug, isSearch: isSearch)
@@ -72,12 +73,12 @@ class _MainBusinessUIState extends State<MainBusinessUI>
           snippet: value.businessData!.address ?? "",
         ),
       );
-
+      var stars = value.businessData?.average_rating;
       setState(() {
         markers[MarkerId(value.businessData!.name ?? "")] = marker;
-      });
-      setState(() {
         _businessDetail = value;
+        isLoading = false;
+        result = double.parse(stars!);
       });
     });
   }
@@ -198,8 +199,6 @@ class _MainBusinessUIState extends State<MainBusinessUI>
       return false;
     }
 
-    var stars = _businessDetail?.businessData?.average_rating;
-    double result = double.parse(stars!);
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Container(
@@ -213,7 +212,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             topRight: Radius.circular(20),
           ),
         ),
-        child: _businessDetail?.businessData == null
+        child: isLoading
             ? const Padding(
                 padding: EdgeInsets.all(32),
                 child: Center(
@@ -871,20 +870,66 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             ],
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Scrollbar(
-              isAlwaysShown: true,
-              child: SingleChildScrollView(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Scrollbar(
+                      thumbVisibility: true,
+                      child: SingleChildScrollView(
+                        child: Text(
+                          _businessDetail?.businessData?.description ?? "",
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            child: Container(
+              width: 160,
+              padding: EdgeInsets.symmetric(vertical: 8),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: AppColors.greenTheme,
+              ),
+              child: const FittedBox(
                 child: Text(
-                  _businessDetail?.businessData?.description ?? "",
-                  style: const TextStyle(fontSize: 10),
+                  "Show Description",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
           ),
         ),
+        // Expanded(
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 8),
+        //     child: Scrollbar(
+        //       thumbVisibility: true,
+        //       child: SingleChildScrollView(
+        //         child: Text(
+        //           _businessDetail?.businessData?.description ?? "",
+        //           style: const TextStyle(fontSize: 10),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+
+        getGallery(_businessDetail?.businessData?.moreImages ?? "", height),
         Padding(
           padding: const EdgeInsets.only(top: 16, bottom: 16),
           child: Container(
@@ -1054,7 +1099,6 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             ),
           ),
         ),
-        getGallery(_businessDetail?.businessData?.moreImages ?? "", height),
       ],
     );
   }
@@ -1239,7 +1283,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
       widget = Container(
         height: height * 0.15,
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        margin: const EdgeInsets.only(bottom: 32),
+        margin: const EdgeInsets.only(top: 16),
         child: ListView.builder(
           clipBehavior: Clip.none,
           shrinkWrap: true,

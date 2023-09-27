@@ -2,6 +2,7 @@ import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
 import 'package:dubai_local/models/top_home_response_model.dart';
 import 'package:dubai_local/screens/categories_ui.dart';
+import 'package:dubai_local/screens/editProfile.dart';
 import 'package:dubai_local/screens/listing.dart';
 import 'package:dubai_local/screens/home_ui.dart';
 import 'package:dubai_local/screens/main_business_ui.dart';
@@ -226,6 +227,14 @@ class _BottomNavState extends State<BottomNav> {
         );
       case 9:
         return MyProfile(
+          returnToHome: returnToHome,
+          onBack: onBack,
+          setArgs: setArgs,
+          args: _args,
+          changeIndex: (index) => setScreen(index),
+        );
+      case 10:
+        return EditProfile(
           returnToHome: returnToHome,
           onBack: onBack,
           setArgs: setArgs,

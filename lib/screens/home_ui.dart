@@ -663,97 +663,102 @@ class _HomeUIState extends State<HomeUI> {
                     changeIndex: widget.changeIndex,
                     setArgs: widget.setArgs,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: widget.categoryList.isNotEmpty
-                        ? GridView.builder(
-                            padding: const EdgeInsets.only(top: 8),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemCount: 10,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 5,
-                                    childAspectRatio: 5 / 4.5,
-                                    mainAxisSpacing: 20 / 2,
-                                    crossAxisSpacing: 10),
-                            itemBuilder: (BuildContext context, int index) {
-                              return InkButton(
-                                rippleColor:
-                                    const Color(Constants.themeColorRed),
-                                backGroundColor: const Color(0xffffffff),
-                                borderRadius: 10,
-                                child: Container(
-                                  clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Color(0xffD5DEF2),
-                                          style: BorderStyle.solid,
-                                          width: 1),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8))),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      index == 9
-                                          ? Expanded(
-                                              child: Image.asset(
-                                                ImagesPaths.ic_more_svg,
-                                                width: 25,
-                                              ),
-                                            )
-                                          : Expanded(
-                                              child: SizedBox(
+                  SizedBox(
+                    width: width * 0.8,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: widget.categoryList.isNotEmpty
+                          ? GridView.builder(
+                              padding: const EdgeInsets.only(top: 8, bottom: 0),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: 9,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 5 / 4.5,
+                                      mainAxisSpacing: 20 / 2,
+                                      crossAxisSpacing: 10),
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkButton(
+                                  rippleColor:
+                                      const Color(Constants.themeColorRed),
+                                  backGroundColor: const Color(0xffffffff),
+                                  borderRadius: 10,
+                                  child: Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xffD5DEF2),
+                                            style: BorderStyle.solid,
+                                            width: 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8))),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        index == 8
+                                            ? Expanded(
+                                                child: Image.asset(
+                                                  ImagesPaths.ic_more_svg,
                                                   width: 25,
-                                                  child: Image.network(widget
-                                                      .categoryList[index]
-                                                      .fullIcon)),
-                                            ),
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xffD5DEF2),
-                                        ),
-                                        child: Text(
-                                          (() {
-                                            if (index == 9) {
-                                              return "More";
-                                            } else {
-                                              return widget
-                                                  .categoryList[index].name;
-                                            }
-                                          }()),
-                                          style: const TextStyle(
-                                            color: Color(0xff333333),
-                                            fontSize: 10,
-                                            overflow: TextOverflow.ellipsis,
+                                                ),
+                                              )
+                                            : Expanded(
+                                                child: SizedBox(
+                                                    width: 25,
+                                                    child: Image.network(widget
+                                                        .categoryList[index]
+                                                        .fullIcon)),
+                                              ),
+                                        Container(
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xffD5DEF2),
                                           ),
-                                          textAlign: TextAlign.center,
+                                          child: Text(
+                                            (() {
+                                              if (index == 8) {
+                                                return "More";
+                                              } else {
+                                                return widget
+                                                    .categoryList[index].name;
+                                              }
+                                            }()),
+                                            style: const TextStyle(
+                                              color: Color(0xff333333),
+                                              fontSize: 10,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                onTap: () {
-                                  if (index == 9) {
-                                    widget.changeIndex!(3);
-                                  } else {
-                                    openSubCategory(
-                                      context,
-                                      widget.categoryList[index].name,
-                                      widget.categoryList[index].slug,
-                                    );
-                                  }
-                                },
-                              );
-                            })
-                        : const SizedBox.shrink(),
+                                  onTap: () {
+                                    if (index == 9) {
+                                      widget.changeIndex!(3);
+                                    } else {
+                                      openSubCategory(
+                                        context,
+                                        widget.categoryList[index].name,
+                                        widget.categoryList[index].slug,
+                                      );
+                                    }
+                                  },
+                                );
+                              })
+                          : const SizedBox.shrink(),
+                    ),
                   ),
                   widget.topList.isNotEmpty
                       ? ListView.builder(
+                          padding: EdgeInsets.only(top: 8),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -788,7 +793,7 @@ class _HomeUIState extends State<HomeUI> {
                                     child: Text(
                                         widget.topList[index].heading ?? "",
                                         style: const TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                         textAlign: TextAlign.center),
                                   ),

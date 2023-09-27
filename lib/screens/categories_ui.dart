@@ -55,9 +55,17 @@ class CategoriesUi extends StatelessWidget {
               returnToHome: returnToHome,
               onBack: () {},
             ),
-            const Text(
-              "Categories",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 24,
+              ),
+              child: Text(
+                "Categories",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 19,
+                ),
+              ),
             ),
             SearchWidget(
               isLight: false,
