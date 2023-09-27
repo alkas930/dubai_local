@@ -283,7 +283,7 @@ class _DetailUiState extends State<DetailUi> {
                                         child: Text(
                                           "${double.tryParse(searchItems.average_rating!) ?? 0.toStringAsFixed(1)}",
                                           style: const TextStyle(
-                                              fontSize: 6,
+                                              fontSize: 10,
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
                                         ))

@@ -90,12 +90,12 @@ class MoreUI extends StatelessWidget {
                         icon: ImagesPaths.more_important_phone,
                         url: Endpoints.UsefulNumbers),
                     Divider(),
-                    moreItems(
-                        context: context,
-                        title: "Visit Website",
-                        icon: ImagesPaths.more_visit_website,
-                        url: Endpoints.BASE_URL),
-                    Divider(),
+                    // moreItems(
+                    //     context: context,
+                    //     title: "Visit Website",
+                    //     icon: ImagesPaths.more_visit_website,
+                    //     url: Endpoints.BASE_URL),
+                    // Divider(),
                   ],
                 ),
               ),

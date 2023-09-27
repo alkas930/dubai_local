@@ -1135,7 +1135,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                     SizedBox(
                       width: width * .76,
                       child: Text(
-                        isWeb ? "$title (Click to visit)" : title,
+                        isWeb ? "$title" : title,
                         style: TextStyle(
                             fontSize: 11,
                             overflow: TextOverflow.ellipsis,
