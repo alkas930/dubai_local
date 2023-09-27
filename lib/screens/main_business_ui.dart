@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/business_details_response_model.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
@@ -408,7 +409,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                         aboutContent(width, context, height),
                         // GOOGLE MAP
                         GoogleMap(
-                          liteModeEnabled: true,
+                          liteModeEnabled: Platform.isAndroid ? true : false,
                           markers: markers.values.toSet(),
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
