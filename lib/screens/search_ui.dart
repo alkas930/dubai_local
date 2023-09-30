@@ -17,6 +17,7 @@ class SearchUi extends StatefulWidget {
   final Function(Map args)? setArgs;
   final Function() onBack;
   final Function() returnToHome;
+  final List<TopHomeData> topList;
   final Map args;
 
   const SearchUi(
@@ -24,6 +25,7 @@ class SearchUi extends StatefulWidget {
       required this.changeIndex,
       required this.setArgs,
       required this.onBack,
+      required this.topList,
       required this.returnToHome,
       required this.args})
       : super(key: key);
@@ -78,26 +80,24 @@ class _SearchUiState extends State<SearchUi> {
       widget.changeIndex!(6);
     }
 
-    Widget ListingCard({required TopHomeData data, required int index}) =>
-        Stack(
+    Widget ListingCard({required TopHomeData data, required int index}) {
+      if (data.source?.toLowerCase() == "recent_businesses") {
+        return Stack(
           children: [
-            Card(
-              clipBehavior: Clip.hardEdge,
-              elevation: 8,
-              shadowColor: Colors.black,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                width: (width - 32 - 8) / 3,
+                width: (width - 32 - 8) / 5,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (data.res![index].icon != null) ...[
-                      Expanded(
+                    if (data.res![index].full_banner != null) ...[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
                         child: Image.network(
-                          data.res![index].icon!,
+                          width: (width - 32 - 8) / 5,
+                          height: (width - 32 - 8) / 5,
+                          data.res![index].full_banner!,
                           fit: BoxFit.cover,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
@@ -119,17 +119,18 @@ class _SearchUiState extends State<SearchUi> {
                       child: Container(
                         // decoration: const BoxDecoration(color: Colors.transparent),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 4),
+                            horizontal: 4, vertical: 3.8),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               data.res![index].name!,
                               style: const TextStyle(
                                   fontSize: 10,
-                                  color: Color(Constants.themeColorRed),
-                                  fontWeight: FontWeight.bold),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal),
                               maxLines: 2,
+                              textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                             ),
                             // Row(
@@ -163,16 +164,22 @@ class _SearchUiState extends State<SearchUi> {
               child: Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: InkButton(
-                      rippleColor: Color.fromARGB(80, 255, 255, 255),
+                      rippleColor: const Color.fromARGB(80, 255, 255, 255),
                       backGroundColor: Colors.transparent,
                       borderRadius: 10,
                       onTap: () {
-                        if (data.source == "business") {
+                        if (data.source?.toLowerCase() == "business") {
                           if (data.res![index].slug != null) {
                             openSubCategoryBusiness(
                                 context, "", data.res![index].slug!);
                           }
-                        } else if (data.source == "blog") {
+                        } else if (data.source?.toLowerCase() ==
+                            "recent_businesses") {
+                          if (data.res![index].slug != null) {
+                            widget.setArgs!({"slug": data.res![index].slug});
+                            widget.changeIndex!(8);
+                          }
+                        } else if (data.source?.toLowerCase() == "blog") {
                           if (data.res![index].link != null) {
                             widget.changeIndex!(7);
                             widget.setArgs!({"url": data.res![index].link!});
@@ -181,10 +188,123 @@ class _SearchUiState extends State<SearchUi> {
                           //     arguments: {"url": data.res![index].link!});
                         }
                       },
-                      child: SizedBox.shrink())),
+                      child: const SizedBox.shrink())),
             )
           ],
         );
+      }
+      return Stack(
+        children: [
+          Card(
+            clipBehavior: Clip.hardEdge,
+            elevation: 8,
+            shadowColor: Colors.black,
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: SizedBox(
+              width: (width - 32 - 8) / 3,
+              height: ((width - 32 - 8) / 3) * .90,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (data.res![index].image != null ||
+                      data.res![index].icon != null) ...[
+                    Expanded(
+                      child: Image.network(
+                        data.source?.toLowerCase() == "blog"
+                            ? data.res![index].image!
+                            : data.res![index].icon!,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                  Center(
+                    child: Container(
+                      // decoration: const BoxDecoration(color: Colors.transparent),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data.source?.toLowerCase() == "blog"
+                                ? data.res![index].title!
+                                : data.res![index].name!,
+                            style: const TextStyle(
+                                fontSize: 8,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          // Row(
+                          //   children: [
+                          //     Image.asset(
+                          //       ImagesPaths.ic_location,
+                          //       scale: 12,
+                          //       color: const Color(0xff444444),
+                          //     ),
+                          //     Expanded(
+                          //       child: Text(
+                          //         data.res![index].name!,
+                          //         style: const TextStyle(
+                          //             fontSize: 10,
+                          //             color: Color(0xff444444)),
+                          //         maxLines: 1,
+                          //         overflow: TextOverflow.ellipsis,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: InkButton(
+                    rippleColor: const Color.fromARGB(80, 255, 255, 255),
+                    backGroundColor: Colors.transparent,
+                    borderRadius: 10,
+                    onTap: () {
+                      if (data.source?.toLowerCase() == "business") {
+                        if (data.res![index].slug != null) {
+                          openSubCategoryBusiness(
+                              context, "", data.res![index].slug!);
+                        }
+                      } else if (data.source?.toLowerCase() == "blog") {
+                        if (data.res![index].link != null) {
+                          widget.changeIndex!(7);
+                          widget.setArgs!({"url": data.res![index].link!});
+                        }
+                        // Navigator.pushNamed(context, AppRoutes.webview,
+                        //     arguments: {"url": data.res![index].link!});
+                      }
+                    },
+                    child: const SizedBox.shrink())),
+          )
+        ],
+      );
+    }
 
     Widget WebviewBanner(String image, String url) => GestureDetector(
           onTap: () {
@@ -260,7 +380,7 @@ class _SearchUiState extends State<SearchUi> {
                                 ? data.res![index].title!
                                 : data.res![index].name!,
                             style: const TextStyle(
-                                fontSize: 8,
+                                fontSize: 10,
                                 color: Colors.black,
                                 fontWeight: FontWeight.normal),
                             maxLines: 1,
@@ -298,7 +418,7 @@ class _SearchUiState extends State<SearchUi> {
             child: Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: InkButton(
-                    rippleColor: Color.fromARGB(80, 255, 255, 255),
+                    rippleColor: const Color.fromARGB(80, 255, 255, 255),
                     backGroundColor: Colors.transparent,
                     borderRadius: 10,
                     onTap: () {
@@ -316,7 +436,7 @@ class _SearchUiState extends State<SearchUi> {
                         //     arguments: {"url": data.res![index].link!});
                       }
                     },
-                    child: SizedBox.shrink())),
+                    child: const SizedBox.shrink())),
           )
         ],
       );
@@ -627,17 +747,21 @@ class _SearchUiState extends State<SearchUi> {
                                                       const EdgeInsets.only(
                                                           bottom: 8),
                                                   child: SizedBox(
-                                                    height: topList[index]
+                                                    height: widget
+                                                                    .topList[
+                                                                        index]
                                                                     .source
                                                                     ?.toLowerCase() ==
                                                                 "blog" &&
-                                                            topList[index]
+                                                            widget
+                                                                    .topList[
+                                                                        index]
                                                                     .res!
                                                                     .length >
                                                                 2
                                                         ? (128 * 2) + 32
                                                         : 128,
-                                                    child: topList[index]
+                                                    child: widget.topList[index]
                                                                 .source
                                                                 ?.toLowerCase() ==
                                                             "blog"
@@ -654,14 +778,16 @@ class _SearchUiState extends State<SearchUi> {
                                                                     const NeverScrollableScrollPhysics(),
                                                                 scrollDirection:
                                                                     Axis.vertical,
-                                                                itemCount: topList[
+                                                                itemCount: widget
+                                                                        .topList[
                                                                             index]
                                                                         .res!
                                                                         .isNotEmpty
-                                                                    ? topList[index].res!.length >
+                                                                    ? widget.topList[index].res!.length >
                                                                             4
                                                                         ? 4
-                                                                        : topList[index]
+                                                                        : widget
+                                                                            .topList[index]
                                                                             .res
                                                                             ?.length
                                                                     : 0,
@@ -677,12 +803,14 @@ class _SearchUiState extends State<SearchUi> {
                                                                         int
                                                                             idx) =>
                                                                     ListingCardBlog(
-                                                                        data: topList[
+                                                                        data: widget.topList[
                                                                             index],
                                                                         index:
                                                                             idx),
                                                               ),
-                                                              if (topList[index]
+                                                              if (widget
+                                                                      .topList[
+                                                                          index]
                                                                       .res!
                                                                       .length >
                                                                   2) ...[
@@ -698,10 +826,9 @@ class _SearchUiState extends State<SearchUi> {
                                                                   },
                                                                   child:
                                                                       Container(
-                                                                    margin: EdgeInsets
+                                                                    margin: const EdgeInsets
                                                                         .only(
-                                                                            top:
-                                                                                8),
+                                                                        top: 8),
                                                                     padding: const EdgeInsets
                                                                         .symmetric(
                                                                         horizontal:
@@ -735,11 +862,14 @@ class _SearchUiState extends State<SearchUi> {
                                                             shrinkWrap: true,
                                                             scrollDirection:
                                                                 Axis.horizontal,
-                                                            itemCount: topList[
+                                                            itemCount: widget
+                                                                    .topList[
                                                                         index]
                                                                     .res!
                                                                     .isNotEmpty
-                                                                ? topList[index]
+                                                                ? widget
+                                                                    .topList[
+                                                                        index]
                                                                     .res
                                                                     ?.length
                                                                 : 0,
@@ -747,7 +877,8 @@ class _SearchUiState extends State<SearchUi> {
                                                                         context,
                                                                     int idx) =>
                                                                 ListingCard(
-                                                                    data: topList[
+                                                                    data: widget
+                                                                            .topList[
                                                                         index],
                                                                     index: idx),
                                                           ),

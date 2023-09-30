@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/SearchModel.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
-import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {

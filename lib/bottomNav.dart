@@ -151,6 +151,7 @@ class _BottomNavState extends State<BottomNav> {
           setArgs: setArgs,
           args: _args,
           changeIndex: (index) => setScreen(index),
+          topList: topList,
         );
       case 2:
         // if (_navigatorKey.currentState!.canPop()) {
@@ -358,100 +359,100 @@ class _BottomNavState extends State<BottomNav> {
         ),
       ],
     );
-    return Stack(
-      children: <Widget>[
-        Image.asset(
-          ImagesPaths.img_bg,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            extendBodyBehindAppBar: true,
-            body: WillPopScope(
-              onWillPop: () async =>
-                  !await _navigatorKey.currentState!.maybePop(),
-              child: Navigator(
-                key: _navigatorKey,
-                onGenerateRoute: (settings) {
-                  log("SETTINGS: ${settings}");
-                  return MaterialPageRoute(
-                    builder: (BuildContext context) => SafeArea(
-                      child: Container(
-                          // child: getScreen(settings.name!),
-                          ),
-                    ),
-                    settings: settings,
-                  );
-                },
-              ),
-            ),
-            bottomNavigationBar: Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(Constants.tabBarRadius),
-                    bottomRight: Radius.circular(Constants.tabBarRadius)),
-                color: const Color(0xffeef1f8),
-              ),
-              alignment: Alignment.center,
-              height: Constants.tabBarHeight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  menuItem(
-                      isSelected: _currentIndex == 0,
-                      icon: ImagesPaths.ic_notification,
-                      title: "Notification",
-                      onTap: () {
-                        ToastContext().init(context);
-                        Toast.show("No New Notifications");
-                      },
-                      width: width),
-                  menuItem(
-                      isSelected: _currentIndex == 1,
-                      icon: ImagesPaths.ic_search,
-                      title: "Search",
-                      onTap: () {
-                        setScreen(1);
-                      },
-                      width: width),
-                  menuItem(
-                      isSelected: _currentIndex == 2,
-                      icon: ImagesPaths.ic_home,
-                      title: "Home",
-                      isHighlighted: true,
-                      onTap: () {
-                        setScreen(2);
-                      },
-                      width: width),
-                  menuItem(
-                      isSelected: _currentIndex == 3,
-                      icon: ImagesPaths.ic_category,
-                      title: "Categories",
-                      onTap: () {
-                        setScreen(3);
-                      },
-                      width: width),
-                  menuItem(
-                      isSelected: _currentIndex == 4,
-                      icon: ImagesPaths.ic_more,
-                      title: "More",
-                      onTap: () {
-                        setScreen(4);
-                      },
-                      width: width),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
+    // return Stack(
+    //   children: <Widget>[
+    //     Image.asset(
+    //       ImagesPaths.img_bg,
+    //       height: MediaQuery.of(context).size.height,
+    //       width: MediaQuery.of(context).size.width,
+    //       fit: BoxFit.cover,
+    //     ),
+    //     Padding(
+    //       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+    //       child: Scaffold(
+    //         backgroundColor: Colors.transparent,
+    //         extendBodyBehindAppBar: true,
+    //         body: WillPopScope(
+    //           onWillPop: () async =>
+    //               !await _navigatorKey.currentState!.maybePop(),
+    //           child: Navigator(
+    //             key: _navigatorKey,
+    //             onGenerateRoute: (settings) {
+    //               log("SETTINGS: ${settings}");
+    //               return MaterialPageRoute(
+    //                 builder: (BuildContext context) => SafeArea(
+    //                   child: Container(
+    //                       // child: getScreen(settings.name!),
+    //                       ),
+    //                 ),
+    //                 settings: settings,
+    //               );
+    //             },
+    //           ),
+    //         ),
+    //         bottomNavigationBar: Container(
+    //           margin: const EdgeInsets.only(bottom: 8),
+    //           decoration: const BoxDecoration(
+    //             borderRadius: BorderRadius.only(
+    //                 bottomLeft: Radius.circular(Constants.tabBarRadius),
+    //                 bottomRight: Radius.circular(Constants.tabBarRadius)),
+    //             color: const Color(0xffeef1f8),
+    //           ),
+    //           alignment: Alignment.center,
+    //           height: Constants.tabBarHeight,
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             mainAxisSize: MainAxisSize.min,
+    //             children: [
+    //               menuItem(
+    //                   isSelected: _currentIndex == 0,
+    //                   icon: ImagesPaths.ic_notification,
+    //                   title: "Notification",
+    //                   onTap: () {
+    //                     ToastContext().init(context);
+    //                     Toast.show("No New Notifications");
+    //                   },
+    //                   width: width),
+    //               menuItem(
+    //                   isSelected: _currentIndex == 1,
+    //                   icon: ImagesPaths.ic_search,
+    //                   title: "Search",
+    //                   onTap: () {
+    //                     setScreen(1);
+    //                   },
+    //                   width: width),
+    //               menuItem(
+    //                   isSelected: _currentIndex == 2,
+    //                   icon: ImagesPaths.ic_home,
+    //                   title: "Home",
+    //                   isHighlighted: true,
+    //                   onTap: () {
+    //                     setScreen(2);
+    //                   },
+    //                   width: width),
+    //               menuItem(
+    //                   isSelected: _currentIndex == 3,
+    //                   icon: ImagesPaths.ic_category,
+    //                   title: "Categories",
+    //                   onTap: () {
+    //                     setScreen(3);
+    //                   },
+    //                   width: width),
+    //               menuItem(
+    //                   isSelected: _currentIndex == 4,
+    //                   icon: ImagesPaths.ic_more,
+    //                   title: "More",
+    //                   onTap: () {
+    //                     setScreen(4);
+    //                   },
+    //                   width: width),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 
   Widget menuItem(

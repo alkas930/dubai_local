@@ -402,7 +402,7 @@ class _HomeUIState extends State<HomeUI> {
                       child: Container(
                         // decoration: const BoxDecoration(color: Colors.transparent),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 4),
+                            horizontal: 4, vertical: 3.8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [

@@ -36,7 +36,6 @@ class LoginSignUpUI extends StatelessWidget {
             context, AppRoutes.main, (Route<dynamic> route) => false,
             arguments: args);
       }
-      print(value);
     }).catchError((onError) {});
   }
 
