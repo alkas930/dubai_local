@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:dubai_local/Constants.dart';
+import 'package:dubai_local/bottomNav.dart';
+import 'package:dubai_local/screens/home_ui.dart';
 import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../models/all_categories_response_model.dart';
@@ -30,6 +35,72 @@ class _HeaderWidget extends State<HeaderWidget> {
   final userLoggedIn = GetStorage().read(SharedPrefrencesKeys.IS_LOGGED_BY);
   List<AllCategoriesData> categoryList = [];
   List<TopHomeData> topList = [];
+
+  Widget UserIcon() {
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return Text('');
+    } else {
+      return GestureDetector(
+        onTap: () {
+          if (userLoggedIn == Constants.facebookLogin ||
+              userLoggedIn == Constants.googleLogin) {
+            widget.changeIndex!(9);
+          } else {
+            Navigator.pushNamed(context, AppRoutes.loginSignUp, arguments: {
+              "categoryList": categoryList,
+              "topList": topList,
+            });
+          }
+        },
+        child: Container(
+          width: Constants.iconSize,
+          height: Constants.iconSize,
+          child: userLoggedIn == Constants.guestLogin ||
+                  userImage.toString().trim().isEmpty
+              ? FittedBox(
+                  fit: BoxFit.fill,
+                  child: Icon(
+                    Icons.account_circle_rounded,
+                    color: Colors.grey.shade100,
+                  ),
+                )
+              : ClipOval(
+                  child: Image.network(
+                    userImage.toString().trim(),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      // return SizedBox.shrink();
+                      return FittedBox(
+                        fit: BoxFit.fill,
+                        child: Icon(
+                          Icons.account_circle_rounded,
+                          color: Colors.grey.shade100,
+                        ),
+                      );
+                    },
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,71 +143,7 @@ class _HeaderWidget extends State<HeaderWidget> {
                   widget.returnToHome();
                 },
                 child: Image.asset(ImagesPaths.app_logo_d, width: width * .40)),
-            GestureDetector(
-              onTap: () {
-                if (userLoggedIn == Constants.facebookLogin ||
-                    userLoggedIn == Constants.googleLogin)
-                  widget.changeIndex!(9);
-                else
-                  Navigator.pushNamed(context, AppRoutes.loginSignUp,
-                      arguments: {
-                        "categoryList": categoryList,
-                        "topList": topList,
-                      });
-                ;
-              },
-              child: Container(
-                width: Constants.iconSize,
-                height: Constants.iconSize,
-                // decoration: BoxDecoration(
-                //   border: Border.all(color: Colors.white, width: 1),
-                //   borderRadius: BorderRadius.all(Radius.circular(50)),
-                // ),
-                child: userLoggedIn == Constants.guestLogin ||
-                        userImage.toString().trim().isEmpty
-                    ? FittedBox(
-                        fit: BoxFit.fill,
-                        child: Icon(
-                          Icons.account_circle_rounded,
-                          color: Colors.grey.shade100,
-                        ),
-                      )
-                    : ClipOval(
-                        child: Image.network(
-                          userImage.toString().trim(),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
-                            // return SizedBox.shrink();
-                            return FittedBox(
-                              fit: BoxFit.fill,
-                              child: Icon(
-                                Icons.account_circle_rounded,
-                                color: Colors.grey.shade100,
-                              ),
-                            );
-                          },
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-              ),
-            ),
+            UserIcon(),
           ],
         ),
       ),

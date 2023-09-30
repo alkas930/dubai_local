@@ -11,7 +11,6 @@ import 'package:dubai_local/screens/my_profile.dart';
 import 'package:dubai_local/screens/search_ui.dart';
 import 'package:dubai_local/screens/sub_categories_ui.dart';
 import 'package:dubai_local/screens/webview_screen_ui.dart';
-import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
@@ -263,7 +262,6 @@ class _BottomNavState extends State<BottomNav> {
     log("RERENDER");
     final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
 
     if (args["categoryList"] != null && args["categoryList"]?.isNotEmpty) {
       categoryList = List<AllCategoriesData>.from(args["categoryList"]);

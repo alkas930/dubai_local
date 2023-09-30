@@ -536,21 +536,24 @@ class _SearchUiState extends State<SearchUi> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SearchWidget(
-                      isLight: false,
-                      changeIndex: null,
-                      setArgs: null,
-                      isListEnabled: false,
-                      updateListing: (searchList) {
-                        setState(() {
-                          this.searchList = searchList;
-                        });
-                      }),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: SearchWidget(
+                        isLight: false,
+                        changeIndex: null,
+                        setArgs: null,
+                        isListEnabled: false,
+                        updateListing: (searchList) {
+                          setState(() {
+                            this.searchList = searchList;
+                          });
+                        }),
+                  ),
                   searchList.isEmpty
                       ? Expanded(
                           child: SingleChildScrollView(
                             child: Container(
-                              margin: const EdgeInsets.only(top: 16),
+                              margin: const EdgeInsets.only(top: 10),
                               alignment: Alignment.topCenter,
                               width: width,
                               constraints: BoxConstraints(minHeight: height),
@@ -643,7 +646,7 @@ class _SearchUiState extends State<SearchUi> {
                                                               GridView.builder(
                                                                 padding:
                                                                     const EdgeInsets
-                                                                            .only(
+                                                                        .only(
                                                                         top: 8),
                                                                 shrinkWrap:
                                                                     true,
@@ -700,7 +703,7 @@ class _SearchUiState extends State<SearchUi> {
                                                                             top:
                                                                                 8),
                                                                     padding: const EdgeInsets
-                                                                            .symmetric(
+                                                                        .symmetric(
                                                                         horizontal:
                                                                             8,
                                                                         vertical:
@@ -764,7 +767,7 @@ class _SearchUiState extends State<SearchUi> {
                                                         child: Container(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .symmetric(
+                                                                  .symmetric(
                                                                   horizontal: 8,
                                                                   vertical: 4),
                                                           decoration: const BoxDecoration(

@@ -3,14 +3,12 @@ import 'package:dubai_local/models/all_categories_response_model.dart';
 import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
-import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
 import '../models/top_home_response_model.dart';
 import '../services/networking_services/api_call.dart';
-import '../utils/localisations/app_colors.dart';
 import '../utils/localisations/images_paths.dart';
 
 class HomeUI extends StatefulWidget {
@@ -119,12 +117,12 @@ class _HomeUIState extends State<HomeUI> {
                           ),
                         ],
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Expanded(
                             child: Text(
                               "",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -303,7 +301,7 @@ class _HomeUIState extends State<HomeUI> {
                                 ? data.res![index].title!
                                 : data.res![index].name!,
                             style: const TextStyle(
-                                fontSize: 8,
+                                fontSize: 10,
                                 color: Colors.black,
                                 fontWeight: FontWeight.normal),
                             maxLines: 1,
@@ -341,7 +339,7 @@ class _HomeUIState extends State<HomeUI> {
             child: Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: InkButton(
-                    rippleColor: Color.fromARGB(80, 255, 255, 255),
+                    rippleColor: const Color.fromARGB(80, 255, 255, 255),
                     backGroundColor: Colors.transparent,
                     borderRadius: 10,
                     onTap: () {
@@ -359,7 +357,7 @@ class _HomeUIState extends State<HomeUI> {
                         //     arguments: {"url": data.res![index].link!});
                       }
                     },
-                    child: SizedBox.shrink())),
+                    child: const SizedBox.shrink())),
           )
         ],
       );
@@ -449,7 +447,7 @@ class _HomeUIState extends State<HomeUI> {
               child: Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: InkButton(
-                      rippleColor: Color.fromARGB(80, 255, 255, 255),
+                      rippleColor: const Color.fromARGB(80, 255, 255, 255),
                       backGroundColor: Colors.transparent,
                       borderRadius: 10,
                       onTap: () {
@@ -473,7 +471,7 @@ class _HomeUIState extends State<HomeUI> {
                           //     arguments: {"url": data.res![index].link!});
                         }
                       },
-                      child: SizedBox.shrink())),
+                      child: const SizedBox.shrink())),
             )
           ],
         );
@@ -567,7 +565,7 @@ class _HomeUIState extends State<HomeUI> {
             child: Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: InkButton(
-                    rippleColor: Color.fromARGB(80, 255, 255, 255),
+                    rippleColor: const Color.fromARGB(80, 255, 255, 255),
                     backGroundColor: Colors.transparent,
                     borderRadius: 10,
                     onTap: () {
@@ -585,7 +583,7 @@ class _HomeUIState extends State<HomeUI> {
                         //     arguments: {"url": data.res![index].link!});
                       }
                     },
-                    child: SizedBox.shrink())),
+                    child: const SizedBox.shrink())),
           )
         ],
       );
@@ -690,10 +688,10 @@ class _HomeUIState extends State<HomeUI> {
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: Color(0xffD5DEF2),
+                                            color: const Color(0xffD5DEF2),
                                             style: BorderStyle.solid,
                                             width: 1),
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(8))),
                                     child: Column(
                                       crossAxisAlignment:
@@ -717,7 +715,7 @@ class _HomeUIState extends State<HomeUI> {
                                               ),
                                         Container(
                                           width: double.infinity,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: Color(0xffD5DEF2),
                                           ),
                                           child: Text(
@@ -731,7 +729,7 @@ class _HomeUIState extends State<HomeUI> {
                                             }()),
                                             style: const TextStyle(
                                               color: Color(0xff333333),
-                                              fontSize: 10,
+                                              fontSize: 12,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             textAlign: TextAlign.center,
@@ -758,7 +756,7 @@ class _HomeUIState extends State<HomeUI> {
                   ),
                   widget.topList.isNotEmpty
                       ? ListView.builder(
-                          padding: EdgeInsets.only(top: 8),
+                          padding: const EdgeInsets.only(top: 8),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -786,8 +784,8 @@ class _HomeUIState extends State<HomeUI> {
                                   WebviewBanner(ImagesPaths.ic_things_to_do,
                                       Endpoints.ThingsToDo),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 5),
                                   child: SizedBox(
                                     width: double.infinity,
                                     child: Text(
@@ -854,9 +852,10 @@ class _HomeUIState extends State<HomeUI> {
                                                   },
                                                   child: Container(
                                                     margin:
-                                                        EdgeInsets.only(top: 8),
+                                                        const EdgeInsets.only(
+                                                            top: 8),
                                                     padding: const EdgeInsets
-                                                            .symmetric(
+                                                        .symmetric(
                                                         horizontal: 8,
                                                         vertical: 4),
                                                     decoration:
@@ -902,7 +901,7 @@ class _HomeUIState extends State<HomeUI> {
                                         ?.toLowerCase() ==
                                     "recent_businesses") ...[
                                   Transform.translate(
-                                    offset: Offset(0, -8),
+                                    offset: const Offset(0, -8),
                                     child: GestureDetector(
                                       onTap: () {
                                         openDialog();

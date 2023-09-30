@@ -1,15 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/sub_categories_response_model.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
-import 'package:dubai_local/utils/localisations/images_paths.dart';
-import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
-
-import '../utils/localisations/app_colors.dart';
 
 class SubCategoriesUI extends StatefulWidget {
   final Function(int index)? changeIndex;
@@ -101,9 +96,7 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
               returnToHome: widget.returnToHome,
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                top: 24,
-              ),
+              padding: const EdgeInsets.only(top: 24, bottom: 5),
               child: Text(
                 widget.args["catName"] ?? "",
                 style: const TextStyle(

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:dubai_local/Constants.dart';
-import 'package:dubai_local/services/networking_services/api_manager.dart';
 import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
@@ -30,13 +29,14 @@ class LoginSignUpUI extends StatelessWidget {
       if (value["data"] != null) {
         storage.write(SharedPrefrencesKeys.IS_LOGGED_BY, Constants.googleLogin);
         storage.write(SharedPrefrencesKeys.USER_NAME, data!.displayName ?? "");
-        storage.write(SharedPrefrencesKeys.USER_ID, data.id ?? "");
+        storage.write(SharedPrefrencesKeys.USER_ID, data.id);
         storage.write(SharedPrefrencesKeys.USER_IMAGE, data.photoUrl ?? "");
-        storage.write(SharedPrefrencesKeys.USER_EMAIL, data.email ?? "");
+        storage.write(SharedPrefrencesKeys.USER_EMAIL, data.email);
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.main, (Route<dynamic> route) => false,
             arguments: args);
       }
+      print(value);
     }).catchError((onError) {});
   }
 
@@ -94,7 +94,7 @@ class LoginSignUpUI extends StatelessWidget {
                     width: width),
               ),
               Container(
-                margin: EdgeInsets.only(top: 85),
+                margin: const EdgeInsets.only(top: 85),
                 child: InkButton(
                     borderRadius: 5,
                     width: width * .7,
@@ -117,9 +117,9 @@ class LoginSignUpUI extends StatelessWidget {
                     }),
               ),
               Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  margin: EdgeInsets.only(top: 30),
-                  child: Text(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  margin: const EdgeInsets.only(top: 30),
+                  child: const Text(
                     "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy.",
                     style: TextStyle(fontSize: 14, color: Colors.white),
                   )),
@@ -147,7 +147,7 @@ class LoginSignUpUI extends StatelessWidget {
             CircleAvatar(
               backgroundColor: Colors.white,
               child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   child: Image.asset(
@@ -160,7 +160,7 @@ class LoginSignUpUI extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 "Login with $title",
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
           ],
