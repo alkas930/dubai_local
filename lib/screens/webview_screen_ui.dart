@@ -6,7 +6,6 @@ import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../utils/localisations/images_paths.dart';
 
 class WebViewScreen extends StatefulWidget {
   final Function(int index)? changeIndex;
@@ -92,11 +91,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
                           }
                           return NavigationDecision.navigate;
                         },
-                        onPageFinished: (url) {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        },
+                        // onPageFinished: (url) {
+                        //   setState(() {
+                        //     isLoading = false;
+                        //   });
+                        // },
                       ),
                     )
                     ..setBackgroundColor(Colors.transparent)

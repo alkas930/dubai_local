@@ -1,8 +1,5 @@
 import 'package:dubai_local/services/networking_services/endpoints.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
-import 'package:dubai_local/utils/localisations/app_colors.dart';
-import 'package:dubai_local/utils/localisations/custom_widgets.dart';
-import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import '../utils/localisations/images_paths.dart';
 
@@ -24,8 +21,6 @@ class MoreUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
     Future<bool> _onWillPop() async {
       // Navigator.pop(context);
       onBack();

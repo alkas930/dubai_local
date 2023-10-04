@@ -230,6 +230,7 @@ class _HomeUIState extends State<HomeUI> {
       // Navigator.pushNamed(context, AppRoutes.subCategories,
       //     arguments: {"catName": catName, "slug": slug});
       widget.setArgs!({"catName": catName, "slug": slug});
+
       widget.changeIndex!(5);
     }
 
@@ -739,7 +740,7 @@ class _HomeUIState extends State<HomeUI> {
                                     ),
                                   ),
                                   onTap: () {
-                                    if (index == 9) {
+                                    if (index == 8) {
                                       widget.changeIndex!(3);
                                     } else {
                                       openSubCategory(
