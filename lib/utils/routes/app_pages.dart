@@ -12,6 +12,6 @@ class AppPages {
     // AppRoutes.detail: (context) => const DetailUi(),
     // AppRoutes.webview: (context) => const WebViewScreen(),
     AppRoutes.splash: (context) => const SplashUI(),
-    AppRoutes.loginSignUp: (context) => const LoginSignUpUI(),
+    AppRoutes.loginSignUp: (context) => LoginSignUpUI(),
   };
 }

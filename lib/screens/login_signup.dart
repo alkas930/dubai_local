@@ -5,16 +5,18 @@ import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../services/networking_services/api_call.dart';
 
 class LoginSignUpUI extends StatelessWidget {
-  const LoginSignUpUI({Key? key}) : super(key: key);
+  LoginSignUpUI({Key? key}) : super(key: key);
 
   void saveUser(GoogleSignInAccount? data, BuildContext context, args,
       GetStorage storage) {
@@ -39,12 +41,79 @@ class LoginSignUpUI extends StatelessWidget {
     }).catchError((onError) {});
   }
 
+  void saveiosUser(
+    AuthorizationCredentialAppleID? data,
+    BuildContext context,
+    Map args,
+    GetStorage storage,
+  ) {
+    if (data != null) {
+      final Map<String, dynamic> appleInfo = {
+        "identityToken": data.identityToken,
+        "authorizationCode": data.authorizationCode,
+      };
+
+      CallAPI().createUser(body: {
+        "userid": UserInfo,
+        "appleInfo": appleInfo,
+        // Send the Apple login info to the backend
+      }).then((value) {
+        if (value["data"] != null) {
+          storage.write(
+            SharedPrefrencesKeys.IS_LOGGED_BY,
+            Constants.SignInWithApple,
+          );
+
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRoutes.main,
+            (Route<dynamic> route) => false,
+            arguments: args,
+          );
+        }
+      }).catchError((onError) {});
+    }
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Ios Auth
+  Future<User?> _handleAppleSignIn() async {
+    try {
+      final AuthorizationCredentialAppleID appleCredential =
+          await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName
+        ],
+      );
+
+      // Convert identityToken and authorizationCode to strings
+      final String? identityToken = appleCredential.identityToken;
+      final String authorizationCode = appleCredential.authorizationCode;
+
+      final AuthCredential credential = OAuthProvider("apple.com").credential(
+        idToken: identityToken,
+        accessToken: authorizationCode,
+      );
+
+      final UserCredential authResult =
+          await _auth.signInWithCredential(credential);
+      return authResult.user;
+    } catch (e) {
+      print("Error during Apple Sign-In: $e");
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     final GoogleSignIn googleSignIn = GoogleSignIn();
+    // final SignInWithApple signInWithApple = SignInWithApple();
+
     final GetStorage storage = GetStorage();
     return SafeArea(
       child: Scaffold(
@@ -92,6 +161,42 @@ class LoginSignUpUI extends StatelessWidget {
                     },
                     width: width),
               ),
+
+              Container(
+                margin: const EdgeInsets.only(top: 35),
+                child: AppleLogin(
+                    title: "Apple",
+                    imagePath: ImagesPaths.applelogo,
+                    onTap: () async {
+                      User? user = await _handleAppleSignIn();
+                      if (user != null) {
+                        print(
+                            'Apple Sign-In successful. User: ${user.displayName}');
+                        storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
+                            Constants.loggedOut);
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            AppRoutes.main, (Route<dynamic> route) => false,
+                            arguments: args);
+                      } else {
+                        print('Apple Sign-In failed.');
+                      }
+
+                      SignInWithAppleButtonStyle.whiteOutlined;
+
+                      SignInWithApple.getAppleIDCredential(
+                        scopes: [
+                          AppleIDAuthorizationScopes.email,
+                          AppleIDAuthorizationScopes.fullName,
+                        ],
+                      ).then((value) {
+                        saveiosUser(value, context, args, storage);
+                      }).onError((error, stackTrace) {
+                        log(error.toString());
+                        log(stackTrace.toString());
+                      });
+                    },
+                    width: width),
+              ),
               Container(
                 margin: const EdgeInsets.only(top: 85),
                 child: InkButton(
@@ -130,6 +235,45 @@ class LoginSignUpUI extends StatelessWidget {
   }
 
   Widget googleLogin(
+      {required String title,
+      required String imagePath,
+      required Function onTap,
+      required double width}) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: SizedBox(
+        width: width * .75,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: Image.asset(
+                    imagePath,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                "Login with $title",
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget AppleLogin(
       {required String title,
       required String imagePath,
       required Function onTap,

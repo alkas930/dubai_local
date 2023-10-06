@@ -8,6 +8,7 @@ import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../models/all_categories_response_model.dart';
 import '../models/top_home_response_model.dart';
 import '../utils/localisations/images_paths.dart';
@@ -33,74 +34,75 @@ class HeaderWidget extends StatefulWidget {
 class _HeaderWidget extends State<HeaderWidget> {
   final userImage = GetStorage().read(SharedPrefrencesKeys.USER_IMAGE);
   final userLoggedIn = GetStorage().read(SharedPrefrencesKeys.IS_LOGGED_BY);
+  final SignInWithApple = GetStorage().read(SharedPrefrencesKeys.IS_LOGGED_BY);
   List<AllCategoriesData> categoryList = [];
   List<TopHomeData> topList = [];
 
-  Widget UserIcon() {
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
-      return Text('');
-    } else {
-      return GestureDetector(
-        onTap: () {
-          if (userLoggedIn == Constants.facebookLogin ||
-              userLoggedIn == Constants.googleLogin) {
-            widget.changeIndex!(9);
-          } else {
-            Navigator.pushNamed(context, AppRoutes.loginSignUp, arguments: {
-              "categoryList": categoryList,
-              "topList": topList,
-            });
-          }
-        },
-        child: Container(
-          width: Constants.iconSize,
-          height: Constants.iconSize,
-          child: userLoggedIn == Constants.guestLogin ||
-                  userImage.toString().trim().isEmpty
-              ? FittedBox(
-                  fit: BoxFit.fill,
-                  child: Icon(
-                    Icons.account_circle_rounded,
-                    color: Colors.grey.shade100,
-                  ),
-                )
-              : ClipOval(
-                  child: Image.network(
-                    userImage.toString().trim(),
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      // return SizedBox.shrink();
-                      return FittedBox(
-                        fit: BoxFit.fill,
-                        child: Icon(
-                          Icons.account_circle_rounded,
-                          color: Colors.grey.shade100,
-                        ),
-                      );
-                    },
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-        ),
-      );
-    }
-  }
+  // Widget UserIcon() {
+  //   if (Theme.of(context).platform == TargetPlatform.iOS) {
+  //     return Text('');
+  //   } else {
+  //     return GestureDetector(
+  //       onTap: () {
+  //         if (userLoggedIn == Constants.facebookLogin ||
+  //             userLoggedIn == Constants.googleLogin) {
+  //           widget.changeIndex!(9);
+  //         } else {
+  //           Navigator.pushNamed(context, AppRoutes.loginSignUp, arguments: {
+  //             "categoryList": categoryList,
+  //             "topList": topList,
+  //           });
+  //         }
+  //       },
+  //       child: Container(
+  //         width: Constants.iconSize,
+  //         height: Constants.iconSize,
+  //         child: userLoggedIn == Constants.guestLogin ||
+  //                 userImage.toString().trim().isEmpty
+  //             ? FittedBox(
+  //                 fit: BoxFit.fill,
+  //                 child: Icon(
+  //                   Icons.account_circle_rounded,
+  //                   color: Colors.grey.shade100,
+  //                 ),
+  //               )
+  //             : ClipOval(
+  //                 child: Image.network(
+  //                   userImage.toString().trim(),
+  //                   fit: BoxFit.cover,
+  //                   width: double.infinity,
+  //                   height: double.infinity,
+  //                   errorBuilder: (BuildContext context, Object exception,
+  //                       StackTrace? stackTrace) {
+  //                     // return SizedBox.shrink();
+  //                     return FittedBox(
+  //                       fit: BoxFit.fill,
+  //                       child: Icon(
+  //                         Icons.account_circle_rounded,
+  //                         color: Colors.grey.shade100,
+  //                       ),
+  //                     );
+  //                   },
+  //                   loadingBuilder: (BuildContext context, Widget child,
+  //                       ImageChunkEvent? loadingProgress) {
+  //                     if (loadingProgress == null) {
+  //                       return child;
+  //                     }
+  //                     return Center(
+  //                       child: CircularProgressIndicator(
+  //                         value: loadingProgress.expectedTotalBytes != null
+  //                             ? loadingProgress.cumulativeBytesLoaded /
+  //                                 loadingProgress.expectedTotalBytes!
+  //                             : null,
+  //                       ),
+  //                     );
+  //                   },
+  //                 ),
+  //               ),
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +145,70 @@ class _HeaderWidget extends State<HeaderWidget> {
                   widget.returnToHome();
                 },
                 child: Image.asset(ImagesPaths.app_logo_d, width: width * .40)),
-            UserIcon(),
+            // UserIcon(),
+
+            GestureDetector(
+              onTap: () {
+                if (userLoggedIn == Constants.facebookLogin ||
+                    userLoggedIn == Constants.googleLogin ||
+                    userLoggedIn == Constants.SignInWithApple) {
+                  widget.changeIndex!(9);
+                } else {
+                  Navigator.pushNamed(context, AppRoutes.loginSignUp,
+                      arguments: {
+                        "categoryList": categoryList,
+                        "topList": topList,
+                      });
+                }
+              },
+              child: Container(
+                width: Constants.iconSize,
+                height: Constants.iconSize,
+                child: userLoggedIn == Constants.guestLogin ||
+                        userImage.toString().trim().isEmpty
+                    ? FittedBox(
+                        fit: BoxFit.fill,
+                        child: Icon(
+                          Icons.account_circle_rounded,
+                          color: Colors.grey.shade100,
+                        ),
+                      )
+                    : ClipOval(
+                        child: Image.network(
+                          userImage.toString().trim(),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            // return SizedBox.shrink();
+                            return FittedBox(
+                              fit: BoxFit.fill,
+                              child: Icon(
+                                Icons.account_circle_rounded,
+                                color: Colors.grey.shade100,
+                              ),
+                            );
+                          },
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+              ),
+            )
           ],
         ),
       ),

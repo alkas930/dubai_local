@@ -1,8 +1,11 @@
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 class Constants {
   static const loggedOut = -1;
   static const guestLogin = 0;
   static const facebookLogin = 1;
   static const googleLogin = 2;
+  static const SignInWithApple = 1;
 
   //HEADER ICON SIZE W=H
   static const double iconSize = 32.0;

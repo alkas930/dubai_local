@@ -36,4 +36,5 @@ class ImagesPaths {
   static const String ic_document = "assets/images/ic_documents.png";
   static const String ic_star = "assets/images/ic_vector.png";
   static const String ic_forward_ios = "assets/images/ic_fordward_ios.png";
+  static const String applelogo = "assets/images/apple.png";
 }
