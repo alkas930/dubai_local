@@ -24,6 +24,7 @@ class MainBusinessUI extends StatefulWidget {
   final Function() onBack;
   final Function() returnToHome;
   final Map args;
+  final bool isBackEnabled;
 
   const MainBusinessUI(
       {Key? key,
@@ -31,6 +32,7 @@ class MainBusinessUI extends StatefulWidget {
       required this.setArgs,
       required this.onBack,
       required this.returnToHome,
+      required this.isBackEnabled,
       required this.args})
       : super(key: key);
 
@@ -243,6 +245,30 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                               end: Alignment.bottomCenter,
                             ),
                           ),
+                        ),
+                        // HeaderWidget(
+                        //   isBackEnabled: true,
+                        //   changeIndex: widget.changeIndex,
+                        //   onBack: widget.onBack,
+                        //   returnToHome: widget.returnToHome,
+                        // ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 32),
+                          child: SizedBox(
+                              width: Constants.iconSize,
+                              height: Constants.iconSize,
+                              child: widget.isBackEnabled
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        // Navigator.pop(context);
+                                        widget.onBack();
+                                      },
+                                      child: const Icon(
+                                        Icons.arrow_back_ios,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : null),
                         ),
                         Positioned(
                           bottom: 15,

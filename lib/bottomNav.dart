@@ -224,6 +224,7 @@ class _BottomNavState extends State<BottomNav> {
           setArgs: setArgs,
           args: _args,
           changeIndex: (index) => setScreen(index),
+          isBackEnabled: true,
         );
       case 9:
         return MyProfile(
