@@ -49,7 +49,7 @@ class _SplashUIState extends State<SplashUI> {
           });
     } else {
       Navigator.pushNamedAndRemoveUntil(
-          context, AppRoutes.main, (Route<dynamic> route) => false,
+          context, AppRoutes.loginSignUp, (Route<dynamic> route) => false,
           arguments: {
             "categoryList": categoryList,
             "topList": topList,
