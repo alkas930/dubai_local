@@ -52,7 +52,7 @@ dependencies:
   map_launcher: ^2.5.0
   google_maps_flutter: ^2.3.0
   firebase_core: ^2.17.0
-  firebase_auth: ^4.10.1
+  firebase_auth: ^4.10.0
   sign_in_with_apple: ^5.0.0
   readmore: ^2.2.0
 

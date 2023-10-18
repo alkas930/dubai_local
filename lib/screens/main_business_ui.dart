@@ -241,7 +241,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                 ),
               ),
               child: isLoading
-                  ? const Padding(
+                  ? Padding(
                       padding: EdgeInsets.all(32),
                       child: Center(
                         child: CircularProgressIndicator(
@@ -256,11 +256,15 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                           height: height * 0.22,
                           child: Stack(
                             children: [
-                              Image.network(
-                                _businessDetail?.businessData?.fullBanner ?? "",
-                                fit: BoxFit.cover,
-                                width: width,
-                                height: height * 0.22,
+                              Opacity(
+                                opacity: 0.50,
+                                child: Image.network(
+                                  _businessDetail?.businessData?.fullBanner ??
+                                      "",
+                                  fit: BoxFit.cover,
+                                  width: width,
+                                  height: height * 0.22,
+                                ),
                               ),
                               Container(
                                 decoration: const BoxDecoration(
@@ -815,14 +819,13 @@ class _MainBusinessUIState extends State<MainBusinessUI>
           //   ),
           // ),
 
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                getGallery(
+          Row(
+            children: [
+              SingleChildScrollView(
+                child: getGallery(
                     _businessDetail?.businessData?.moreImages ?? "", height),
-              ],
-            ),
+              ),
+            ],
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15),

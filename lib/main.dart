@@ -7,18 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
-  await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Await Firebase initialization
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Firebase.initializeApp();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
