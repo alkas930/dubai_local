@@ -106,6 +106,53 @@ class LoginSignUpUI extends StatelessWidget {
     }
   }
 
+  Widget AppleUser(context) {
+    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+
+    final GetStorage storage = GetStorage();
+
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return Container(
+        margin: const EdgeInsets.only(top: 35),
+        child: AppleLogin(
+            title: "Apple",
+            imagePath: ImagesPaths.applelogo,
+            onTap: () async {
+              User? user = await _handleAppleSignIn();
+              if (user != null) {
+                print('Apple Sign-In successful. User: ${user.displayName}');
+                storage.write(
+                    SharedPrefrencesKeys.IS_LOGGED_BY, Constants.loggedOut);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, AppRoutes.main, (Route<dynamic> route) => false,
+                    arguments: args);
+              } else {
+                print('Apple Sign-In failed.');
+              }
+
+              SignInWithAppleButtonStyle.whiteOutlined;
+
+              SignInWithApple.getAppleIDCredential(
+                scopes: [
+                  AppleIDAuthorizationScopes.email,
+                  AppleIDAuthorizationScopes.fullName,
+                ],
+              ).then((value) {
+                saveiosUser(value, context, args, storage);
+              }).onError((error, stackTrace) {
+                log(error.toString());
+                log(stackTrace.toString());
+              });
+            },
+            width: width),
+      );
+    } else {
+      return Text('');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
@@ -162,41 +209,7 @@ class LoginSignUpUI extends StatelessWidget {
                     width: width),
               ),
 
-              Container(
-                margin: const EdgeInsets.only(top: 35),
-                child: AppleLogin(
-                    title: "Apple",
-                    imagePath: ImagesPaths.applelogo,
-                    onTap: () async {
-                      User? user = await _handleAppleSignIn();
-                      if (user != null) {
-                        print(
-                            'Apple Sign-In successful. User: ${user.displayName}');
-                        storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
-                            Constants.loggedOut);
-                        Navigator.pushNamedAndRemoveUntil(context,
-                            AppRoutes.main, (Route<dynamic> route) => false,
-                            arguments: args);
-                      } else {
-                        print('Apple Sign-In failed.');
-                      }
-
-                      SignInWithAppleButtonStyle.whiteOutlined;
-
-                      SignInWithApple.getAppleIDCredential(
-                        scopes: [
-                          AppleIDAuthorizationScopes.email,
-                          AppleIDAuthorizationScopes.fullName,
-                        ],
-                      ).then((value) {
-                        saveiosUser(value, context, args, storage);
-                      }).onError((error, stackTrace) {
-                        log(error.toString());
-                        log(stackTrace.toString());
-                      });
-                    },
-                    width: width),
-              ),
+              AppleUser(context),
               Container(
                 margin: const EdgeInsets.only(top: 85),
                 child: InkButton(
@@ -220,13 +233,23 @@ class LoginSignUpUI extends StatelessWidget {
                           arguments: args);
                     }),
               ),
-              Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  margin: const EdgeInsets.only(top: 30),
-                  child: const Text(
-                    "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy.",
-                    style: TextStyle(fontSize: 14, color: Colors.white),
-                  )),
+
+              Center(
+                child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    margin: const EdgeInsets.only(top: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: const Text(
+                            "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy.",
+                            style: TextStyle(fontSize: 14, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
             ],
           ),
         ),
