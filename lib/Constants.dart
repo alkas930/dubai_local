@@ -5,7 +5,7 @@ class Constants {
   static const guestLogin = 0;
   static const facebookLogin = 1;
   static const googleLogin = 2;
-  static const SignInWithApple = 1;
+  static const AppleUser = 2;
 
   //HEADER ICON SIZE W=H
   static const double iconSize = 32.0;

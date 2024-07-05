@@ -9,7 +9,7 @@ import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import 'package:velocity_x/velocity_x.dart';
+// import 'package:velocity_x/velocity_x.dart';
 
 import '../Constants.dart';
 import '../utils/localisations/app_colors.dart';
@@ -304,21 +304,21 @@ class _DetailUiState extends State<DetailUi> {
                                   alignment: Alignment.topRight,
                                   child: Row(
                                     children: [
-                                      VxRating(
-                                        onRatingUpdate: (v) {},
-                                        size: 10,
-                                        normalColor: AppColors.grey,
-                                        selectionColor: AppColors.yellow,
-                                        maxRating: 5,
-                                        count: 5,
-                                        value: searchItems.average_rating !=
-                                                null
-                                            ? double.parse(double.parse(
-                                                    searchItems.average_rating!)
-                                                .toStringAsFixed(2))
-                                            : 0,
-                                        isSelectable: false,
-                                      ),
+                                      // VxRating(
+                                      //   onRatingUpdate: (v) {},
+                                      //   size: 10,
+                                      //   normalColor: AppColors.grey,
+                                      //   selectionColor: AppColors.yellow,
+                                      //   maxRating: 5,
+                                      //   count: 5,
+                                      //   value: searchItems.average_rating !=
+                                      //           null
+                                      //       ? double.parse(double.parse(
+                                      //               searchItems.average_rating!)
+                                      //           .toStringAsFixed(2))
+                                      //       : 0,
+                                      //   isSelectable: false,
+                                      // ),
                                       Container(
                                           margin:
                                               const EdgeInsets.only(left: 8),

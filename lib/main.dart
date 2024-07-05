@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Poppins",
       ),
-      routes: AppPages.route,
       initialRoute: AppPages.initialRoute,
+      routes: AppPages.route,
     );
   }
 }

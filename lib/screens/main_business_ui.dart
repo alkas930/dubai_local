@@ -16,7 +16,7 @@ import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:velocity_x/velocity_x.dart';
+// import 'package:velocity_x/velocity_x.dart';
 import 'package:readmore/readmore.dart';
 
 import '../models/SubCategoryBusinessResponseModel.dart';
@@ -323,23 +323,16 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 15),
-                                          child: Text(
-                                            _businessDetail
-                                                    ?.businessData?.name ??
-                                                "",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ],
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                      child: Text(
+                                        _businessDetail?.businessData?.name ??
+                                            "",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -567,17 +560,17 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                VxRating(
-                                                  onRatingUpdate: (v) {},
-                                                  size: 10,
-                                                  normalColor: AppColors.grey,
-                                                  selectionColor:
-                                                      AppColors.yellow,
-                                                  maxRating: 5,
-                                                  count: 5,
-                                                  value: result,
-                                                  isSelectable: false,
-                                                ),
+                                                // VxRating(
+                                                //   onRatingUpdate: (v) {},
+                                                //   size: 10,
+                                                //   normalColor: AppColors.grey,
+                                                //   selectionColor:
+                                                //       AppColors.yellow,
+                                                //   maxRating: 5,
+                                                //   count: 5,
+                                                //   value: result,
+                                                //   isSelectable: false,
+                                                // ),
                                               ],
                                             )),
                                         Container(
@@ -775,17 +768,13 @@ class _MainBusinessUIState extends State<MainBusinessUI>
           SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Text(
-                  _businessDetail?.businessData?.name ?? "",
-                  style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              _businessDetail?.businessData?.name ?? "",
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
@@ -819,13 +808,10 @@ class _MainBusinessUIState extends State<MainBusinessUI>
           //   ),
           // ),
 
-          Row(
-            children: [
-              SingleChildScrollView(
-                child: getGallery(
-                    _businessDetail?.businessData?.moreImages ?? "", height),
-              ),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: getGallery(
+                _businessDetail?.businessData?.moreImages ?? "", height),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15),
@@ -1533,7 +1519,7 @@ class SubmitReviewButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(primary: AppColors.greenTheme),
+        style: ElevatedButton.styleFrom(backgroundColor: AppColors.greenTheme),
         child: const Text('Submit Review'));
   }
 }

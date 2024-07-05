@@ -151,7 +151,7 @@ class _HeaderWidget extends State<HeaderWidget> {
               onTap: () {
                 if (userLoggedIn == Constants.facebookLogin ||
                     userLoggedIn == Constants.googleLogin ||
-                    userLoggedIn == Constants.SignInWithApple) {
+                    userLoggedIn == Constants.AppleUser) {
                   widget.changeIndex!(9);
                 } else {
                   Navigator.pushNamed(context, AppRoutes.loginSignUp,

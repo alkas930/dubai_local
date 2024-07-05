@@ -47,32 +47,31 @@ class LoginSignUpUI extends StatelessWidget {
     Map args,
     GetStorage storage,
   ) {
-    if (data != null) {
-      final Map<String, dynamic> appleInfo = {
-        "identityToken": data.identityToken,
-        "authorizationCode": data.authorizationCode,
-      };
+    print("response ----- ${data?.userIdentifier}${data?.identityToken}");
+    CallAPI().createUser(body: {
+      "userid": data?.email ?? "",
 
-      CallAPI().createUser(body: {
-        "userid": UserInfo,
-        "appleInfo": appleInfo,
-        // Send the Apple login info to the backend
-      }).then((value) {
-        if (value["data"] != null) {
-          storage.write(
-            SharedPrefrencesKeys.IS_LOGGED_BY,
-            Constants.SignInWithApple,
-          );
+      "username": data?.givenName ?? "",
+      "emailid": data?.identityToken ?? "",
+      "phonenumber": "",
+      "password": "",
+      // Send the Apple login info to the backend
+    }).then((value) {
+      if (value["data"] != null) {
+        storage.write(
+          SharedPrefrencesKeys.IS_LOGGED_BY,
+          Constants.AppleUser,
+        );
+        storage.write(SharedPrefrencesKeys.USER_NAME, data!.familyName ?? "");
 
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            AppRoutes.main,
-            (Route<dynamic> route) => false,
-            arguments: args,
-          );
-        }
-      }).catchError((onError) {});
-    }
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.main,
+          (Route<dynamic> route) => false,
+          arguments: args,
+        );
+      }
+    }).catchError((onError) {});
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -193,61 +192,92 @@ class LoginSignUpUI extends StatelessWidget {
               //       },
               //       width: width),
               // ),
-              Container(
-                margin: const EdgeInsets.only(top: 35),
-                child: googleLogin(
-                    title: "Google",
-                    imagePath: ImagesPaths.ic_google,
-                    onTap: () {
-                      googleSignIn.signIn().then((value) {
-                        saveUser(value, context, args, storage);
-                      }).onError((error, stackTrace) {
-                        log(error.toString());
-                        log(stackTrace.toString());
-                      });
-                    },
-                    width: width),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 40),
+                    child: googleLogin(
+                        title: "Google",
+                        imagePath: ImagesPaths.ic_google,
+                        onTap: () {
+                          googleSignIn.signIn().then((value) {
+                            saveUser(value, context, args, storage);
+                          }).onError((error, stackTrace) {
+                            log(error.toString());
+                            log(stackTrace.toString());
+                          });
+                        },
+                        width: width),
+                  ),
+                ],
               ),
 
-              AppleUser(context),
-              Container(
-                margin: const EdgeInsets.only(top: 85),
-                child: InkButton(
-                    borderRadius: 5,
-                    width: width * .7,
-                    backGroundColor: Colors.grey.shade300,
-                    height: 40,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 10),
-                      child: Text(
-                        "CONTINUE WITHOUT LOGIN",
-                        style: TextStyle(color: Colors.grey.shade700),
-                      ),
-                    ),
-                    onTap: () {
-                      storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
-                          Constants.loggedOut);
-                      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.main,
-                          (Route<dynamic> route) => false,
-                          arguments: args);
-                    }),
+              const SizedBox(
+                height: 30,
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // ignore: invalid_use_of_visible_for_testing_member
+                  AppleLogin(
+                      title: "Apple",
+                      onTap: () {
+                        SignInWithApple.getAppleIDCredential(
+                          scopes: [
+                            AppleIDAuthorizationScopes.email,
+                            AppleIDAuthorizationScopes.fullName
+                          ],
+                        ).then((value) {
+                          saveiosUser(value as AuthorizationCredentialAppleID?,
+                              context, args, storage);
+                        }).onError((error, stackTrace) {
+                          log(error.toString());
+                          log(stackTrace.toString());
+                        });
+                      },
+                      imagePath: ImagesPaths.applelogo,
+                      width: width),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 85),
+                    child: InkButton(
+                        borderRadius: 5,
+                        width: width * .7,
+                        backGroundColor: Colors.grey.shade300,
+                        height: 40,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 10),
+                          child: Text(
+                            "CONTINUE WITHOUT LOGIN",
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                        ),
+                        onTap: () {
+                          storage.write(SharedPrefrencesKeys.IS_LOGGED_BY,
+                              Constants.loggedOut);
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              AppRoutes.main, (Route<dynamic> route) => false,
+                              arguments: args);
+                        }),
+                  ),
+                ],
               ),
 
               Center(
                 child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     margin: const EdgeInsets.only(top: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: const Text(
-                            "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy.",
-                            style: TextStyle(fontSize: 14, color: Colors.white),
-                          ),
-                        ),
-                      ],
+                    child: const Text(
+                      "By signing in, you are agreeing to our Terms & Conditions and Privacy Policy.",
+                      style: TextStyle(fontSize: 13, color: Colors.white),
                     )),
               ),
             ],
