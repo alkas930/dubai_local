@@ -1,4 +1,4 @@
-package com.eseo.dubailocal
+package com.dubai.dubailocal
 
 import io.flutter.embedding.android.FlutterActivity
 

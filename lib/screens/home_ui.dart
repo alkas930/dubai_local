@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
 import 'package:dubai_local/services/networking_services/endpoints.dart';
@@ -12,6 +14,7 @@ import '../services/networking_services/api_call.dart';
 import '../utils/localisations/images_paths.dart';
 
 class HomeUI extends StatefulWidget {
+  final VoidCallback toggleTheme;
   final Function(int index)? changeIndex;
   final Function(Map args)? setArgs;
   final List<AllCategoriesData> categoryList;
@@ -28,7 +31,8 @@ class HomeUI extends StatefulWidget {
       required this.onBack,
       required this.returnToHome,
       required this.topList,
-      required this.args})
+      required this.args,
+      required this.toggleTheme})
       : super(key: key);
 
   @override
@@ -399,45 +403,19 @@ class _HomeUIState extends State<HomeUI> {
                         ),
                       )
                     ],
+                    SizedBox(
+                      height: 5,
+                    ),
                     Center(
-                      child: Container(
-                        // decoration: const BoxDecoration(color: Colors.transparent),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 3.8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              data.res![index].name!,
-                              style: const TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal),
-                              maxLines: 2,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            // Row(
-                            //   children: [
-                            //     Image.asset(
-                            //       ImagesPaths.ic_location,
-                            //       scale: 12,
-                            //       color: const Color(0xff444444),
-                            //     ),
-                            //     Expanded(
-                            //       child: Text(
-                            //         data.res![index].name!,
-                            //         style: const TextStyle(
-                            //             fontSize: 10,
-                            //             color: Color(0xff444444)),
-                            //         maxLines: 1,
-                            //         overflow: TextOverflow.ellipsis,
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                          ],
-                        ),
+                      child: Text(
+                        data.res![index].name!,
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -448,7 +426,7 @@ class _HomeUIState extends State<HomeUI> {
               child: Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: InkButton(
-                      rippleColor: const Color.fromARGB(80, 255, 255, 255),
+                      rippleColor: Color.fromARGB(80, 185, 32, 152),
                       backGroundColor: Colors.transparent,
                       borderRadius: 10,
                       onTap: () {
@@ -594,9 +572,6 @@ class _HomeUIState extends State<HomeUI> {
           onTap: () {
             widget.setArgs!({"url": url});
             widget.changeIndex!(7);
-
-            // Navigator.pushNamed(context, AppRoutes.webview,
-            //     arguments: {"url": url});
           },
           child: Padding(
             padding: const EdgeInsets.only(bottom: 24),
@@ -611,7 +586,6 @@ class _HomeUIState extends State<HomeUI> {
           ),
         );
     Future<bool> _onWillPop() async {
-      // Navigator.pop(context);
       widget.onBack();
       return false;
     }
@@ -619,7 +593,6 @@ class _HomeUIState extends State<HomeUI> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: SingleChildScrollView(
-        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -657,11 +630,14 @@ class _HomeUIState extends State<HomeUI> {
               ),
               child: Column(
                 children: [
+                  //// search bar
                   SearchWidget(
                     isLight: true,
                     changeIndex: widget.changeIndex,
                     setArgs: widget.setArgs,
                   ),
+
+                  ///grid view
                   SizedBox(
                     width: width * 0.8,
                     child: Padding(
@@ -875,7 +851,21 @@ class _HomeUIState extends State<HomeUI> {
                                                           fontSize: 10),
                                                     ),
                                                   ),
-                                                )
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 5,
+                                                      child: Icon(
+                                                        Icons.lightbulb_outline,
+                                                        size: 35,
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            255, 190, 245, 192),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ]
                                             ],
                                           )

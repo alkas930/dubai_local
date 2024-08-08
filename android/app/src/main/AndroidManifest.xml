@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.eseo.dubailocal">
+    package="com.dubai.dubailocal">
     <uses-permission android:name="android.permission.INTERNET"/>
     <queries>
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
@@ -12,7 +12,7 @@
        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyB8LNvJQ-rFvKs9TvIPsjXcJ9o1oZ6ZpKA"/>
         <activity
-            android:name="com.eseo.dubailocal.MainActivity"
+            android:name="com.dubai.dubailocal.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

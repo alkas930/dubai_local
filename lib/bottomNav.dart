@@ -166,6 +166,7 @@ class _BottomNavState extends State<BottomNav> {
           args: _args,
           topList: topList,
           categoryList: categoryList,
+          toggleTheme: () {},
         );
       case 3:
         // if (_navigatorKey.currentState!.canPop()) {
@@ -255,6 +256,7 @@ class _BottomNavState extends State<BottomNav> {
           changeIndex: (index) => setScreen(index),
           topList: topList,
           categoryList: categoryList,
+          toggleTheme: () {},
         );
     }
   }
@@ -262,6 +264,7 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     log("RERENDER");
+
     final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     final double width = MediaQuery.of(context).size.width;
 
@@ -474,7 +477,7 @@ class _BottomNavState extends State<BottomNav> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Transform.translate(
-              offset: isHighlighted ? const Offset(0, -16) : const Offset(0, 0),
+              offset: isHighlighted ? const Offset(0, -12) : const Offset(0, 0),
               child: CircleAvatar(
                 backgroundColor: isHighlighted
                     ? const Color(Constants.themeColorRed)

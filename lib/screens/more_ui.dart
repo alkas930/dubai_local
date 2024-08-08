@@ -1,6 +1,12 @@
+import 'dart:ffi';
+
+import 'package:dubai_local/main.dart';
 import 'package:dubai_local/services/networking_services/endpoints.dart';
+import 'package:dubai_local/theme_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import '../utils/localisations/images_paths.dart';
 
 class MoreUI extends StatelessWidget {
@@ -10,14 +16,16 @@ class MoreUI extends StatelessWidget {
   final Function() returnToHome;
   final Map args;
 
-  const MoreUI(
-      {Key? key,
-      required this.changeIndex,
-      required this.setArgs,
-      required this.onBack,
-      required this.returnToHome,
-      required this.args})
-      : super(key: key);
+  MoreUI({
+    Key? key,
+    required this.changeIndex,
+    required this.setArgs,
+    required this.onBack,
+    required this.returnToHome,
+    required this.args,
+  }) : super(key: key);
+
+  final themedata = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +34,8 @@ class MoreUI extends StatelessWidget {
       onBack();
       return false;
     }
+
+    final DemoController _demoController = Get.put(DemoController());
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -46,8 +56,8 @@ class MoreUI extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: _demoController.lightTheme.focusColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
@@ -55,44 +65,77 @@ class MoreUI extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    moreItems(
-                        context: context,
-                        title: "Explore Dubai",
-                        icon: ImagesPaths.more_explore,
-                        url: Endpoints.ExploreDubai),
-                    Divider(),
-                    moreItems(
-                        context: context,
-                        title: "Things To Do",
-                        icon: ImagesPaths.more_things_to_do,
-                        url: Endpoints.ThingsToDo),
-                    Divider(),
-                    moreItems(
-                        context: context,
-                        title: "Blog",
-                        icon: ImagesPaths.more_blog,
-                        url: Endpoints.Blog),
-                    Divider(),
-                    moreItems(
-                        context: context,
-                        title: "Important Phone Numbers",
-                        icon: ImagesPaths.more_important_phone,
-                        url: Endpoints.UsefulNumbers),
-                    Divider(),
-                    // moreItems(
-                    //     context: context,
-                    //     title: "Visit Website",
-                    //     icon: ImagesPaths.more_visit_website,
-                    //     url: Endpoints.BASE_URL),
-                    // Divider(),
-                  ],
-                ),
+                child: Column(mainAxisSize: MainAxisSize.max, children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  moreItems(
+                      context: context,
+                      title: "Explore Dubai",
+                      icon: ImagesPaths.more_explore,
+                      url: Endpoints.ExploreDubai),
+                  Divider(),
+                  moreItems(
+                      context: context,
+                      title: "Things To Do",
+                      icon: ImagesPaths.more_things_to_do,
+                      url: Endpoints.ThingsToDo),
+                  Divider(),
+                  moreItems(
+                      context: context,
+                      title: "Blog",
+                      icon: ImagesPaths.more_blog,
+                      url: Endpoints.Blog),
+                  Divider(),
+                  moreItems(
+                      context: context,
+                      title: "Important Phone Numbers",
+                      icon: ImagesPaths.more_important_phone,
+                      url: Endpoints.UsefulNumbers),
+                  Divider(),
+                  moreItems(
+                      context: context,
+                      title: "Visit Website",
+                      icon: ImagesPaths.more_visit_website,
+                      url: Endpoints.BASE_URL),
+                  Divider(
+                    height: 10,
+                  ),
+                  ////////////////////////////////////////////////////////
+                  IconButton(
+                    onPressed: () {
+                      Get.bottomSheet(
+                        backgroundColor:
+                            const Color.fromARGB(255, 117, 112, 112),
+                        Container(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.light_mode),
+                                title: const Text("Light Theme"),
+                                onTap: () {
+                                  Get.changeThemeMode(ThemeMode.light);
+                                  Get.back(); // Close the bottom sheet
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.dark_mode),
+                                title: const Text("Dark Theme"),
+                                onTap: () {
+                                  Get.changeThemeMode(ThemeMode.dark);
+                                  Get.back(); // Close the bottom sheet
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.brightness_6),
+                  )
+                ]),
               ),
             ),
           ),

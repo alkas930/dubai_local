@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dubai_local/Constants.dart';
+
 import 'package:dubai_local/utils/localisations/SharedPrefKeys.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/localisations/images_paths.dart';
@@ -8,6 +9,7 @@ import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -77,90 +79,93 @@ class LoginSignUpUI extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Ios Auth
-  Future<User?> _handleAppleSignIn() async {
-    try {
-      final AuthorizationCredentialAppleID appleCredential =
-          await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName
-        ],
-      );
+  // Future<User?> _handleAppleSignIn() async {
+  //   try {
+  //     final AuthorizationCredentialAppleID appleCredential =
+  //         await SignInWithApple.getAppleIDCredential(
+  //       scopes: [
+  //         AppleIDAuthorizationScopes.email,
+  //         AppleIDAuthorizationScopes.fullName
+  //       ],
+  //     );
 
-      // Convert identityToken and authorizationCode to strings
-      final String? identityToken = appleCredential.identityToken;
-      final String authorizationCode = appleCredential.authorizationCode;
+  //     // Convert identityToken and authorizationCode to strings
+  //     final String? identityToken = appleCredential.identityToken;
+  //     final String authorizationCode = appleCredential.authorizationCode;
 
-      final AuthCredential credential = OAuthProvider("apple.com").credential(
-        idToken: identityToken,
-        accessToken: authorizationCode,
-      );
+  //     final AuthCredential credential = OAuthProvider("apple.com").credential(
+  //       idToken: identityToken,
+  //       accessToken: authorizationCode,
+  //     );
 
-      final UserCredential authResult =
-          await _auth.signInWithCredential(credential);
-      return authResult.user;
-    } catch (e) {
-      print("Error during Apple Sign-In: $e");
-      return null;
-    }
-  }
+  //     final UserCredential authResult =
+  //         await _auth.signInWithCredential(credential);
+  //     return authResult.user;
+  //   } catch (e) {
+  //     print("Error during Apple Sign-In: $e");
+  //     return null;
+  //   }
+  // }
 
-  Widget AppleUser(context) {
-    final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
+  // Widget AppleUser(context) {
+  //   final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+  //   final double width = MediaQuery.of(context).size.width;
+  //   final double height = MediaQuery.of(context).size.height;
 
-    final GetStorage storage = GetStorage();
+  //   final GetStorage storage = GetStorage();
 
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
-      return Container(
-        margin: const EdgeInsets.only(top: 35),
-        child: AppleLogin(
-            title: "Apple",
-            imagePath: ImagesPaths.applelogo,
-            onTap: () async {
-              User? user = await _handleAppleSignIn();
-              if (user != null) {
-                print('Apple Sign-In successful. User: ${user.displayName}');
-                storage.write(
-                    SharedPrefrencesKeys.IS_LOGGED_BY, Constants.loggedOut);
-                Navigator.pushNamedAndRemoveUntil(
-                    context, AppRoutes.main, (Route<dynamic> route) => false,
-                    arguments: args);
-              } else {
-                print('Apple Sign-In failed.');
-              }
+  //   if (Theme.of(context).platform == TargetPlatform.iOS) {
+  //     return Container(
+  //       margin: const EdgeInsets.only(top: 35),
+  //       child: AppleLogin(
+  //           title: "Apple",
+  //           imagePath: ImagesPaths.applelogo,
+  //           onTap: () async {
+  //             User? user = await _handleAppleSignIn();
+  //             if (user != null) {
+  //               print('Apple Sign-In successful. User: ${user.displayName}');
+  //               storage.write(
+  //                   SharedPrefrencesKeys.IS_LOGGED_BY, Constants.loggedOut);
+  //               Navigator.pushNamedAndRemoveUntil(
+  //                   context, AppRoutes.main, (Route<dynamic> route) => false,
+  //                   arguments: args);
+  //             } else {
+  //               print('Apple Sign-In failed.');
+  //             }
 
-              SignInWithAppleButtonStyle.whiteOutlined;
+  //             SignInWithAppleButtonStyle.whiteOutlined;
 
-              SignInWithApple.getAppleIDCredential(
-                scopes: [
-                  AppleIDAuthorizationScopes.email,
-                  AppleIDAuthorizationScopes.fullName,
-                ],
-              ).then((value) {
-                saveiosUser(value, context, args, storage);
-              }).onError((error, stackTrace) {
-                log(error.toString());
-                log(stackTrace.toString());
-              });
-            },
-            width: width),
-      );
-    } else {
-      return Text('');
-    }
-  }
+  //             SignInWithApple.getAppleIDCredential(
+  //               scopes: [
+  //                 AppleIDAuthorizationScopes.email,
+  //                 AppleIDAuthorizationScopes.fullName,
+  //               ],
+  //             ).then((value) {
+  //               saveiosUser(value, context, args, storage);
+  //             }).onError((error, stackTrace) {
+  //               log(error.toString());
+  //               log(stackTrace.toString());
+  //             });
+  //           },
+  //           width: width),
+  //     );
+  //   } else {
+  //     return SizedBox.shrink();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
+
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+
     final GoogleSignIn googleSignIn = GoogleSignIn();
     // final SignInWithApple signInWithApple = SignInWithApple();
 
     final GetStorage storage = GetStorage();
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -175,7 +180,7 @@ class LoginSignUpUI extends StatelessWidget {
             children: [
               Container(
                 margin: const EdgeInsets.only(
-                  top: 105,
+                  top: 120,
                 ),
                 child: Image.asset(
                   ImagesPaths.app_logo_d,
@@ -193,17 +198,35 @@ class LoginSignUpUI extends StatelessWidget {
               //       width: width),
               // ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 40),
+                    margin: const EdgeInsets.only(top: 60),
                     child: googleLogin(
                         title: "Google",
                         imagePath: ImagesPaths.ic_google,
-                        onTap: () {
+                        onTap: () async {
+                          final GoogleSignInAccount? googleUser =
+                              await googleSignIn.signIn();
+                          final GoogleSignInAuthentication googleAuth =
+                              await googleUser!.authentication;
+                          final credential = GoogleAuthProvider.credential(
+                            accessToken: googleAuth.accessToken,
+                            idToken: googleAuth.idToken,
+                          );
+                          // Use the credential to sign in with Firebase
+                          await FirebaseAuth.instance
+                              .signInWithCredential(credential);
+
+                          login(context, args).then((v) {
+                            saveUser(v, context, args, storage);
+                          });
                           googleSignIn.signIn().then((value) {
                             saveUser(value, context, args, storage);
+                            // Navigator.pushNamedAndRemoveUntil(context,
+                            //     AppRoutes.main, (Route<dynamic> route) => false,
+                            //     arguments: args);
                           }).onError((error, stackTrace) {
                             log(error.toString());
                             log(stackTrace.toString());
@@ -218,38 +241,44 @@ class LoginSignUpUI extends StatelessWidget {
                 height: 30,
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // ignore: invalid_use_of_visible_for_testing_member
-                  AppleLogin(
-                      title: "Apple",
-                      onTap: () {
-                        SignInWithApple.getAppleIDCredential(
-                          scopes: [
-                            AppleIDAuthorizationScopes.email,
-                            AppleIDAuthorizationScopes.fullName
-                          ],
-                        ).then((value) {
-                          saveiosUser(value as AuthorizationCredentialAppleID?,
-                              context, args, storage);
-                        }).onError((error, stackTrace) {
-                          log(error.toString());
-                          log(stackTrace.toString());
-                        });
-                      },
-                      imagePath: ImagesPaths.applelogo,
-                      width: width),
-                ],
-              ),
+              (Theme.of(context).platform == TargetPlatform.iOS)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // ignore: invalid_use_of_visible_for_testing_member
+                        AppleLogin(
+                            title: "Apple",
+                            onTap: () {
+                              SignInWithApple.getAppleIDCredential(
+                                scopes: [
+                                  AppleIDAuthorizationScopes.email,
+                                  AppleIDAuthorizationScopes.fullName
+                                ],
+                              ).then((value) {
+                                saveiosUser(
+                                    value as AuthorizationCredentialAppleID?,
+                                    context,
+                                    args,
+                                    storage);
+                              }).onError((error, stackTrace) {
+                                log(error.toString());
+                                log(stackTrace.toString());
+                              });
+                            },
+                            imagePath: ImagesPaths.applelogo,
+                            width: width),
+                      ],
+                    )
+                  : SizedBox.shrink(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 85),
+                    margin: const EdgeInsets.only(top: 30),
                     child: InkButton(
                         borderRadius: 5,
-                        width: width * .7,
+                        // width: width * .7,
                         backGroundColor: Colors.grey.shade300,
                         height: 40,
                         child: Padding(
@@ -295,6 +324,8 @@ class LoginSignUpUI extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         onTap();
+        // login(context);
+        // print(User);
       },
       child: SizedBox(
         width: width * .75,
@@ -305,11 +336,8 @@ class LoginSignUpUI extends StatelessWidget {
               backgroundColor: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Image.asset(
-                    imagePath,
-                  ),
+                child: Image.asset(
+                  imagePath,
                 ),
               ),
             ),
@@ -344,11 +372,8 @@ class LoginSignUpUI extends StatelessWidget {
               backgroundColor: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Image.asset(
-                    imagePath,
-                  ),
+                child: Image.asset(
+                  imagePath,
                 ),
               ),
             ),
@@ -416,6 +441,24 @@ class LoginSignUpUI extends StatelessWidget {
       }
     } catch (error) {
       if (kDebugMode) {}
+    }
+  }
+
+  login(context, args) async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    final UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    final User? user = userCredential.user;
+    if (user != null && user.emailVerified) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, AppRoutes.main, (Route<dynamic> route) => false,
+          arguments: args);
     }
   }
 }

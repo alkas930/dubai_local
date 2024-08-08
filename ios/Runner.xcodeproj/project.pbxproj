@@ -402,7 +402,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 4.8.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.eseo.dubailocal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dubai.dubailocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -537,7 +537,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 4.8.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.eseo.dubailocal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dubai.dubailocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -567,7 +567,7 @@
 				);
 				MARKETING_VERSION = 4.8.3;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.eseo.dubailocal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dubai.dubailocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = iphoneos;

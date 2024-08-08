@@ -253,7 +253,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
-                          height: height * 0.22,
+                          height: height / 4,
                           child: Stack(
                             children: [
                               Opacity(
@@ -263,7 +263,7 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                       "",
                                   fit: BoxFit.cover,
                                   width: width,
-                                  height: height * 0.22,
+                                  height: height / 4,
                                 ),
                               ),
                               Container(
@@ -370,14 +370,15 @@ class _MainBusinessUIState extends State<MainBusinessUI>
                                             color: Colors.white,
                                           ),
                                           SizedBox(
-                                            width: 5,
+                                            width: 7,
                                           ),
                                           Text(
                                             _businessDetail
                                                     ?.businessData?.phone ??
                                                 "",
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13),
                                           )
                                         ],
                                       ),
@@ -813,427 +814,492 @@ class _MainBusinessUIState extends State<MainBusinessUI>
             child: getGallery(
                 _businessDetail?.businessData?.moreImages ?? "", height),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 16),
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 5.5, horizontal: 5.5),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: const Color(Constants.themeColorRed),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: SingleChildScrollView(
-                                child: SizedBox(
-                                  width: width,
-                                  child: Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Expanded(
-                                              child: Stack(
-                                                alignment: Alignment.center,
+          //////////////
+          SizedBox(
+            height: 12,
+          ),
+          SizedBox(
+            height: 48,
+            child: ListView.builder(
+              itemCount: 1,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(),
+                        child: Container(
+                          width: 130,
+                          height: 32,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 5.5, horizontal: 5.5),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: const Color(Constants.themeColorRed),
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: SingleChildScrollView(
+                                      child: SizedBox(
+                                        width: width,
+                                        child: Form(
+                                          key: _formKey,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
                                                 children: [
-                                                  Container(
-                                                    margin: const EdgeInsets
-                                                        .symmetric(vertical: 8),
-                                                    child: const Text(
-                                                        "Claim This Business"),
-                                                  ),
-                                                  Positioned(
-                                                    right: 0,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context,
-                                                                rootNavigator:
-                                                                    true)
-                                                            .pop('dialog');
-                                                      },
-                                                      child: const Icon(
-                                                          Icons.close),
+                                                  Expanded(
+                                                    child: Stack(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  vertical: 8),
+                                                          child: const Text(
+                                                              "Claim This Business"),
+                                                        ),
+                                                        Positioned(
+                                                          right: 0,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context,
+                                                                      rootNavigator:
+                                                                          true)
+                                                                  .pop(
+                                                                      'dialog');
+                                                            },
+                                                            child: const Icon(
+                                                                Icons.close),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                _businessDetail
-                                                        ?.businessData?.name ??
-                                                    "",
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      _businessDetail
+                                                              ?.businessData
+                                                              ?.name ??
+                                                          "",
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 14),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              right: 4),
+                                                      child: TextFormField(
+                                                        controller:
+                                                            nameController,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          labelText:
+                                                              "Enter Name",
+                                                          errorMaxLines: 2,
+                                                        ),
+                                                        validator: (value) => value!
+                                                                    .isEmpty ||
+                                                                !RegExp(r"^[a-zA-Z\s]+$")
+                                                                    .hasMatch(
+                                                                        value)
+                                                            ? 'Please enter a valid name'
+                                                            : null,
+                                                        style: const TextStyle(
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 4),
+                                                      child: TextFormField(
+                                                        controller:
+                                                            emailController,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          labelText:
+                                                              "Enter Email",
+                                                          errorMaxLines: 2,
+                                                        ),
+                                                        validator: (value) => value!
+                                                                    .isEmpty ||
+                                                                !RegExp(r"[a-z0-9!#$%&'*+/=?^_{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                                                    .hasMatch(
+                                                                        value)
+                                                            ? 'Please enter valid email'
+                                                            : null,
+                                                        style: const TextStyle(
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              TextFormField(
+                                                controller: phoneController,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: "Enter Phone",
+                                                  errorMaxLines: 2,
+                                                ),
+                                                validator: (value) => value!
+                                                                .length >
+                                                            15 ||
+                                                        value.length < 9
+                                                    ? 'Please enter valid phone no.'
+                                                    : null,
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
                                                     fontSize: 14),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Container(
-                                                margin: const EdgeInsets.only(
-                                                    right: 4),
-                                                child: TextFormField(
-                                                  controller: nameController,
+                                              GestureDetector(
+                                                child: Container(
                                                   decoration:
-                                                      const InputDecoration(
-                                                    labelText: "Enter Name",
-                                                    errorMaxLines: 2,
+                                                      const BoxDecoration(
+                                                          color: Color(Constants
+                                                              .themeColorRed),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          16))),
+                                                  margin: const EdgeInsets.only(
+                                                      top: 16),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 4),
+                                                  child: const Text(
+                                                    "Submit",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
-                                                  validator: (value) => value!
-                                                              .isEmpty ||
-                                                          !RegExp(r"^[a-zA-Z\s]+$")
-                                                              .hasMatch(value)
-                                                      ? 'Please enter a valid name'
-                                                      : null,
-                                                  style: const TextStyle(
-                                                      fontSize: 14),
                                                 ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 4),
-                                                child: TextFormField(
-                                                  controller: emailController,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    labelText: "Enter Email",
-                                                    errorMaxLines: 2,
-                                                  ),
-                                                  validator: (value) => value!
-                                                              .isEmpty ||
-                                                          !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-                                                              .hasMatch(value)
-                                                      ? 'Please enter valid email'
-                                                      : null,
-                                                  style: const TextStyle(
-                                                      fontSize: 14),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        TextFormField(
-                                          controller: phoneController,
-                                          decoration: const InputDecoration(
-                                            labelText: "Enter Phone",
-                                            errorMaxLines: 2,
-                                          ),
-                                          validator: (value) => value!.length >
-                                                      15 ||
-                                                  value.length < 9
-                                              ? 'Please enter valid phone no.'
-                                              : null,
-                                          style: const TextStyle(fontSize: 14),
-                                        ),
-                                        GestureDetector(
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                                color: Color(
-                                                    Constants.themeColorRed),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(16))),
-                                            margin:
-                                                const EdgeInsets.only(top: 16),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 16, vertical: 4),
-                                            child: const Text(
-                                              "Submit",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            if (validateAndSave()) {
-                                              Navigator.of(context,
-                                                      rootNavigator: true)
-                                                  .pop('dialog');
-                                              claimBusiness();
-                                            }
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: const FittedBox(
-                        child: Text(
-                          "Own This Business?",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              color: Colors.white),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: SingleChildScrollView(
-                            child: SizedBox(
-                              // width: width,
-                              child: Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 5.5),
-                                                child:
-                                                    const Text("Send Enquiry"),
-                                              ),
-                                              Positioned(
-                                                right: 0,
-                                                child: GestureDetector(
-                                                  onTap: () {
+                                                onTap: () {
+                                                  if (validateAndSave()) {
                                                     Navigator.of(context,
                                                             rootNavigator: true)
                                                         .pop('dialog');
-                                                  },
-                                                  child:
-                                                      const Icon(Icons.close),
+                                                    claimBusiness();
+                                                  }
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: const FittedBox(
+                              child: Text(
+                                "Own This Business?",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10,
+                                    color: Colors.white),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: SingleChildScrollView(
+                                  child: SizedBox(
+                                    // width: width,
+                                    child: Form(
+                                      key: _formKey,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Stack(
+                                                  alignment: Alignment.center,
+                                                  children: [
+                                                    Container(
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 5.5),
+                                                      child: const Text(
+                                                          "Send Enquiry"),
+                                                    ),
+                                                    Positioned(
+                                                      right: 0,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context,
+                                                                  rootNavigator:
+                                                                      true)
+                                                              .pop('dialog');
+                                                        },
+                                                        child: const Icon(
+                                                            Icons.close),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            _businessDetail
-                                                    ?.businessData?.name ??
-                                                "",
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TextFormField(
-                                      controller: nameController,
-                                      decoration: const InputDecoration(
-                                        labelText: "Enter Name",
-                                        errorMaxLines: 2,
-                                      ),
-                                      validator: (value) => value!.isEmpty ||
-                                              !RegExp(r"^[a-zA-Z\s]+$")
-                                                  .hasMatch(value)
-                                          ? 'Please enter a valid name'
-                                          : null,
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            margin:
-                                                const EdgeInsets.only(right: 4),
-                                            child: TextFormField(
-                                              controller: emailController,
-                                              decoration: const InputDecoration(
-                                                labelText: "Enter Email",
-                                                errorMaxLines: 2,
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  _businessDetail?.businessData
+                                                          ?.name ??
+                                                      "",
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ),
-                                              validator: (value) => value!
-                                                          .isEmpty ||
-                                                      !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-                                                          .hasMatch(value)
-                                                  ? 'Please enter valid email'
-                                                  : null,
-                                              style:
-                                                  const TextStyle(fontSize: 14),
-                                            ),
+                                            ],
                                           ),
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 4),
-                                            child: TextFormField(
-                                              controller: phoneController,
-                                              decoration: const InputDecoration(
-                                                labelText: "Enter Phone",
-                                                errorMaxLines: 2,
+                                          TextFormField(
+                                            controller: nameController,
+                                            decoration: const InputDecoration(
+                                              labelText: "Enter Name",
+                                              errorMaxLines: 2,
+                                            ),
+                                            validator: (value) => value!
+                                                        .isEmpty ||
+                                                    !RegExp(r"^[a-zA-Z\s]+$")
+                                                        .hasMatch(value)
+                                                ? 'Please enter a valid name'
+                                                : null,
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(
+                                                      right: 4),
+                                                  child: TextFormField(
+                                                    controller: emailController,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      labelText: "Enter Email",
+                                                      errorMaxLines: 2,
+                                                    ),
+                                                    validator: (value) => value!
+                                                                .isEmpty ||
+                                                            !RegExp(r"[a-z0-9!#$%&'*+/=?^_{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                                                .hasMatch(value)
+                                                        ? 'Please enter valid email'
+                                                        : null,
+                                                    style: const TextStyle(
+                                                        fontSize: 14),
+                                                  ),
+                                                ),
                                               ),
-                                              validator: (value) => value!
-                                                              .length >
-                                                          15 ||
-                                                      value.length < 9
-                                                  ? 'Please enter valid phone no.'
-                                                  : null,
-                                              style:
-                                                  const TextStyle(fontSize: 14),
-                                            ),
+                                              Expanded(
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 4),
+                                                  child: TextFormField(
+                                                    controller: phoneController,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      labelText: "Enter Phone",
+                                                      errorMaxLines: 2,
+                                                    ),
+                                                    validator: (value) => value!
+                                                                    .length >
+                                                                15 ||
+                                                            value.length < 9
+                                                        ? 'Please enter valid phone no.'
+                                                        : null,
+                                                    style: const TextStyle(
+                                                        fontSize: 14),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    TextFormField(
-                                      controller: messageController,
-                                      decoration: const InputDecoration(
-                                        labelText: "Enter Message",
-                                        errorMaxLines: 2,
+                                          TextFormField(
+                                            controller: messageController,
+                                            decoration: const InputDecoration(
+                                              labelText: "Enter Message",
+                                              errorMaxLines: 2,
+                                            ),
+                                            validator: (value) => value!.isEmpty
+                                                ? 'Message cannot be blank'
+                                                : null,
+                                            maxLines: 3,
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          ),
+                                          GestureDetector(
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                  color: Color(
+                                                      Constants.themeColorRed),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(16))),
+                                              margin: const EdgeInsets.only(
+                                                  top: 16),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 4),
+                                              child: const Text(
+                                                "Submit",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              if (validateAndSave()) {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop('dialog');
+                                                sendEnquiry();
+                                              }
+                                            },
+                                          )
+                                        ],
                                       ),
-                                      validator: (value) => value!.isEmpty
-                                          ? 'Message cannot be blank'
-                                          : null,
-                                      maxLines: 3,
-                                      style: const TextStyle(fontSize: 14),
                                     ),
-                                    GestureDetector(
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                            color:
-                                                Color(Constants.themeColorRed),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(16))),
-                                        margin: const EdgeInsets.only(top: 16),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 4),
-                                        child: const Text(
-                                          "Submit",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: AppColors.greenTheme),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        ImagesPaths.ic_send_enquiry,
+                                        width: 12,
+                                        color: Colors.white,
                                       ),
-                                      onTap: () {
-                                        if (validateAndSave()) {
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pop('dialog');
-                                          sendEnquiry();
-                                        }
-                                      },
-                                    )
-                                  ],
+                                      const Text(
+                                        "Send Enquiry",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                            fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: AppColors.greenTheme),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Share.share(
+                              "https://dubailocal.ae/business/${_businessDetail?.businessData?.slug ?? ""}",
+                              subject:
+                                  _businessDetail?.businessData?.name ?? "");
+                        },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 5),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                ImagesPaths.ic_send_enquiry,
-                                width: 12,
-                                color: Colors.white,
-                              ),
-                              const Text(
-                                "Send Enquiry",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: AppColors.greenTheme),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5.5, vertical: 5),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    ImagesPaths.ic_send_enquiry,
+                                    width: 12,
                                     color: Colors.white,
-                                    fontSize: 10),
+                                  ),
+                                  const Text(
+                                    " Send to Friend",
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Share.share(
-                        "https://dubailocal.ae/business/${_businessDetail?.businessData?.slug ?? ""}",
-                        subject: _businessDetail?.businessData?.name ?? "");
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: AppColors.greenTheme),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5.5, vertical: 5),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            ImagesPaths.ic_send_enquiry,
-                            width: 12,
-                            color: Colors.white,
-                          ),
-                          const Text(
-                            " Send to Friend",
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                );
+              },
             ),
-          ),
+          )
+
+          ///////////////////////////////////////////////
         ],
       ),
     );

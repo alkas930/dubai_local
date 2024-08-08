@@ -38,71 +38,7 @@ class _HeaderWidget extends State<HeaderWidget> {
   List<AllCategoriesData> categoryList = [];
   List<TopHomeData> topList = [];
 
-  // Widget UserIcon() {
-  //   if (Theme.of(context).platform == TargetPlatform.iOS) {
-  //     return Text('');
-  //   } else {
-  //     return GestureDetector(
-  //       onTap: () {
-  //         if (userLoggedIn == Constants.facebookLogin ||
-  //             userLoggedIn == Constants.googleLogin) {
-  //           widget.changeIndex!(9);
-  //         } else {
-  //           Navigator.pushNamed(context, AppRoutes.loginSignUp, arguments: {
-  //             "categoryList": categoryList,
-  //             "topList": topList,
-  //           });
-  //         }
-  //       },
-  //       child: Container(
-  //         width: Constants.iconSize,
-  //         height: Constants.iconSize,
-  //         child: userLoggedIn == Constants.guestLogin ||
-  //                 userImage.toString().trim().isEmpty
-  //             ? FittedBox(
-  //                 fit: BoxFit.fill,
-  //                 child: Icon(
-  //                   Icons.account_circle_rounded,
-  //                   color: Colors.grey.shade100,
-  //                 ),
-  //               )
-  //             : ClipOval(
-  //                 child: Image.network(
-  //                   userImage.toString().trim(),
-  //                   fit: BoxFit.cover,
-  //                   width: double.infinity,
-  //                   height: double.infinity,
-  //                   errorBuilder: (BuildContext context, Object exception,
-  //                       StackTrace? stackTrace) {
-  //                     // return SizedBox.shrink();
-  //                     return FittedBox(
-  //                       fit: BoxFit.fill,
-  //                       child: Icon(
-  //                         Icons.account_circle_rounded,
-  //                         color: Colors.grey.shade100,
-  //                       ),
-  //                     );
-  //                   },
-  //                   loadingBuilder: (BuildContext context, Widget child,
-  //                       ImageChunkEvent? loadingProgress) {
-  //                     if (loadingProgress == null) {
-  //                       return child;
-  //                     }
-  //                     return Center(
-  //                       child: CircularProgressIndicator(
-  //                         value: loadingProgress.expectedTotalBytes != null
-  //                             ? loadingProgress.cumulativeBytesLoaded /
-  //                                 loadingProgress.expectedTotalBytes!
-  //                             : null,
-  //                       ),
-  //                     );
-  //                   },
-  //                 ),
-  //               ),
-  //       ),
-  //     );
-  //   }
-  // }
+  //
 
   @override
   Widget build(BuildContext context) {

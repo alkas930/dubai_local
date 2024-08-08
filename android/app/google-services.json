@@ -1,51 +1,26 @@
 {
   "project_info": {
-    "project_number": "171874090622",
-    "project_id": "dubai-local-4d92d",
-    "storage_bucket": "dubai-local-4d92d.appspot.com"
+    "project_number": "830654306926",
+    "project_id": "dubailocal-ba0a5",
+    "storage_bucket": "dubailocal-ba0a5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:171874090622:android:4c34efafbb8f7c0cc6e22f",
+        "mobilesdk_app_id": "1:830654306926:android:3c0c477c12e29fc43e247f",
         "android_client_info": {
-          "package_name": "com.eseo.dubailocal"
+          "package_name": "com.dubai.dubailocal"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "171874090622-upn3f4jkaqadg835jalmv80l727pggoq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.eseo.dubailocal",
-            "certificate_hash": "874ece4b254279df31761636206cc8c59ea41fde"
-          }
-        },
-        {
-          "client_id": "171874090622-l9n4hde9dmov4101ct9na843ase8i54b.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB_mti1X7dhBLklBDaHt2Nghv1bgM75pc8"
+          "current_key": "AIzaSyBxPTqlwdGKrpUw-4nkYAPq9wuCScHRM8Y"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "171874090622-l9n4hde9dmov4101ct9na843ase8i54b.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "171874090622-1efds29pk8evlr8qped412rm29hr5sc5.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.eseo.dubailocal"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

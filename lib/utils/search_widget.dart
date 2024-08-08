@@ -137,12 +137,9 @@ class _SearchWidget extends State<SearchWidget> {
           children: [
             Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: const [
-                    BoxShadow(
-                        blurRadius: 0.5, offset: Offset(0, 8), spreadRadius: -8)
-                  ]),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(50),
+              ),
               width: width * widget.width,
               child: TextFormField(
                 decoration: InputDecoration(

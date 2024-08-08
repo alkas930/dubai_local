@@ -148,9 +148,9 @@ class _DetailUiState extends State<DetailUi> {
                     child: Text(
                       category ?? "",
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 19,
-                      ),
+                          color: Colors.white,
+                          fontSize: 19,
+                          overflow: TextOverflow.ellipsis),
                     ),
                   ),
                   // Padding(

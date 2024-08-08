@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,9 @@ class MyProfile extends StatelessWidget {
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.splash, (Route<dynamic> route) => false);
       }
-    }).catchError((onError) {});
+    }).catchError((onError) {
+      log(onError);
+    });
   }
 
   void logOut(BuildContext context, GetStorage storage) {
