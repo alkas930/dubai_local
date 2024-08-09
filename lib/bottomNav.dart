@@ -11,8 +11,10 @@ import 'package:dubai_local/screens/my_profile.dart';
 import 'package:dubai_local/screens/search_ui.dart';
 import 'package:dubai_local/screens/sub_categories_ui.dart';
 import 'package:dubai_local/screens/webview_screen_ui.dart';
+import 'package:dubai_local/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:toast/toast.dart';
 
 import 'utils/localisations/images_paths.dart';
@@ -276,6 +278,8 @@ class _BottomNavState extends State<BottomNav> {
     }
     print("HOME ARGS: ${args}");
 
+    ThemeController themecontroller = Get.put(ThemeController());
+
     return Stack(
       children: <Widget>[
         Image.asset(
@@ -317,8 +321,9 @@ class _BottomNavState extends State<BottomNav> {
                           icon: ImagesPaths.ic_notification,
                           title: "Notification",
                           onTap: () {
-                            ToastContext().init(context);
-                            Toast.show("No New Notifications");
+                            // ToastContext().init(context);
+                            // Toast.show("No New Notifications");
+                            themecontroller.changeTheme();
                           },
                           width: width),
                       menuItem(

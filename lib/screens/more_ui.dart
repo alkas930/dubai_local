@@ -35,8 +35,6 @@ class MoreUI extends StatelessWidget {
       return false;
     }
 
-    final DemoController _demoController = Get.put(DemoController());
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Column(
@@ -56,8 +54,8 @@ class MoreUI extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Container(
-              decoration: BoxDecoration(
-                color: _demoController.lightTheme.focusColor,
+              decoration: const BoxDecoration(
+                color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
@@ -101,40 +99,6 @@ class MoreUI extends StatelessWidget {
                   Divider(
                     height: 10,
                   ),
-                  ////////////////////////////////////////////////////////
-                  IconButton(
-                    onPressed: () {
-                      Get.bottomSheet(
-                        backgroundColor:
-                            const Color.fromARGB(255, 117, 112, 112),
-                        Container(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListTile(
-                                leading: const Icon(Icons.light_mode),
-                                title: const Text("Light Theme"),
-                                onTap: () {
-                                  Get.changeThemeMode(ThemeMode.light);
-                                  Get.back(); // Close the bottom sheet
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.dark_mode),
-                                title: const Text("Dark Theme"),
-                                onTap: () {
-                                  Get.changeThemeMode(ThemeMode.dark);
-                                  Get.back(); // Close the bottom sheet
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.brightness_6),
-                  )
                 ]),
               ),
             ),

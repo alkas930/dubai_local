@@ -1,25 +1,15 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-class DemoController extends GetxController {
-  // Declare the reactive variable
-  RxBool isDarkTheme = false.obs;
+class ThemeController extends GetxController {
+  RxBool isDark = false.obs;
 
-  get themeModes => isDarkTheme.value;
-
-  // Method to change the theme
-  void changeTheme() {
-    // Toggle the theme value
-    isDarkTheme.value = !isDarkTheme.value;
-
-    // Change the app's theme
-    Get.changeTheme(
-      isDarkTheme.value ? lightTheme : ThemeData.dark(),
-    );
+  void onInit() {
+    super.onInit();
   }
 
-  final ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light,
-    useMaterial3: true,
-  );
+  void changeTheme() {
+    isDark.value = !isDark.value;
+    Get.changeThemeMode((isDark.value ? ThemeMode.dark : ThemeMode.light));
+  }
 }

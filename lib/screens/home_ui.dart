@@ -3,10 +3,13 @@
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
 import 'package:dubai_local/services/networking_services/endpoints.dart';
+import 'package:dubai_local/theme_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:toast/toast.dart';
 
 import '../models/top_home_response_model.dart';
@@ -42,6 +45,7 @@ class HomeUI extends StatefulWidget {
 class _HomeUIState extends State<HomeUI> {
   @override
   Widget build(BuildContext context) {
+    ThemeController themeController = Get.find<ThemeController>();
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     final _formKey = GlobalKey<FormState>();
@@ -617,311 +621,327 @@ class _HomeUIState extends State<HomeUI> {
                 ),
               ),
             ),
-            Container(
-              alignment: Alignment.topCenter,
-              width: width,
-              constraints: BoxConstraints(minHeight: height),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                children: [
-                  //// search bar
-                  SearchWidget(
-                    isLight: true,
-                    changeIndex: widget.changeIndex,
-                    setArgs: widget.setArgs,
+            Obx(
+              () => Container(
+                alignment: Alignment.topCenter,
+                width: width,
+                constraints: BoxConstraints(minHeight: height),
+                decoration: BoxDecoration(
+                  color: themeController.isDark.value
+                      ? const Color.fromARGB(255, 238, 225, 188)
+                      : const Color.fromARGB(255, 186, 165, 223),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
+                ),
+                child: Column(
+                  children: [
+                    //// search bar
+                    SearchWidget(
+                      isLight: true,
+                      changeIndex: widget.changeIndex,
+                      setArgs: widget.setArgs,
+                    ),
 
-                  ///grid view
-                  SizedBox(
-                    width: width * 0.8,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: widget.categoryList.isNotEmpty
-                          ? GridView.builder(
-                              padding: const EdgeInsets.only(top: 8, bottom: 0),
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              itemCount: 9,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      childAspectRatio: 5 / 4.5,
-                                      mainAxisSpacing: 20 / 2,
-                                      crossAxisSpacing: 10),
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkButton(
-                                  rippleColor:
-                                      const Color(Constants.themeColorRed),
-                                  backGroundColor: const Color(0xffffffff),
-                                  borderRadius: 10,
-                                  child: Container(
-                                    clipBehavior: Clip.hardEdge,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: const Color(0xffD5DEF2),
-                                            style: BorderStyle.solid,
-                                            width: 1),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(8))),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        index == 8
-                                            ? Expanded(
-                                                child: Image.asset(
-                                                  ImagesPaths.ic_more_svg,
-                                                  width: 25,
-                                                ),
-                                              )
-                                            : Expanded(
-                                                child: SizedBox(
+                    ///grid view
+                    SizedBox(
+                      width: width * 0.8,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: widget.categoryList.isNotEmpty
+                            ? GridView.builder(
+                                padding:
+                                    const EdgeInsets.only(top: 8, bottom: 0),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemCount: 9,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        childAspectRatio: 5 / 4.5,
+                                        mainAxisSpacing: 20 / 2,
+                                        crossAxisSpacing: 10),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkButton(
+                                    rippleColor:
+                                        const Color(Constants.themeColorRed),
+                                    backGroundColor: const Color(0xffffffff),
+                                    borderRadius: 10,
+                                    child: Container(
+                                      clipBehavior: Clip.hardEdge,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xffD5DEF2),
+                                              style: BorderStyle.solid,
+                                              width: 1),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(8))),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          index == 8
+                                              ? Expanded(
+                                                  child: Image.asset(
+                                                    ImagesPaths.ic_more_svg,
                                                     width: 25,
-                                                    child: Image.network(widget
-                                                        .categoryList[index]
-                                                        .fullIcon)),
-                                              ),
-                                        Container(
-                                          width: double.infinity,
-                                          decoration: const BoxDecoration(
-                                            color: Color(0xffD5DEF2),
-                                          ),
-                                          child: Text(
-                                            (() {
-                                              if (index == 8) {
-                                                return "More";
-                                              } else {
-                                                return widget
-                                                    .categoryList[index].name;
-                                              }
-                                            }()),
-                                            style: const TextStyle(
-                                              color: Color(0xff333333),
-                                              fontSize: 12,
-                                              overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                )
+                                              : Expanded(
+                                                  child: SizedBox(
+                                                      width: 25,
+                                                      child: Image.network(
+                                                          widget
+                                                              .categoryList[
+                                                                  index]
+                                                              .fullIcon)),
+                                                ),
+                                          Container(
+                                            width: double.infinity,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xffD5DEF2),
                                             ),
-                                            textAlign: TextAlign.center,
+                                            child: Text(
+                                              (() {
+                                                if (index == 8) {
+                                                  return "More";
+                                                } else {
+                                                  return widget
+                                                      .categoryList[index].name;
+                                                }
+                                              }()),
+                                              style: const TextStyle(
+                                                color: Color(0xff333333),
+                                                fontSize: 12,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      if (index == 8) {
+                                        widget.changeIndex!(3);
+                                      } else {
+                                        openSubCategory(
+                                          context,
+                                          widget.categoryList[index].name,
+                                          widget.categoryList[index].slug,
+                                        );
+                                      }
+                                    },
+                                  );
+                                })
+                            : const SizedBox.shrink(),
+                      ),
+                    ),
+                    widget.topList.isNotEmpty
+                        ? ListView.builder(
+                            padding: const EdgeInsets.only(top: 8),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: widget.topList.length,
+                            itemBuilder: (BuildContext context, int index) =>
+                                Container(
+                              color:
+                                  widget.topList[index].source?.toLowerCase() ==
+                                          "recent_businesses"
+                                      ? const Color(0xffEEF1F8)
+                                      : Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: widget.topList[index].source
+                                              ?.toLowerCase() ==
+                                          "recent_businesses"
+                                      ? 8
+                                      : 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (index == 2)
+                                    WebviewBanner(ImagesPaths.ic_explore_dubai,
+                                        Endpoints.ExploreDubai),
+                                  if (index == 4)
+                                    WebviewBanner(ImagesPaths.ic_things_to_do,
+                                        Endpoints.ThingsToDo),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 5),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: Text(
+                                          widget.topList[index].heading ?? "",
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center),
                                     ),
                                   ),
-                                  onTap: () {
-                                    if (index == 8) {
-                                      widget.changeIndex!(3);
-                                    } else {
-                                      openSubCategory(
-                                        context,
-                                        widget.categoryList[index].name,
-                                        widget.categoryList[index].slug,
-                                      );
-                                    }
-                                  },
-                                );
-                              })
-                          : const SizedBox.shrink(),
-                    ),
-                  ),
-                  widget.topList.isNotEmpty
-                      ? ListView.builder(
-                          padding: const EdgeInsets.only(top: 8),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: widget.topList.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              Container(
-                            color:
-                                widget.topList[index].source?.toLowerCase() ==
-                                        "recent_businesses"
-                                    ? const Color(0xffEEF1F8)
-                                    : Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                vertical: widget.topList[index].source
-                                            ?.toLowerCase() ==
-                                        "recent_businesses"
-                                    ? 8
-                                    : 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (index == 2)
-                                  WebviewBanner(ImagesPaths.ic_explore_dubai,
-                                      Endpoints.ExploreDubai),
-                                if (index == 4)
-                                  WebviewBanner(ImagesPaths.ic_things_to_do,
-                                      Endpoints.ThingsToDo),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 5),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: Text(
-                                        widget.topList[index].heading ?? "",
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: SizedBox(
-                                    height: widget.topList[index].source
-                                                    ?.toLowerCase() ==
-                                                "blog" &&
-                                            widget.topList[index].res!.length >
-                                                2
-                                        ? (128 * 2) + 32
-                                        : 128,
-                                    child: widget.topList[index].source
-                                                ?.toLowerCase() ==
-                                            "blog"
-                                        ? Column(
-                                            children: [
-                                              GridView.builder(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8),
-                                                shrinkWrap: true,
-                                                physics:
-                                                    const NeverScrollableScrollPhysics(),
-                                                scrollDirection: Axis.vertical,
-                                                itemCount: widget.topList[index]
-                                                        .res!.isNotEmpty
-                                                    ? widget.topList[index].res!
-                                                                .length >
-                                                            4
-                                                        ? 4
-                                                        : widget.topList[index]
-                                                            .res?.length
-                                                    : 0,
-                                                gridDelegate:
-                                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 2,
-                                                  childAspectRatio: 2 / 1.3,
-                                                ),
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                            int idx) =>
-                                                        ListingCardBlog(
-                                                            data: widget
-                                                                .topList[index],
-                                                            index: idx),
-                                              ),
-                                              if (widget.topList[index].res!
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: SizedBox(
+                                      height: widget.topList[index].source
+                                                      ?.toLowerCase() ==
+                                                  "blog" &&
+                                              widget.topList[index].res!
                                                       .length >
-                                                  2) ...[
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    widget.setArgs!({
-                                                      "url": Endpoints.Blog
-                                                    });
-                                                    widget.changeIndex!(7);
-                                                  },
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 8),
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 4),
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                            color: Color(
-                                                                0xff318805),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            2))),
-                                                    child: const Text(
-                                                      "Check All Events",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 10),
-                                                    ),
+                                                  2
+                                          ? (128 * 2) + 32
+                                          : 128,
+                                      child: widget.topList[index].source
+                                                  ?.toLowerCase() ==
+                                              "blog"
+                                          ? Column(
+                                              children: [
+                                                GridView.builder(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8),
+                                                  shrinkWrap: true,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  itemCount: widget
+                                                          .topList[index]
+                                                          .res!
+                                                          .isNotEmpty
+                                                      ? widget.topList[index]
+                                                                  .res!.length >
+                                                              4
+                                                          ? 4
+                                                          : widget
+                                                              .topList[index]
+                                                              .res
+                                                              ?.length
+                                                      : 0,
+                                                  gridDelegate:
+                                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 2,
+                                                    childAspectRatio: 2 / 1.3,
                                                   ),
+                                                  itemBuilder: (BuildContext
+                                                              context,
+                                                          int idx) =>
+                                                      ListingCardBlog(
+                                                          data: widget
+                                                              .topList[index],
+                                                          index: idx),
                                                 ),
-                                                Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 5,
-                                                      child: Icon(
-                                                        Icons.lightbulb_outline,
-                                                        size: 35,
-                                                        color: const Color
-                                                            .fromARGB(
-                                                            255, 190, 245, 192),
+                                                if (widget.topList[index].res!
+                                                        .length >
+                                                    2) ...[
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      widget.setArgs!({
+                                                        "url": Endpoints.Blog
+                                                      });
+                                                      widget.changeIndex!(7);
+                                                    },
+                                                    child: Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 8),
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 4),
+                                                      decoration: const BoxDecoration(
+                                                          color:
+                                                              Color(0xff318805),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          2))),
+                                                      child: const Text(
+                                                        "Check All Events",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 10),
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ]
-                                            ],
-                                          )
-                                        : ListView.builder(
-                                            clipBehavior: Clip.none,
-                                            physics:
-                                                const ClampingScrollPhysics(),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: widget.topList[index]
-                                                    .res!.isNotEmpty
-                                                ? widget
-                                                    .topList[index].res?.length
-                                                : 0,
-                                            itemBuilder: (BuildContext context,
-                                                    int idx) =>
-                                                ListingCard(
-                                                    data: widget.topList[index],
-                                                    index: idx),
-                                          ),
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 5,
+                                                        child: Icon(
+                                                          Icons
+                                                              .lightbulb_outline,
+                                                          size: 35,
+                                                          color: const Color
+                                                              .fromARGB(255,
+                                                              190, 245, 192),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ]
+                                              ],
+                                            )
+                                          : ListView.builder(
+                                              clipBehavior: Clip.none,
+                                              physics:
+                                                  const ClampingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: widget.topList[index]
+                                                      .res!.isNotEmpty
+                                                  ? widget.topList[index].res
+                                                      ?.length
+                                                  : 0,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                          int idx) =>
+                                                      ListingCard(
+                                                          data: widget
+                                                              .topList[index],
+                                                          index: idx),
+                                            ),
+                                    ),
                                   ),
-                                ),
-                                if (widget.topList[index].source
-                                        ?.toLowerCase() ==
-                                    "recent_businesses") ...[
-                                  Transform.translate(
-                                    offset: const Offset(0, -8),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        openDialog();
-                                      },
-                                      child: Center(
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8, vertical: 4),
-                                          decoration: const BoxDecoration(
-                                              color: Color(0xff318805),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(2))),
-                                          child: const Text(
-                                            "List Your Business Now",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 10),
+                                  if (widget.topList[index].source
+                                          ?.toLowerCase() ==
+                                      "recent_businesses") ...[
+                                    Transform.translate(
+                                      offset: const Offset(0, -8),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          openDialog();
+                                        },
+                                        child: Center(
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            decoration: const BoxDecoration(
+                                                color: Color(0xff318805),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(2))),
+                                            child: const Text(
+                                              "List Your Business Now",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                ]
-                              ],
+                                    )
+                                  ]
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                      : const SizedBox.shrink()
-                ],
+                          )
+                        : const SizedBox.shrink()
+                  ],
+                ),
               ),
             ),
           ],
