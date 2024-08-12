@@ -1,10 +1,16 @@
+import 'dart:ffi';
+
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/all_categories_response_model.dart';
 import 'package:dubai_local/models/top_home_response_model.dart';
+import 'package:dubai_local/theme_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:http/http.dart';
 import '../utils/localisations/app_colors.dart';
 import '../utils/search_widget.dart';
 
@@ -98,36 +104,43 @@ class CategoriesUi extends StatelessWidget {
       {required BuildContext context,
       required AllCategoriesData categoryItems,
       required Function openSubCategory}) {
-    return InkButton(
-      rippleColor: const Color(Constants.themeColorRed),
-      backGroundColor: const Color(0xffEEF2F3),
-      borderRadius: 10,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 35, child: Image.network(categoryItems.fullIcon)),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            categoryItems.name,
-            style: const TextStyle(
-              color: Color(0xff333333),
-              fontSize: 10,
-              overflow: TextOverflow.ellipsis,
+    ThemeController themeController = Get.put(ThemeController());
+    return Obx(
+      () => InkButton(
+        rippleColor: Color(Constants.themeColorRed),
+        backGroundColor: themeController.isDark.value
+            ? const Color.fromARGB(255, 36, 36, 36)
+            : Colors.white,
+        borderRadius: 10,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 35, child: Image.network(categoryItems.fullIcon)),
+            const SizedBox(
+              height: 5,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+            Text(
+              categoryItems.name,
+              style: TextStyle(
+                color: themeController.isDark.value
+                    ? Color.fromARGB(255, 252, 250, 250)
+                    : Colors.black,
+                fontSize: 10,
+                overflow: TextOverflow.ellipsis,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        onTap: () {
+          openSubCategory(
+            context,
+            categoryItems.name,
+            categoryItems.slug,
+          );
+        },
       ),
-      onTap: () {
-        openSubCategory(
-          context,
-          categoryItems.name,
-          categoryItems.slug,
-        );
-      },
     );
   }
 }

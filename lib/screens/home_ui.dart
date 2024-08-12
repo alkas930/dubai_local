@@ -628,8 +628,8 @@ class _HomeUIState extends State<HomeUI> {
                 constraints: BoxConstraints(minHeight: height),
                 decoration: BoxDecoration(
                   color: themeController.isDark.value
-                      ? const Color.fromARGB(255, 238, 225, 188)
-                      : const Color.fromARGB(255, 186, 165, 223),
+                      ? const Color.fromARGB(255, 36, 36, 36)
+                      : Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
@@ -667,7 +667,10 @@ class _HomeUIState extends State<HomeUI> {
                                   return InkButton(
                                     rippleColor:
                                         const Color(Constants.themeColorRed),
-                                    backGroundColor: const Color(0xffffffff),
+                                    backGroundColor: themeController
+                                            .isDark.value
+                                        ? const Color.fromARGB(255, 36, 36, 36)
+                                        : Colors.white,
                                     borderRadius: 10,
                                     child: Container(
                                       clipBehavior: Clip.hardEdge,
@@ -752,8 +755,9 @@ class _HomeUIState extends State<HomeUI> {
                                 Container(
                               color:
                                   widget.topList[index].source?.toLowerCase() ==
-                                          "recent_businesses"
-                                      ? const Color(0xffEEF1F8)
+                                              "recent_businesses" &&
+                                          themeController.isDark.value
+                                      ? const Color.fromARGB(255, 36, 36, 36)
                                       : Colors.white,
                               padding: EdgeInsets.symmetric(
                                   vertical: widget.topList[index].source
@@ -777,8 +781,12 @@ class _HomeUIState extends State<HomeUI> {
                                       width: double.infinity,
                                       child: Text(
                                           widget.topList[index].heading ?? "",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 18,
+                                              // color:
+                                              //     themeController.isDark.value
+                                              //         ? Colors.white
+                                              //         : Colors.black,
                                               fontWeight: FontWeight.bold),
                                           textAlign: TextAlign.center),
                                     ),

@@ -4,10 +4,13 @@ import 'package:dubai_local/models/SubCategoryBusinessResponseModel.dart';
 import 'package:dubai_local/models/business_details_response_model.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
 import 'package:dubai_local/services/networking_services/endpoints.dart';
+import 'package:dubai_local/theme_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/routes/app_routes.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:toast/toast.dart';
 // import 'package:velocity_x/velocity_x.dart';
 
@@ -112,6 +115,7 @@ class _DetailUiState extends State<DetailUi> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeController themeController = Get.put(ThemeController());
     // final Map args = (ModalRoute.of(context)!.settings.arguments ?? {}) as Map;
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
@@ -192,8 +196,10 @@ class _DetailUiState extends State<DetailUi> {
                 SingleChildScrollView(
                   physics: const ScrollPhysics(),
                   child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: themeController.isDark.value
+                          ? const Color.fromARGB(255, 36, 36, 36)
+                          : Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
@@ -235,6 +241,7 @@ class _DetailUiState extends State<DetailUi> {
   }
 
   Widget items({required SubcatBusinessData searchItems}) {
+    ThemeController themeController = Get.put(ThemeController());
     void openBusinessDetails(BuildContext context, String businessSlug) {
       // Navigator.pushNamed(context, AppRoutes.mainBusiness,
       //     arguments: {"slug": businessSlug});

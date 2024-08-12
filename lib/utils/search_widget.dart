@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/SearchModel.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
+import 'package:dubai_local/theme_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SearchWidget extends StatefulWidget {
   final bool isLight;
@@ -122,6 +124,7 @@ class _SearchWidget extends State<SearchWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeController themeController = Get.put(ThemeController());
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Container(
@@ -137,7 +140,9 @@ class _SearchWidget extends State<SearchWidget> {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: themeController.isDark.value
+                    ? const Color.fromARGB(255, 36, 36, 36)
+                    : Colors.white,
                 borderRadius: BorderRadius.circular(50),
               ),
               width: width * widget.width,
@@ -145,13 +150,16 @@ class _SearchWidget extends State<SearchWidget> {
                 decoration: InputDecoration(
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                  suffixIcon: const Icon(
-                    Icons.search,
-                    color: Color(0xff626262),
-                  ),
+                  suffixIcon: Icon(Icons.search,
+                      color: themeController.isDark.value
+                          ? Colors.white
+                          : const Color.fromARGB(255, 36, 36, 36)),
                   hintText: "Try 'Asian Cuisine' or 'Mobile shop'",
-                  hintStyle:
-                      const TextStyle(fontSize: 12, color: Color(0xff626262)),
+                  hintStyle: TextStyle(
+                      fontSize: 12,
+                      color: themeController.isDark.value
+                          ? Colors.white
+                          : Colors.black),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         const BorderSide(color: Color(Constants.themeColorRed)),

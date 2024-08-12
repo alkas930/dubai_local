@@ -1,7 +1,9 @@
+import 'package:dubai_local/theme_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/app_colors.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:toast/toast.dart';
 import '../Constants.dart';
 import '../models/SearchModel.dart';
@@ -56,6 +58,7 @@ class _SearchUiState extends State<SearchUi> {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController phoneController = TextEditingController();
     final TextEditingController messageController = TextEditingController();
+    ThemeController themeController = Get.put(ThemeController());
 
     if (args["categoryList"] != null && args["categoryList"]?.isNotEmpty) {
       categoryList = List<AllCategoriesData>.from(args["categoryList"]);
@@ -81,6 +84,7 @@ class _SearchUiState extends State<SearchUi> {
     }
 
     Widget ListingCard({required TopHomeData data, required int index}) {
+      ThemeController themeController = Get.put(ThemeController());
       if (data.source?.toLowerCase() == "recent_businesses") {
         return Stack(
           children: [
@@ -847,7 +851,7 @@ class _SearchUiState extends State<SearchUi> {
                                                                           color: Colors
                                                                               .white,
                                                                           fontSize:
-                                                                              10),
+                                                                              8),
                                                                     ),
                                                                   ),
                                                                 )

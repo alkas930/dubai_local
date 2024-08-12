@@ -1,10 +1,12 @@
 import 'package:dubai_local/Constants.dart';
 import 'package:dubai_local/models/sub_categories_response_model.dart';
 import 'package:dubai_local/services/networking_services/api_call.dart';
+import 'package:dubai_local/theme_controller.dart';
 import 'package:dubai_local/utils/header_widgets.dart';
 import 'package:dubai_local/utils/localisations/custom_widgets.dart';
 import 'package:dubai_local/utils/search_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SubCategoriesUI extends StatefulWidget {
   final Function(int index)? changeIndex;
@@ -154,33 +156,39 @@ class _SubCategoriesUIState extends State<SubCategoriesUI> {
       required SubcatData categoryItem,
       required int index,
       required Function openSubCategoryBusiness}) {
-    return InkButton(
-      rippleColor: const Color(Constants.themeColorRed),
-      backGroundColor: const Color(0xffEEF2F3),
-      borderRadius: 10,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 35, child: Image.network(categoryItem.fullIcon!)),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            categoryItem.subCatName!,
-            style: const TextStyle(
-              color: Color(0xff333333),
-              fontSize: 10,
-              overflow: TextOverflow.ellipsis,
+    ThemeController themeController = Get.put(ThemeController());
+    return Obx(
+      () => InkButton(
+        rippleColor: const Color(Constants.themeColorRed),
+        backGroundColor: themeController.isDark.value
+            ? const Color.fromARGB(255, 36, 36, 36)
+            : Colors.white,
+        borderRadius: 10,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 35, child: Image.network(categoryItem.fullIcon!)),
+            const SizedBox(
+              height: 5,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+            Text(
+              categoryItem.subCatName!,
+              style: TextStyle(
+                color:
+                    themeController.isDark.value ? Colors.white : Colors.black,
+                fontSize: 10,
+                overflow: TextOverflow.ellipsis,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        onTap: () {
+          openSubCategoryBusiness(
+              context, categoryItem.subCatName, categoryItem.slug);
+        },
       ),
-      onTap: () {
-        openSubCategoryBusiness(
-            context, categoryItem.subCatName, categoryItem.slug);
-      },
     );
   }
 }
